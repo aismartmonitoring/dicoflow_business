@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Analysis — DicoFlow</title>
+<meta name="description" content="TAM/SAM/SOM analysis, competitor deep-dive, regulatory landscape, territory mapping, and SWOT analysis for DicoFlow in India's diagnostic imaging market.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .market-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+  .market-table th{background:rgba(77,208,225,.08);color:var(--teal-light);padding:.6rem .5rem;text-align:right;font-weight:600;border-bottom:1px solid var(--border-teal);}
+  .market-table th:first-child{text-align:left;}
+  .market-table td{padding:.55rem .5rem;text-align:right;border-bottom:1px solid var(--border);color:var(--text-secondary);}
+  .market-table td:first-child{text-align:left;color:var(--text-primary);font-weight:500;}
+  .market-table .total-row td{font-weight:700;color:var(--teal-light);border-top:2px solid var(--border-teal);background:rgba(77,208,225,.04);}
+  .market-table .section-header td{background:rgba(77,208,225,.06);color:var(--teal);font-weight:600;text-align:left;}
+  .tam-ring{display:flex;flex-direction:column;align-items:center;gap:.5rem;}
+  .tam-ring .ring{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:800;}
+  .tam-ring .ring-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);}
+  .competitor-card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;background:var(--bg-card);position:relative;overflow:hidden;}
+  .competitor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .competitor-card.ms::before{background:#e91e63;}
+  .competitor-card.pd::before{background:#2196f3;}
+  .competitor-card.md::before{background:#ff9800;}
+  .competitor-card.df::before{background:var(--teal);}
+  .competitor-card h3{font-size:1rem;margin-bottom:1rem;}
+  .comp-row{display:flex;justify-content:space-between;font-size:.8rem;padding:.3rem 0;border-bottom:1px solid var(--border);}
+  .comp-label{color:var(--text-muted);}
+  .comp-value{font-weight:600;}
+  .swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .swot-card{border-radius:var(--radius-lg);padding:1.5rem;}
+  .swot-card h3{font-size:1rem;margin-bottom:1rem;}
+  .swot-card ul{list-style:none;padding:0;margin:0;}
+  .swot-card li{padding:.4rem 0;font-size:.82rem;line-height:1.6;color:var(--text-secondary);border-bottom:1px solid rgba(255,255,255,.04);}
+  .swot-card li::before{margin-right:.5rem;font-weight:700;}
+  .swot-s{background:rgba(38,166,154,.06);border:1px solid rgba(38,166,154,.2);}
+  .swot-s h3{color:var(--success);} .swot-s li::before{content:'✅';color:var(--success);}
+  .swot-w{background:rgba(255,152,0,.06);border:1px solid rgba(255,152,0,.2);}
+  .swot-w h3{color:#ff9800;} .swot-w li::before{content:'⚠️';}
+  .swot-o{background:rgba(77,208,225,.06);border:1px solid rgba(77,208,225,.2);}
+  .swot-o h3{color:var(--teal-light);} .swot-o li::before{content:'🚀';}
+  .swot-t{background:rgba(239,83,80,.06);border:1px solid rgba(239,83,80,.2);}
+  .swot-t h3{color:var(--danger);} .swot-t li::before{content:'🔴';}
+  .territory-card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;background:var(--bg-card);}
+  .territory-card h4{color:var(--teal-light);font-size:.95rem;margin-bottom:.5rem;}
+  .reg-badge{display:inline-block;padding:.15rem .5rem;border-radius:8px;font-size:.68rem;font-weight:600;margin:.15rem .1rem;}
+  .reg-mandatory{background:rgba(239,83,80,.15);color:var(--danger);}
+  .reg-recommended{background:rgba(255,215,0,.15);color:#ffd700;}
+  .reg-optional{background:rgba(77,208,225,.15);color:var(--teal-light);}
+  @media(max-width:768px){.swot-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:5rem;padding-bottom:2rem;">
+  <div class="hero-inner">
+    <div class="section-badge" style="animation:fadeInUp .6s ease both;">📊 Market Intelligence</div>
+    <h1 class="hero-title">India Diagnostic Imaging <span class="gradient">Market Analysis</span></h1>
+    <p class="hero-desc">Comprehensive analysis of India's ₹45,000 Cr diagnostic imaging market. TAM/SAM/SOM sizing, competitor landscape, regulatory requirements, territory prioritisation, and SWOT analysis — everything you need for investor conversations and strategic planning.</p>
+    <div class="stats-row" style="animation:fadeInUp .8s ease .4s both;">
+      <div class="stat"><span class="stat-number" style="color:var(--teal-light);">1.9L+</span><span class="stat-label">Diagnostics Centres</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--teal-light);">₹45K Cr</span><span class="stat-label">Market Size (2025)</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--success);">14%</span><span class="stat-label">Annual Growth</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--success);">65%+</span><span class="stat-label">Still Paper-Based</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TAM / SAM / SOM ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Market Sizing</div>
+    <h2 class="section-title reveal">TAM → SAM → SOM</h2>
+    <p class="section-subtitle reveal">Bottom-up market sizing based on diagnostic centre count, average spend per centre, and realistic capture rates.</p>
+  </div>
+
+  <div class="reveal" style="max-width:900px;margin:0 auto;overflow-x:auto;">
+    <table class="market-table">
+      <thead><tr><th>Metric</th><th>Volume</th><th>Avg Revenue/Centre</th><th>Market Value</th></tr></thead>
+      <tbody>
+        <tr class="section-header"><td colspan="4">TOTAL ADDRESSABLE MARKET (TAM) — All India</td></tr>
+        <tr><td>Large Hospitals (500+ bed)</td><td>4,000</td><td>₹15L (T4 Enterprise)</td><td>₹600 Cr</td></tr>
+        <tr><td>Medium Hospitals (100-500 bed)</td><td>18,000</td><td>₹7L (T3 Radiology)</td><td>₹1,260 Cr</td></tr>
+        <tr><td>Diagnostic Chains (5+ branches)</td><td>2,500</td><td>₹10L (multi-branch T3/T4)</td><td>₹250 Cr</td></tr>
+        <tr><td>Standalone Diagnostic Centres</td><td>85,000</td><td>₹2.5L (T2/T5)</td><td>₹2,125 Cr</td></tr>
+        <tr><td>Small Clinics (X-ray/USG only)</td><td>80,000</td><td>₹1L (T1 Billing)</td><td>₹800 Cr</td></tr>
+        <tr class="total-row"><td>TAM Total</td><td>1,89,500</td><td>—</td><td style="color:var(--success);">₹5,035 Cr</td></tr>
+
+        <tr class="section-header"><td colspan="4">SERVICEABLE ADDRESSABLE MARKET (SAM) — Digital-ready, urban/semi-urban</td></tr>
+        <tr><td>Digital-ready medium hospitals</td><td>8,000</td><td>₹7L</td><td>₹560 Cr</td></tr>
+        <tr><td>Digital-ready diagnostic chains</td><td>1,500</td><td>₹10L</td><td>₹150 Cr</td></tr>
+        <tr><td>Digital-ready standalone centres</td><td>35,000</td><td>₹2.5L</td><td>₹875 Cr</td></tr>
+        <tr><td>Digital-ready small clinics</td><td>25,000</td><td>₹1L</td><td>₹250 Cr</td></tr>
+        <tr class="total-row"><td>SAM Total</td><td>69,500</td><td>—</td><td style="color:var(--success);">₹1,835 Cr</td></tr>
+
+        <tr class="section-header"><td colspan="4">SERVICEABLE OBTAINABLE MARKET (SOM) — Realistic 3-year capture</td></tr>
+        <tr><td>Year 1 (36 deals)</td><td>36</td><td>₹3.7L</td><td>₹1.33 Cr</td></tr>
+        <tr><td>Year 2 (90 deals)</td><td>90</td><td>₹3.5L</td><td>₹3.15 Cr</td></tr>
+        <tr><td>Year 3 (180 deals)</td><td>180</td><td>₹3.2L</td><td>₹5.76 Cr</td></tr>
+        <tr class="total-row"><td>SOM 3-Year Total</td><td>306 centres</td><td>—</td><td style="color:var(--success);">₹10.24 Cr</td></tr>
+        <tr><td style="color:var(--text-muted);font-style:italic;">SOM as % of SAM</td><td>0.44%</td><td>—</td><td style="color:var(--text-muted);">0.56%</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:1rem;">Note: SOM excludes recurring AMC + hosting + upsell revenue (additional ₹5.41 Cr over 3 years). With recurring, 3-year total = ₹15.65 Cr.</p>
+  </div>
+</section>
+
+<!-- ===== COMPETITOR DEEP DIVE ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">Competitor Landscape</div>
+      <h2 class="section-title reveal">Head-to-Head Comparison</h2>
+    </div>
+
+    <div class="grid-2 stagger">
+      <div class="competitor-card ms reveal">
+        <h3 style="color:#e91e63;">MedSynapse</h3>
+        <div class="comp-row"><span class="comp-label">PACS Pricing</span><span class="comp-value" style="color:#e91e63;">₹3.5L+ / ₹18-25L Enterprise</span></div>
+        <div class="comp-row"><span class="comp-label">AMC</span><span class="comp-value">18-22% of licence</span></div>
+        <div class="comp-row"><span class="comp-label">Implementation</span><span class="comp-value">3-6 weeks</span></div>
+        <div class="comp-row"><span class="comp-label">Target Segment</span><span class="comp-value">Large hospitals</span></div>
+        <div class="comp-row"><span class="comp-label">Billing Module</span><span class="comp-value">No (separate vendor)</span></div>
+        <div class="comp-row"><span class="comp-label">Film Prep</span><span class="comp-value">Basic</span></div>
+        <div class="comp-row"><span class="comp-label">Cloud Option</span><span class="comp-value">Yes (₹3-5L/yr)</span></div>
+        <div class="comp-row"><span class="comp-label">Strengths</span><span class="comp-value" style="color:var(--success);">Brand trust, large installs</span></div>
+        <div class="comp-row"><span class="comp-label">Weaknesses</span><span class="comp-value" style="color:var(--danger);">Price, slow impl, no billing</span></div>
+        <div style="margin-top:1rem;padding:.75rem;border-radius:var(--radius-md);background:rgba(77,208,225,.05);font-size:.78rem;color:var(--text-secondary);">
+          <strong style="color:var(--teal-light);">DicoFlow Advantage:</strong> 50-70% cheaper, faster implementation (7-14 days vs 3-6 weeks), integrated billing, modern web-based viewer.
+        </div>
+      </div>
+
+      <div class="competitor-card pd reveal">
+        <h3 style="color:#2196f3;">PostDICOM</h3>
+        <div class="comp-row"><span class="comp-label">PACS Pricing</span><span class="comp-value" style="color:#2196f3;">₹3L+ / ₹12-18L Enterprise</span></div>
+        <div class="comp-row"><span class="comp-label">AMC</span><span class="comp-value">15-20% of licence</span></div>
+        <div class="comp-row"><span class="comp-label">Implementation</span><span class="comp-value">2-4 weeks</span></div>
+        <div class="comp-row"><span class="comp-label">Target Segment</span><span class="comp-value">Mid-to-large hospitals</span></div>
+        <div class="comp-row"><span class="comp-label">Billing Module</span><span class="comp-value">No</span></div>
+        <div class="comp-row"><span class="comp-label">Film Prep</span><span class="comp-value">Limited</span></div>
+        <div class="comp-row"><span class="comp-label">Cloud Option</span><span class="comp-value">Cloud-first</span></div>
+        <div class="comp-row"><span class="comp-label">Strengths</span><span class="comp-value" style="color:var(--success);">Cloud-native, good viewer</span></div>
+        <div class="comp-row"><span class="comp-label">Weaknesses</span><span class="comp-value" style="color:var(--danger);">Price, no Indian billing</span></div>
+        <div style="margin-top:1rem;padding:.75rem;border-radius:var(--radius-md);background:rgba(77,208,225,.05);font-size:.78rem;color:var(--text-secondary);">
+          <strong style="color:var(--teal-light);">DicoFlow Advantage:</strong> Hybrid cloud+on-prem flexibility, Indian billing/GST built-in, film prep, booklet generation, 50% cheaper.
+        </div>
+      </div>
+
+      <div class="competitor-card md reveal">
+        <h3 style="color:#ff9800;">Meddiff</h3>
+        <div class="comp-row"><span class="comp-label">PACS Pricing</span><span class="comp-value" style="color:#ff9800;">₹2L+ / ₹8-12L Enterprise</span></div>
+        <div class="comp-row"><span class="comp-label">AMC</span><span class="comp-value">15-18% of licence</span></div>
+        <div class="comp-row"><span class="comp-label">Implementation</span><span class="comp-value">2-3 weeks</span></div>
+        <div class="comp-row"><span class="comp-label">Target Segment</span><span class="comp-value">Small-medium centres</span></div>
+        <div class="comp-row"><span class="comp-label">Billing Module</span><span class="comp-value">Basic</span></div>
+        <div class="comp-row"><span class="comp-label">Film Prep</span><span class="comp-value">No</span></div>
+        <div class="comp-row"><span class="comp-label">Cloud Option</span><span class="comp-value">Limited</span></div>
+        <div class="comp-row"><span class="comp-label">Strengths</span><span class="comp-value" style="color:var(--success);">Regional presence, price</span></div>
+        <div class="comp-row"><span class="comp-label">Weaknesses</span><span class="comp-value" style="color:var(--danger);">Legacy UI, no film prep</span></div>
+        <div style="margin-top:1rem;padding:.75rem;border-radius:var(--radius-md);background:rgba(77,208,225,.05);font-size:.78rem;color:var(--text-secondary);">
+          <strong style="color:var(--teal-light);">DicoFlow Advantage:</strong> Modern web UI, advanced film prep + booklets, full DICOM viewer, integrated billing, 5-tier flexibility for all centre sizes.
+        </div>
+      </div>
+
+      <div class="competitor-card df reveal">
+        <h3 style="color:var(--teal-light);">DicoFlow (Us)</h3>
+        <div class="comp-row"><span class="comp-label">PACS Pricing</span><span class="comp-value" style="color:var(--teal-light);">₹1.5L / ₹7.5L Enterprise</span></div>
+        <div class="comp-row"><span class="comp-label">AMC</span><span class="comp-value">20% of licence</span></div>
+        <div class="comp-row"><span class="comp-label">Implementation</span><span class="comp-value" style="color:var(--success);">7-14 days</span></div>
+        <div class="comp-row"><span class="comp-label">Target Segment</span><span class="comp-value">All (5-tier approach)</span></div>
+        <div class="comp-row"><span class="comp-label">Billing Module</span><span class="comp-value" style="color:var(--success);">Full (T1, T4, T5)</span></div>
+        <div class="comp-row"><span class="comp-label">Film Prep</span><span class="comp-value" style="color:var(--success);">Advanced (multi-layout)</span></div>
+        <div class="comp-row"><span class="comp-label">Cloud Option</span><span class="comp-value" style="color:var(--success);">Hybrid (Azure/AWS/GCP)</span></div>
+        <div class="comp-row"><span class="comp-label">Strengths</span><span class="comp-value" style="color:var(--success);">Price, speed, full-stack</span></div>
+        <div class="comp-row"><span class="comp-label">Weaknesses</span><span class="comp-value" style="color:var(--danger);">New brand, small team</span></div>
+        <div style="margin-top:1rem;padding:.75rem;border-radius:var(--radius-md);background:rgba(77,208,225,.05);font-size:.78rem;color:var(--text-secondary);">
+          <strong style="color:var(--teal-light);">Key Differentiators:</strong> Only vendor with 5 SKUs covering ₹75K–₹7.5L. Integrated billing+PACS+viewer+film prep. Fastest implementation. Modern React + Python stack.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REGULATORY LANDSCAPE ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Regulatory Landscape</div>
+    <h2 class="section-title reveal">India Healthcare IT Compliance</h2>
+    <p class="section-subtitle reveal">Understanding regulations is a competitive advantage. Centres trust vendors who understand compliance.</p>
+  </div>
+
+  <div class="reveal" style="max-width:900px;margin:0 auto;overflow-x:auto;">
+    <table class="market-table">
+      <thead><tr><th>Regulation</th><th>Scope</th><th>DicoFlow Compliance</th><th>Sales Angle</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>PCPNDT Act <span class="reg-badge reg-mandatory">Mandatory</span></td>
+          <td>USG/prenatal — patient registration, form F, audit trail</td>
+          <td style="color:var(--success);text-align:left;">✅ Form F, mandatory fields, audit log, sealed reports</td>
+          <td style="text-align:left;">"Non-compliance = jail. DicoFlow makes it impossible to skip required fields."</td>
+        </tr>
+        <tr>
+          <td>NABH Standards <span class="reg-badge reg-recommended">Recommended</span></td>
+          <td>Hospital accreditation — patient safety, record keeping</td>
+          <td style="color:var(--success);text-align:left;">✅ Full audit trail, role-based access, report versioning</td>
+          <td style="text-align:left;">"NABH auditors love our automatic audit logs and report history."</td>
+        </tr>
+        <tr>
+          <td>AERB Guidelines <span class="reg-badge reg-mandatory">Mandatory</span></td>
+          <td>Radiation safety — equipment logs, dose tracking</td>
+          <td style="color:var(--teal-light);text-align:left;">🔄 Equipment registry, study metadata with exposure data</td>
+          <td style="text-align:left;">"Track radiation equipment usage and generate AERB reports."</td>
+        </tr>
+        <tr>
+          <td>Digital Personal Data Protection (DPDP) <span class="reg-badge reg-mandatory">Mandatory</span></td>
+          <td>Patient data privacy, consent, data localisation</td>
+          <td style="color:var(--success);text-align:left;">✅ AES-256 encryption, encrypted PHI, India data centres, role-based access</td>
+          <td style="text-align:left;">"Your patient data never leaves India. Encrypted at rest and in transit."</td>
+        </tr>
+        <tr>
+          <td>GST Compliance <span class="reg-badge reg-mandatory">Mandatory</span></td>
+          <td>Billing, invoicing, GST returns</td>
+          <td style="color:var(--success);text-align:left;">✅ GST-compliant invoicing in T1/T4/T5 billing module</td>
+          <td style="text-align:left;">"Auto-calculates GST, generates GST-ready invoices."</td>
+        </tr>
+        <tr>
+          <td>DICOM / IHE Standards <span class="reg-badge reg-optional">Industry Standard</span></td>
+          <td>Medical imaging interoperability</td>
+          <td style="color:var(--success);text-align:left;">✅ Full DICOM 3.0, WADO-RS, DICOMweb, C-STORE/C-FIND/C-MOVE</td>
+          <td style="text-align:left;">"Connect any modality from any vendor — GE, Siemens, Philips, all supported."</td>
+        </tr>
+        <tr>
+          <td>HL7/FHIR <span class="reg-badge reg-optional">Industry Standard</span></td>
+          <td>HIS/EMR interoperability</td>
+          <td style="color:var(--teal-light);text-align:left;">✅ HL7 v2.x + FHIR (T4 Enterprise)</td>
+          <td style="text-align:left;">"Integrate with any HIS/EMR system. Future-proof with FHIR."</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== TERRITORY MAPPING ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">Territory Mapping</div>
+      <h2 class="section-title reveal">Where to Start & How to Expand</h2>
+    </div>
+
+    <!-- Priority Tiers -->
+    <div class="grid-3 stagger">
+      <div class="territory-card reveal">
+        <h4>🥇 Tier 1 — Launch Cities (Month 1-6)</h4>
+        <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.7;margin-bottom:.75rem;">Start where you have networks. 2-3 cities max. Focus all resources here.</p>
+        <div style="font-size:.8rem;color:var(--text-secondary);">
+          <strong>Primary:</strong> Bangalore (2,000+ centres), Hyderabad (1,800+), Chennai (1,500+)<br>
+          <strong>Why:</strong> Tech-friendly, high PACS adoption readiness, English-speaking decision makers, high CT/MRI density<br>
+          <strong>Target:</strong> 15-20 deals in 6 months<br>
+          <strong>Approach:</strong> Direct sales + Google Ads + local radiology society events
+        </div>
+      </div>
+
+      <div class="territory-card reveal">
+        <h4>🥈 Tier 2 — Expansion Cities (Month 6-12)</h4>
+        <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.7;margin-bottom:.75rem;">Add 3-4 more cities using hired sales reps. Leverage Tier 1 case studies.</p>
+        <div style="font-size:.8rem;color:var(--text-secondary);">
+          <strong>Cities:</strong> Pune (1,200+), Mumbai (3,000+), Delhi NCR (2,500+), Kolkata (1,000+)<br>
+          <strong>Why:</strong> Massive market size, established diagnostic chains, higher enterprise spend<br>
+          <strong>Target:</strong> 15-25 deals in second 6 months<br>
+          <strong>Approach:</strong> Sales rep + referrals from Tier 1 customers + trade shows
+        </div>
+      </div>
+
+      <div class="territory-card reveal">
+        <h4>🥉 Tier 3 — Scale Phase (Year 2+)</h4>
+        <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.7;margin-bottom:.75rem;">Tier 2-3 cities and semi-urban areas. T1/T2 volume play. Channel partners.</p>
+        <div style="font-size:.8rem;color:var(--text-secondary);">
+          <strong>Cities:</strong> Ahmedabad, Jaipur, Lucknow, Vizag, Coimbatore, Nagpur, Indore, Bhopal, Kochi<br>
+          <strong>Why:</strong> Growing healthcare infra, less competition, price-sensitive (T1/T2 sweet spot)<br>
+          <strong>Target:</strong> 50-90 deals (Year 2)<br>
+          <strong>Approach:</strong> Channel partners + telesales + digital marketing + referrals
+        </div>
+      </div>
+    </div>
+
+    <!-- Centre Density Analysis -->
+    <div class="reveal" style="margin-top:2rem;overflow-x:auto;">
+      <h3 style="color:var(--teal-light);text-align:center;margin-bottom:1rem;">Top 15 Cities by Diagnostic Centre Density</h3>
+      <table class="market-table">
+        <thead><tr><th>City</th><th>Est. Centres</th><th>CT/MRI Centres</th><th>Digital Readiness</th><th>Competition Level</th><th>Priority</th></tr></thead>
+        <tbody>
+          <tr><td>Mumbai</td><td>3,000+</td><td>800+</td><td>High</td><td>High</td><td style="color:#ffd700;font-weight:600;">Tier 2</td></tr>
+          <tr><td>Delhi NCR</td><td>2,500+</td><td>700+</td><td>High</td><td>High</td><td style="color:#ffd700;font-weight:600;">Tier 2</td></tr>
+          <tr><td>Bangalore</td><td>2,000+</td><td>600+</td><td>Very High</td><td>Medium</td><td style="color:var(--success);font-weight:600;">Tier 1 🎯</td></tr>
+          <tr><td>Hyderabad</td><td>1,800+</td><td>500+</td><td>Very High</td><td>Medium</td><td style="color:var(--success);font-weight:600;">Tier 1 🎯</td></tr>
+          <tr><td>Chennai</td><td>1,500+</td><td>450+</td><td>High</td><td>Medium</td><td style="color:var(--success);font-weight:600;">Tier 1 🎯</td></tr>
+          <tr><td>Pune</td><td>1,200+</td><td>350+</td><td>High</td><td>Medium</td><td style="color:#ffd700;font-weight:600;">Tier 2</td></tr>
+          <tr><td>Kolkata</td><td>1,000+</td><td>300+</td><td>Medium</td><td>Low</td><td style="color:#ffd700;font-weight:600;">Tier 2</td></tr>
+          <tr><td>Ahmedabad</td><td>800+</td><td>250+</td><td>Medium</td><td>Low</td><td>Tier 3</td></tr>
+          <tr><td>Jaipur</td><td>600+</td><td>200+</td><td>Medium</td><td>Low</td><td>Tier 3</td></tr>
+          <tr><td>Lucknow</td><td>500+</td><td>150+</td><td>Medium</td><td>Low</td><td>Tier 3</td></tr>
+          <tr><td>Coimbatore</td><td>450+</td><td>150+</td><td>High</td><td>Low</td><td>Tier 3</td></tr>
+          <tr><td>Vizag</td><td>350+</td><td>120+</td><td>Medium</td><td>Very Low</td><td>Tier 3</td></tr>
+          <tr><td>Nagpur</td><td>300+</td><td>100+</td><td>Medium</td><td>Low</td><td>Tier 3</td></tr>
+          <tr><td>Indore</td><td>300+</td><td>100+</td><td>Medium</td><td>Low</td><td>Tier 3</td></tr>
+          <tr><td>Kochi</td><td>350+</td><td>120+</td><td>High</td><td>Low</td><td>Tier 3</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SWOT ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">SWOT Analysis</div>
+    <h2 class="section-title reveal">DicoFlow Strategic Position</h2>
+  </div>
+
+  <div class="swot-grid reveal" style="max-width:900px;margin:0 auto;">
+    <div class="swot-card swot-s">
+      <h3>Strengths</h3>
+      <ul>
+        <li>Only vendor with 5 SKUs (₹75K–₹7.5L) covering every centre size</li>
+        <li>Integrated billing + PACS + viewer + film prep + booklets in one product</li>
+        <li>Modern tech stack (React + Python/FastAPI) — extensible and fast</li>
+        <li>50-70% cheaper than MedSynapse/PostDICOM for equivalent features</li>
+        <li>Fastest implementation: 7-14 days vs competitors' 3-6 weeks</li>
+        <li>AES-256 encrypted PHI — strongest data security in segment</li>
+        <li>Hybrid cloud (Azure/AWS/GCP) + on-premise flexibility</li>
+        <li>Full DICOM 3.0 + DICOMweb + HL7 + FHIR compliance</li>
+        <li>Indian-first: GST billing, PCPNDT compliance, data localisation</li>
+      </ul>
+    </div>
+    <div class="swot-card swot-w">
+      <h3>Weaknesses</h3>
+      <ul>
+        <li>New brand — no hospital reference list yet (mitigate: Early Adopter pricing)</li>
+        <li>Small team — scaling support beyond 50 customers needs hiring</li>
+        <li>No AI-powered auto-reporting yet (planned for v2)</li>
+        <li>No mobile app (web responsive, but no native app)</li>
+        <li>Single founder dependency — key person risk</li>
+        <li>No physical office presence in most cities</li>
+      </ul>
+    </div>
+    <div class="swot-card swot-o">
+      <h3>Opportunities</h3>
+      <ul>
+        <li>65%+ of diagnostic centres still use paper/basic software — massive greenfield</li>
+        <li>DPDP Act forcing digital transformation and data security upgrades</li>
+        <li>Ayushman Bharat Digital Mission driving healthcare IT adoption</li>
+        <li>Film costs rising 15-20%/year — film-to-digital transition accelerating</li>
+        <li>Diagnostic chains expanding to Tier 2-3 cities — need scalable IT</li>
+        <li>No dominant player in ₹1-3L PACS segment — blue ocean</li>
+        <li>Government pushing NABL/NABH accreditation — needs digital audit trails</li>
+        <li>Channel partner program can scale without proportional team growth</li>
+      </ul>
+    </div>
+    <div class="swot-card swot-t">
+      <h3>Threats</h3>
+      <ul>
+        <li>Large vendors (MedSynapse, Agfa) could drop pricing for small centre segment</li>
+        <li>Cloud-only vendors (PostDICOM) may add Indian billing module</li>
+        <li>Open-source PACS (Orthanc, dcm4chee) with better UIs emerging</li>
+        <li>economic slowdown could delay hospital IT spending decisions</li>
+        <li>Regulatory changes (new data laws) may require expensive compliance updates</li>
+        <li>Customer concentration risk — if top 5 customers leave before base grows</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARKET TRENDS ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">Market Trends</div>
+      <h2 class="section-title reveal">5 Macro Trends Favouring DicoFlow</h2>
+    </div>
+
+    <div class="feature-grid stagger">
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal-light);">📱 Digital-First Healthcare</h3>
+        <p class="card-text">Post-COVID, every centre owner understands digital isn't optional. Tele-radiology, online reports, WhatsApp sharing — all require a PACS. The shift from "nice to have" to "must have" means shorter sales cycles.</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal-light);">🎞️ Film Cost Crisis</h3>
+        <p class="card-text">AGFA/Kodak film prices up 15-20%/yr. A medium centre spending ₹3-5L/year on films can eliminate 80-90% of that cost by going digital with DicoFlow. The ROI pitch writes itself.</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal-light);">🏛️ Government Push</h3>
+        <p class="card-text">ABDM (Ayushman Bharat Digital Mission) is creating health IDs, digital records. NABH accreditation increasingly requires digital audit trails. Centres need compliant software — fast.</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal-light);">🔒 Data Protection Laws</h3>
+        <p class="card-text">DPDP Act mandates patient data protection, consent management, breach notification. Centres using Excel/paper are non-compliant. DicoFlow's encrypted PHI and role-based access makes compliance automatic.</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal-light);">📈 Diagnostic Market Growth</h3>
+        <p class="card-text">India's diagnostic market growing at 14% CAGR. New centres opening, existing ones upgrading. More CT/MRI installations = more PACS demand. Rising middle class = more health awareness = more imaging studies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title reveal">Own the <span class="gradient" style="background:var(--gradient-text);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">₹5,000 Cr</span> Market</h2>
+  <div class="cta-buttons reveal">
+    <a href="growth-playbook.html" class="btn btn-primary btn-lg">Growth Playbook →</a>
+    <a href="strategy-planner.html" class="btn btn-outline btn-lg">Strategy Planner →</a>
+    <a href="sales-toolkit.html" class="btn btn-outline btn-lg">Sales Toolkit →</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/animations.js"></script>
+</body>
+</html>

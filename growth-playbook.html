@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth & Retention Playbook — DicoFlow</title>
+<meta name="description" content="Customer retention, upsell strategies, AMC renewal playbook, churn prevention, NPS tracking, referral engine, and 3-year growth roadmap for DicoFlow.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .growth-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+  .growth-table th{background:rgba(77,208,225,.08);color:var(--teal-light);padding:.6rem .5rem;text-align:right;font-weight:600;border-bottom:1px solid var(--border-teal);}
+  .growth-table th:first-child{text-align:left;}
+  .growth-table td{padding:.55rem .5rem;text-align:right;border-bottom:1px solid var(--border);color:var(--text-secondary);}
+  .growth-table td:first-child{text-align:left;color:var(--text-primary);font-weight:500;}
+  .growth-table .total-row td{font-weight:700;color:var(--teal-light);border-top:2px solid var(--border-teal);background:rgba(77,208,225,.04);}
+  .growth-table .section-header td{background:rgba(77,208,225,.06);color:var(--teal);font-weight:600;text-align:left;}
+  .funnel-step{display:flex;align-items:center;gap:1rem;padding:1rem;margin:.5rem 0;border-radius:var(--radius-md);transition:all var(--transition);}
+  .funnel-step:hover{transform:translateX(4px);}
+  .funnel-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0;}
+  .funnel-text{flex:1;}
+  .funnel-text h4{color:var(--text-primary);font-size:.9rem;margin-bottom:.2rem;}
+  .funnel-text p{color:var(--text-secondary);font-size:.8rem;line-height:1.5;}
+  .health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;}
+  .health-card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;background:var(--bg-card);transition:all var(--transition);}
+  .health-card:hover{border-color:var(--border-teal-hover);}
+  .health-score{font-size:2rem;font-weight:800;margin:.5rem 0;}
+  .health-label{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;}
+  .churn-risk{display:inline-block;padding:.2rem .6rem;border-radius:12px;font-size:.7rem;font-weight:600;}
+  .churn-risk.low{background:rgba(38,166,154,.15);color:var(--success);}
+  .churn-risk.medium{background:rgba(255,215,0,.15);color:#ffd700;}
+  .churn-risk.high{background:rgba(239,83,80,.15);color:var(--danger);}
+  .upsell-path{position:relative;padding:1.5rem;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg-card);}
+  .upsell-path::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0;}
+  .upsell-path.t1t2::before{background:linear-gradient(90deg,#4dd0e1,#26a69a);}
+  .upsell-path.t2t3::before{background:linear-gradient(90deg,#26a69a,#66bb6a);}
+  .upsell-path.t2t5::before{background:linear-gradient(90deg,#4dd0e1,#ffd700);}
+  .upsell-path.t3t4::before{background:linear-gradient(90deg,#66bb6a,#ffd700);}
+  .upsell-arrow{font-size:1.5rem;color:var(--teal);text-align:center;margin:.5rem 0;}
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:5rem;padding-bottom:2rem;">
+  <div class="hero-inner">
+    <div class="section-badge" style="animation:fadeInUp .6s ease both;">🌱 Growth & Retention</div>
+    <h1 class="hero-title">Customer <span class="gradient">Growth Playbook</span></h1>
+    <p class="hero-desc">Acquiring customers is half the battle. Keeping them, upselling them, and turning them into referral engines is where real profit lives. This playbook covers retention, upsell paths, AMC renewals, churn prevention, and the 3-year growth roadmap.</p>
+    <div class="stats-row" style="animation:fadeInUp .8s ease .4s both;">
+      <div class="stat"><span class="stat-number" style="color:var(--teal-light);">85%</span><span class="stat-label">AMC Margin</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--teal-light);">₹9.5L</span><span class="stat-label">Year 1 AMC Revenue</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--success);">40%</span><span class="stat-label">Upsell Target</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--success);">95%</span><span class="stat-label">Retention Target</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CUSTOMER LIFECYCLE ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Customer Lifecycle</div>
+    <h2 class="section-title reveal">The 7-Stage Customer Journey</h2>
+    <p class="section-subtitle reveal">From first touch to multi-year advocate. Every stage has specific actions and KPIs.</p>
+  </div>
+
+  <div style="max-width:700px;margin:0 auto;" class="reveal">
+    <div class="funnel-step" style="background:rgba(77,208,225,.05);"><div class="funnel-num" style="background:rgba(77,208,225,.15);color:var(--teal-light);">1</div><div class="funnel-text"><h4>Lead Capture</h4><p>Google Ads, cold calls, WhatsApp, trade shows, referrals. Target: 50-100 leads/month. <strong>KPI: Cost per lead ₹200-500</strong></p></div></div>
+    <div class="funnel-step" style="background:rgba(77,208,225,.04);"><div class="funnel-num" style="background:rgba(38,166,154,.15);color:var(--emerald);">2</div><div class="funnel-text"><h4>Qualification & Demo</h4><p>Qualify needs (tier match), schedule 30-min demo. Film cost calculator + ROI calculator. <strong>KPI: 25-30% lead→demo conversion</strong></p></div></div>
+    <div class="funnel-step" style="background:rgba(38,166,154,.05);"><div class="funnel-num" style="background:rgba(38,166,154,.2);color:var(--success);">3</div><div class="funnel-text"><h4>Proposal & Close</h4><p>Send customised proposal within 24 hours. Follow up at 24h, 48h, 7 days. Early Adopter urgency. <strong>KPI: 25-35% demo→close conversion</strong></p></div></div>
+    <div class="funnel-step" style="background:rgba(38,166,154,.04);"><div class="funnel-num" style="background:rgba(102,187,106,.2);color:#66bb6a;">4</div><div class="funnel-text"><h4>Implementation (7-14 days)</h4><p>On-site setup, DICOM router config, training, data migration. First 7 days = critical satisfaction window. <strong>KPI: Go-live within 10 days</strong></p></div></div>
+    <div class="funnel-step" style="background:rgba(102,187,106,.04);"><div class="funnel-num" style="background:rgba(102,187,106,.15);color:#66bb6a;">5</div><div class="funnel-text"><h4>Adoption & Health Check (Day 30-90)</h4><p>Monthly check-in calls. Feature adoption tracking. Resolve any friction. NPS survey at Day 60. <strong>KPI: NPS ≥ 8, 80%+ feature adoption</strong></p></div></div>
+    <div class="funnel-step" style="background:rgba(255,215,0,.03);"><div class="funnel-num" style="background:rgba(255,215,0,.15);color:#ffd700;">6</div><div class="funnel-text"><h4>Upsell & Expand (Month 4-10)</h4><p>Identify upsell opportunity based on usage. T1→T2, T2→T3/T5, T3→T4. Multi-branch expansion. <strong>KPI: 30-40% of customers upgrade within 12 months</strong></p></div></div>
+    <div class="funnel-step" style="background:rgba(255,215,0,.02);"><div class="funnel-num" style="background:rgba(255,215,0,.1);color:#ffd700;">7</div><div class="funnel-text"><h4>Renew & Refer (Month 10+)</h4><p>AMC renewal conversation starts Month 10. Ask for 2-3 referrals. Case study permission. <strong>KPI: 95% AMC renewal rate, 2 referrals per customer</strong></p></div></div>
+  </div>
+</section>
+
+<!-- ===== UPSELL PATHS ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">Upsell Strategy</div>
+      <h2 class="section-title reveal">Natural Upgrade Paths</h2>
+      <p class="section-subtitle reveal">Each tier has a natural next step. Trigger the upgrade conversation at the right time with the right message.</p>
+    </div>
+
+    <div class="grid-2 stagger">
+      <div class="upsell-path t1t2 reveal">
+        <h3 style="color:var(--teal-light);font-size:1rem;">T1 Billing → T2 PACS</h3>
+        <div class="upsell-arrow">↓</div>
+        <div style="font-size:.85rem;color:var(--text-secondary);line-height:1.7;">
+          <strong>When:</strong> Customer mentions film costs, wants digital images, adds CT/MRI modality<br>
+          <strong>Trigger:</strong> Month 3-6 after T1 go-live<br>
+          <strong>Pitch:</strong> "You're already using DicoFlow for billing. Adding PACS is just a licence upgrade — same interface, same login. Your team already knows the system."<br>
+          <strong>Upgrade Price:</strong> ₹75K (difference) or ₹1.05K Early Adopter<br>
+          <strong>Revenue Impact:</strong> +₹75K licence + ₹15K/yr AMC increase<br>
+          <strong>Conversion Rate:</strong> 35-45% (high — zero switching cost)
+        </div>
+      </div>
+
+      <div class="upsell-path t2t3 reveal">
+        <h3 style="color:var(--emerald);font-size:1rem;">T2 PACS → T3 Radiology</h3>
+        <div class="upsell-arrow">↓</div>
+        <div style="font-size:.85rem;color:var(--text-secondary);line-height:1.7;">
+          <strong>When:</strong> Customer starts doing more reporting, wants booklets, opens 2nd branch<br>
+          <strong>Trigger:</strong> Month 6-12 after T2 go-live<br>
+          <strong>Pitch:</strong> "Your radiologists are spending 2+ hours on report formatting. T3 automates structured reports and booklet generation — saving ₹3-5L/year."<br>
+          <strong>Upgrade Price:</strong> ₹2L (difference) + ₹30K/yr AMC increase<br>
+          <strong>Revenue Impact:</strong> +₹2L licence + ₹30K/yr recurring<br>
+          <strong>Conversion Rate:</strong> 20-30%
+        </div>
+      </div>
+
+      <div class="upsell-path t2t5 reveal">
+        <h3 style="color:#ffd700;font-size:1rem;">T2 PACS → T5 Bundle</h3>
+        <div class="upsell-arrow">↓</div>
+        <div style="font-size:.85rem;color:var(--text-secondary);line-height:1.7;">
+          <strong>When:</strong> Customer's billing software is expiring or causing problems<br>
+          <strong>Trigger:</strong> Any billing vendor pain point<br>
+          <strong>Pitch:</strong> "You're running two separate systems for billing and PACS. T5 unifies both — one login, one database, one support contact. Simpler and cheaper."<br>
+          <strong>Upgrade Price:</strong> ₹75K (difference from T2)<br>
+          <strong>Revenue Impact:</strong> +₹75K licence + ₹10K/yr AMC increase<br>
+          <strong>Conversion Rate:</strong> 25-35%
+        </div>
+      </div>
+
+      <div class="upsell-path t3t4 reveal">
+        <h3 style="color:#ffd700;font-size:1rem;">T3 Radiology → T4 Enterprise</h3>
+        <div class="upsell-arrow">↓</div>
+        <div style="font-size:.85rem;color:var(--text-secondary);line-height:1.7;">
+          <strong>When:</strong> Customer expands to 5+ branches, needs role dashboards, audit trails, HL7<br>
+          <strong>Trigger:</strong> Multi-branch growth or compliance audit requirement<br>
+          <strong>Pitch:</strong> "You've grown beyond T3 capacity. T4 gives you CEO/admin dashboards, 14-stage workflow, HL7/FHIR integration, and unlimited branches. Your existing data migrates seamlessly."<br>
+          <strong>Upgrade Price:</strong> ₹4L (difference) + ₹65K/yr AMC increase<br>
+          <strong>Revenue Impact:</strong> +₹4L licence + ₹65K/yr recurring<br>
+          <strong>Conversion Rate:</strong> 15-25%
+        </div>
+      </div>
+    </div>
+
+    <!-- Upsell Revenue Model -->
+    <div class="reveal" style="margin-top:2rem;overflow-x:auto;">
+      <h3 style="color:var(--teal-light);text-align:center;margin-bottom:1rem;">Upsell Revenue Projections (Year 1-3)</h3>
+      <table class="growth-table">
+        <thead><tr><th>Metric</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr></thead>
+        <tbody>
+          <tr><td>New Customers</td><td>36</td><td>90</td><td>180</td></tr>
+          <tr><td>Cumulative Active Customers</td><td>36</td><td>124</td><td>298</td></tr>
+          <tr><td>Upsell-Eligible (6+ months)</td><td>12</td><td>80</td><td>200</td></tr>
+          <tr><td>Upsell Conversion Rate</td><td>25%</td><td>35%</td><td>40%</td></tr>
+          <tr><td>Upsells Completed</td><td>3</td><td>28</td><td>80</td></tr>
+          <tr><td>Avg Upsell Revenue</td><td>₹1.5L</td><td>₹1.8L</td><td>₹2.0L</td></tr>
+          <tr class="total-row"><td>Upsell Revenue</td><td>₹4.5L</td><td>₹50.4L</td><td>₹1.6 Cr</td></tr>
+          <tr class="section-header"><td colspan="4">AMC RECURRING REVENUE</td></tr>
+          <tr><td>AMC-Paying Customers</td><td>20</td><td>110</td><td>280</td></tr>
+          <tr><td>Avg AMC per Customer</td><td>₹35K</td><td>₹42K</td><td>₹48K</td></tr>
+          <tr><td>AMC Renewal Rate</td><td>90%</td><td>93%</td><td>95%</td></tr>
+          <tr class="total-row"><td>AMC Revenue</td><td>₹6.3L</td><td>₹42.9L</td><td>₹1.28 Cr</td></tr>
+          <tr class="section-header"><td colspan="4">TOTAL RECURRING + UPSELL</td></tr>
+          <tr class="total-row" style="font-size:.95rem;"><td>Total Growth Revenue</td><td style="color:var(--success);">₹10.8L</td><td style="color:var(--success);">₹93.3L</td><td style="color:var(--success);">₹2.88 Cr</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AMC RENEWAL PLAYBOOK ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">AMC Renewal Playbook</div>
+    <h2 class="section-title reveal">Maximise 95% Renewal Rate</h2>
+    <p class="section-subtitle reveal">AMC is 85% margin pure recurring revenue. Every lost renewal = ₹15K-1.25L/year gone forever. Follow this exactly.</p>
+  </div>
+
+  <div class="feature-grid stagger" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">📅 Month 10: Seed the Conversation</h3>
+      <p class="card-text">During regular check-in: "Your AMC renewal is coming up in 2 months. We'll prepare a renewal summary showing all the support tickets we resolved, updates installed, and new features added this year." Plant the value seed early.</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">📊 Month 11: Value Report</h3>
+      <p class="card-text">Send a 1-page PDF: (1) # of support tickets resolved, (2) Software updates installed, (3) New features they received, (4) Uptime %, (5) Data backed up safely. Make renewal feel like a no-brainer. Include renewal quote.</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">💰 Month 11.5: Early Renewal Incentive</h3>
+      <p class="card-text">"Renew before expiry and get 1 extra month of coverage free (13 months for price of 12)." Creates urgency. This costs you almost nothing but prevents lapses.</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">🔄 Month 12: Close or Escalate</h3>
+      <p class="card-text">If not renewed by expiry: (1) Call decision maker directly, (2) Offer 2-month grace period with full support, (3) Explain what happens without AMC: no updates, no support, security patches stop. Most will renew when they realize the risk.</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">📈 During Renewal: Upsell Attempt</h3>
+      <p class="card-text">Every renewal is an upsell opportunity. "Since you're renewing, want to see what T3 offers? It's just ₹2L more and would automate your reporting completely." 30% of renewals convert an upsell if timed right.</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">🎁 Year 2+ Loyalty Benefits</h3>
+      <p class="card-text">Multi-year customers get: (1) Priority support (4hr SLA vs 24hr), (2) Free additional user licences (up to 2), (3) Beta access to new features, (4) Annual health check visit. These cost almost nothing but massively reduce churn.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CHURN PREVENTION ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal" style="background:var(--danger-bg);border-color:rgba(239,83,80,.25);color:var(--danger);">⚠️ Churn Prevention</div>
+      <h2 class="section-title reveal">Early Warning Signals & Response Protocol</h2>
+    </div>
+
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="growth-table">
+        <thead><tr><th>Warning Signal</th><th>Risk Level</th><th>Detection Method</th><th>Immediate Action</th><th>Escalation</th></tr></thead>
+        <tbody>
+          <tr><td>Support ticket volume spikes (3+ in 1 week)</td><td><span class="churn-risk medium">Medium</span></td><td>CRM ticket tracking</td><td>Call within 24 hours, offer on-site visit</td><td>Founder call if not resolved in 48h</td></tr>
+          <tr><td>Login frequency drops >50%</td><td><span class="churn-risk high">High</span></td><td>Usage analytics</td><td>Check-in call: "Is everything okay?"</td><td>On-site visit within 1 week</td></tr>
+          <tr><td>Customer mentions competitor by name</td><td><span class="churn-risk high">High</span></td><td>Sales/support conversation</td><td>Schedule urgent demo of latest features</td><td>Offer exclusive discount on next tier</td></tr>
+          <tr><td>Key contact person changes (new manager)</td><td><span class="churn-risk medium">Medium</span></td><td>LinkedIn + check-in calls</td><td>Welcome call to new contact, fresh demo</td><td>Re-onboard: treat as new customer</td></tr>
+          <tr><td>Payment delayed >30 days</td><td><span class="churn-risk medium">Medium</span></td><td>Finance tracking</td><td>Friendly reminder + payment plan offer</td><td>Escalate to decision maker</td></tr>
+          <tr><td>Customer requests data export/backup</td><td><span class="churn-risk high">High</span></td><td>Support request</td><td>Help with export + ask "Are you considering alternatives?"</td><td>Retention deal: free month + feature unlock</td></tr>
+          <tr><td>AMC renewal conversation avoidance</td><td><span class="churn-risk high">High</span></td><td>CRM renewal pipeline</td><td>On-site visit with value report</td><td>Founder call + special renewal pricing</td></tr>
+          <tr><td>No feature requests in 6 months</td><td><span class="churn-risk low">Low</span></td><td>CRM interaction log</td><td>Proactive check-in + new feature demo</td><td>Offer beta access to new module</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CUSTOMER HEALTH DASHBOARD ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Customer Health Metrics</div>
+    <h2 class="section-title reveal">KPIs to Track Monthly</h2>
+  </div>
+
+  <div class="health-grid reveal" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="health-card"><div class="health-label">Net Promoter Score (NPS)</div><div class="health-score" style="color:var(--success);">≥ 50</div><p style="font-size:.78rem;color:var(--text-muted);">Survey every 6 months. 9-10 = Promoter (ask for referral). 7-8 = Passive (upsell opportunity). ≤6 = Detractor (immediate intervention).</p></div>
+    <div class="health-card"><div class="health-label">AMC Renewal Rate</div><div class="health-score" style="color:var(--teal-light);">95%+</div><p style="font-size:.78rem;color:var(--text-muted);">Below 90% = systemic problem. Investigate top 3 churn reasons. Industry benchmark: 85%. Our target: 95%.</p></div>
+    <div class="health-card"><div class="health-label">Time to First Value</div><div class="health-score" style="color:var(--teal-light);">≤ 7 days</div><p style="font-size:.78rem;color:var(--text-muted);">From contract signing to first patient billed/first study archived. Faster = higher satisfaction = more referrals.</p></div>
+    <div class="health-card"><div class="health-label">Support Resolution Time</div><div class="health-score" style="color:var(--teal-light);">< 4 hrs</div><p style="font-size:.78rem;color:var(--text-muted);">Critical issues (system down): 1 hour. High: 4 hours. Medium: 24 hours. Low: 48 hours. Track and report monthly.</p></div>
+    <div class="health-card"><div class="health-label">Feature Adoption Rate</div><div class="health-score" style="color:var(--success);">80%+</div><p style="font-size:.78rem;color:var(--text-muted);">% of purchased features actually used. Low adoption = churn risk. Offer training if below 60%.</p></div>
+    <div class="health-card"><div class="health-label">Referral Rate</div><div class="health-score" style="color:var(--success);">2 per customer</div><p style="font-size:.78rem;color:var(--text-muted);">Ask every happy customer for 2-3 referrals. Pay ₹10K per conversion. Cheapest acquisition channel (₹10K CAC).</p></div>
+    <div class="health-card"><div class="health-label">Upsell Rate</div><div class="health-score" style="color:#ffd700;">30-40%</div><p style="font-size:.78rem;color:var(--text-muted);">% of eligible customers (6+ months) who upgrade. T1→T2 highest (35-45%), T3→T4 lowest (15-25%).</p></div>
+    <div class="health-card"><div class="health-label">Customer Lifetime Value</div><div class="health-score" style="color:var(--success);">₹5.2L avg</div><p style="font-size:.78rem;color:var(--text-muted);">Licence + 5yr AMC + upsell avg. Must be ≥10x CAC for sustainable growth. Current: 15-25x.</p></div>
+  </div>
+</section>
+
+<!-- ===== REFERRAL ENGINE ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">Referral Engine</div>
+      <h2 class="section-title reveal">How to Build a Self-Sustaining Referral Machine</h2>
+    </div>
+
+    <div class="feature-grid stagger">
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal-light);">🎯 When to Ask</h3>
+        <p class="card-text"><strong>Perfect moments:</strong> (1) Day 30 — first "wow" moment, (2) After resolving a tough support ticket fast, (3) During AMC renewal, (4) After a successful implementaion, (5) When they share positive feedback unprompted. NEVER ask during a problem.</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal-light);">💬 How to Ask</h3>
+        <p class="card-text">"[Name], we're growing DicoFlow in [city]. Do you know 2-3 other centre owners who might benefit from what we've done for you? I'd love to show them how you've reduced film costs by [X]%. Happy to mention you as a reference."</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal-light);">💰 Referral Incentives</h3>
+        <p class="card-text"><strong>For referrer:</strong> ₹10,000 cash or 1 month free AMC per converted referral. <strong>For referee:</strong> Additional 5% discount on top of Early Adopter pricing. <strong>Cost to you:</strong> ₹10-15K per deal (vs ₹15-80K CAC from ads).</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal-light);">📊 Referral Economics</h3>
+        <p class="card-text"><strong>Target:</strong> 2 referrals per happy customer. <strong>Conversion rate:</strong> 40-50% (warm leads convert 2x better). <strong>Year 1:</strong> 36 customers → 72 referrals → 30-36 qualified leads → 12-18 deals. <strong>Referral revenue Year 1:</strong> ₹25-40L.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3-YEAR GROWTH MODEL ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">3-Year Growth Model</div>
+    <h2 class="section-title reveal">Revenue Growth: New + Upsell + AMC</h2>
+    <p class="section-subtitle reveal">The compounding effect of licensing + upsells + AMC creates a hockey-stick revenue curve by Year 3.</p>
+  </div>
+
+  <div class="reveal" style="max-width:900px;margin:0 auto;overflow-x:auto;">
+    <table class="growth-table">
+      <thead><tr><th>Revenue Stream</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>3-Year Total</th></tr></thead>
+      <tbody>
+        <tr class="section-header"><td colspan="5">NEW LICENCE SALES</td></tr>
+        <tr><td>New Deals</td><td>36</td><td>90</td><td>180</td><td>306</td></tr>
+        <tr><td>Avg Deal Size</td><td>₹3.7L</td><td>₹3.5L</td><td>₹3.2L</td><td>—</td></tr>
+        <tr style="font-weight:600;"><td>New Licence Revenue</td><td>₹1.33 Cr</td><td>₹3.15 Cr</td><td>₹5.76 Cr</td><td>₹10.24 Cr</td></tr>
+        <tr class="section-header"><td colspan="5">UPSELL REVENUE</td></tr>
+        <tr><td>Upsells Completed</td><td>3</td><td>28</td><td>80</td><td>111</td></tr>
+        <tr style="font-weight:600;"><td>Upsell Revenue</td><td>₹4.5L</td><td>₹50.4L</td><td>₹1.6 Cr</td><td>₹2.15 Cr</td></tr>
+        <tr class="section-header"><td colspan="5">AMC RECURRING</td></tr>
+        <tr><td>AMC Customers</td><td>20</td><td>110</td><td>280</td><td>—</td></tr>
+        <tr style="font-weight:600;"><td>AMC Revenue</td><td>₹6.3L</td><td>₹42.9L</td><td>₹1.28 Cr</td><td>₹1.77 Cr</td></tr>
+        <tr class="section-header"><td colspan="5">MANAGED HOSTING (25% margin)</td></tr>
+        <tr><td>Cloud Hosting Customers</td><td>8</td><td>40</td><td>100</td><td>—</td></tr>
+        <tr style="font-weight:600;"><td>Hosting Revenue</td><td>₹4.8L</td><td>₹36L</td><td>₹1.08 Cr</td><td>₹1.49 Cr</td></tr>
+        <tr class="total-row" style="font-size:.95rem;"><td>TOTAL REVENUE</td><td style="color:var(--success);">₹1.49 Cr</td><td style="color:var(--success);">₹4.44 Cr</td><td style="color:var(--success);">₹9.72 Cr</td><td style="color:var(--success);">₹15.65 Cr</td></tr>
+        <tr class="total-row"><td>TOTAL PROFIT (est. 55% margin)</td><td style="color:var(--success);">₹82L</td><td style="color:var(--success);">₹2.44 Cr</td><td style="color:var(--success);">₹5.35 Cr</td><td style="color:var(--success);">₹8.61 Cr</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="reveal" style="max-width:700px;margin:2rem auto 0;padding:1.5rem;border:1px solid var(--border-teal);border-radius:var(--radius-lg);background:rgba(77,208,225,.03);">
+    <h4 style="color:var(--teal-light);margin-bottom:1rem;text-align:center;">🔑 The Compounding Insight</h4>
+    <p style="font-size:.85rem;color:var(--text-secondary);text-align:center;line-height:1.7;">Year 1 revenue is 90% new licences. By Year 3, <strong style="color:var(--success);">recurring revenue (AMC + hosting + upsells) = ₹3.96 Cr</strong> — that's 41% of total revenue coming from existing customers with 85% margins and zero acquisition cost. This is why retention is everything.</p>
+  </div>
+</section>
+
+<!-- ===== TEAM SCALING ROADMAP ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">Team Scaling</div>
+      <h2 class="section-title reveal">When & Who to Hire</h2>
+    </div>
+
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="growth-table">
+        <thead><tr><th>Role</th><th>When</th><th>Monthly Cost</th><th>Revenue Trigger</th><th>Impact</th></tr></thead>
+        <tbody>
+          <tr><td>Founder (Sales + Product)</td><td>Day 1</td><td>₹1L</td><td>—</td><td>First 10 deals, product direction</td></tr>
+          <tr><td>Sales Rep #1 (T1/T2 volume)</td><td>Month 4</td><td>₹40K + 10% commission</td><td>Monthly revenue > ₹3L</td><td>Double T2 output, free founder for T4</td></tr>
+          <tr><td>Implementation Engineer</td><td>Month 6</td><td>₹50K</td><td>5+ pending implementations</td><td>Faster go-live, free sales team for selling</td></tr>
+          <tr><td>Support Executive</td><td>Month 8</td><td>₹30K</td><td>20+ active customers</td><td>24hr support SLA, churn prevention</td></tr>
+          <tr><td>Sales Rep #2 (New city)</td><td>Month 10</td><td>₹40K + 10% commission</td><td>Monthly revenue > ₹10L</td><td>Geographic expansion</td></tr>
+          <tr><td>Marketing Executive</td><td>Year 2 Q1</td><td>₹35K</td><td>50+ customers</td><td>Content, events, lead gen automation</td></tr>
+          <tr><td>Customer Success Manager</td><td>Year 2 Q2</td><td>₹45K</td><td>75+ customers</td><td>Retention, upsell, NPS ownership</td></tr>
+          <tr><td>Sales Manager</td><td>Year 2 Q4</td><td>₹80K + bonus</td><td>Monthly revenue > ₹25L</td><td>Scale sales team to 5+ reps</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title reveal">Grow. Retain. <span class="gradient" style="background:var(--gradient-text);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Compound.</span></h2>
+  <div class="cta-buttons reveal">
+    <a href="strategy-planner.html" class="btn btn-primary btn-lg">Strategy Planner →</a>
+    <a href="sales-toolkit.html" class="btn btn-outline btn-lg">Sales Toolkit →</a>
+    <a href="market-analysis.html" class="btn btn-outline btn-lg">Market Analysis →</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/animations.js"></script>
+</body>
+</html>

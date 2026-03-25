@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features — DicoFlow</title>
+<meta name="description" content="Complete feature list: 50+ DICOM viewer tools, film preparation, booklet system, billing, compliance, enterprise workflow, AI inference.">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<section class="hero" style="padding-top:5rem;padding-bottom:2rem;">
+  <div class="hero-inner">
+    <div class="section-badge" style="animation:fadeInUp .6s ease both;">Complete Feature Set</div>
+    <h1 class="hero-title">Every Feature a <span class="gradient">Diagnostic Centre</span> Needs</h1>
+    <p class="hero-desc">From patient walk-in to final archive. 50+ DICOM tools, automated compliance, branded booklets, and enterprise workflow — all in one platform.</p>
+  </div>
+</section>
+
+<!-- TAB NAV -->
+<section style="padding-top:0;">
+  <div class="tabs reveal" style="max-width:var(--max-width);margin:0 auto 3rem;justify-content:center;">
+    <button class="tab active" data-tab="viewer">🔍 DICOM Viewer</button>
+    <button class="tab" data-tab="film">🖨️ Film Prep</button>
+    <button class="tab" data-tab="booklet">📘 Booklets</button>
+    <button class="tab" data-tab="billing">💰 Billing</button>
+    <button class="tab" data-tab="workflow">🔄 Workflow</button>
+    <button class="tab" data-tab="compliance">🛡️ Compliance</button>
+    <button class="tab" data-tab="enterprise">🏗️ Enterprise</button>
+    <button class="tab" data-tab="security">🔐 Security</button>
+  </div>
+
+  <!-- ===== DICOM VIEWER TAB ===== -->
+  <div class="tab-content active" id="tab-viewer">
+    <div class="text-center mb-4">
+      <h2 class="section-title">50+ Professional Diagnostic Tools</h2>
+      <p class="section-subtitle">Cornerstone.js 4.18.4 powered. GPU-accelerated. DICOM Part 14 GSDF-compliant grayscale rendering. Up to 9 simultaneous viewports.</p>
+    </div>
+
+    <div class="feature-grid-4 stagger">
+      <!-- Navigation -->
+      <div class="card reveal">
+        <div class="card-icon">🖱️</div>
+        <h3 class="card-title">Navigation & Display</h3>
+        <ul class="feature-list">
+          <li>Stack scroll (mouse wheel + trackpad)</li>
+          <li>Pan, zoom, rotate, flip H/V</li>
+          <li>Magnifying glass</li>
+          <li>Reset view to default</li>
+          <li>Full-screen viewer mode</li>
+          <li>DICOM header inspector</li>
+        </ul>
+      </div>
+      <!-- Multi-Viewport -->
+      <div class="card reveal">
+        <div class="card-icon">🖥️</div>
+        <h3 class="card-title">Multi-Viewport Engine</h3>
+        <ul class="feature-list">
+          <li>1×1, 1×2, 2×1, 2×2, 3×3 grid layouts</li>
+          <li>Up to 9 simultaneous viewports</li>
+          <li>Independent W/L per viewport</li>
+          <li>Crosshair synchronization</li>
+          <li>Series linking &amp; scroll sync</li>
+          <li>GPU-accelerated rendering</li>
+        </ul>
+      </div>
+      <!-- Windowing -->
+      <div class="card reveal">
+        <div class="card-icon">🎨</div>
+        <h3 class="card-title">Windowing & Enhancement</h3>
+        <ul class="feature-list">
+          <li>Interactive W/L (right-click drag)</li>
+          <li>CT presets: lung, bone, brain, abdomen</li>
+          <li>15+ colormaps (jet, hot, cool, etc.)</li>
+          <li>Sharpen / smooth filters</li>
+          <li>Invert (negative) mode</li>
+          <li>Brightness / contrast fine-tune</li>
+        </ul>
+      </div>
+      <!-- Measurements -->
+      <div class="card reveal">
+        <div class="card-icon">📐</div>
+        <h3 class="card-title">Measurements</h3>
+        <ul class="feature-list">
+          <li>Linear distance (mm)</li>
+          <li>Bidirectional measurement</li>
+          <li>Angle measurement (3-point)</li>
+          <li>Cobb angle (scoliosis)</li>
+          <li>Polyline measurement</li>
+          <li>Height measurement tool</li>
+          <li>HU probe (CT density)</li>
+        </ul>
+      </div>
+      <!-- ROI -->
+      <div class="card reveal">
+        <div class="card-icon">⭕</div>
+        <h3 class="card-title">ROI Analysis</h3>
+        <ul class="feature-list">
+          <li>Circle ROI</li>
+          <li>Ellipse ROI</li>
+          <li>Rectangle ROI</li>
+          <li>Freehand ROI</li>
+          <li>Spline ROI (smooth curves)</li>
+          <li>Statistics: mean, min, max, std, area</li>
+          <li>HU histogram display</li>
+        </ul>
+      </div>
+      <!-- Annotations -->
+      <div class="card reveal">
+        <div class="card-icon">📎</div>
+        <h3 class="card-title">Annotations</h3>
+        <ul class="feature-list">
+          <li>Arrow pointer</li>
+          <li>Text label</li>
+          <li>Freehand drawing (pen tool)</li>
+          <li>Livewire (AI contour detection)</li>
+          <li>Sculptor tool (refine contours)</li>
+          <li>Persistent across sessions</li>
+          <li>Export to DICOM SR</li>
+        </ul>
+      </div>
+      <!-- Specialty -->
+      <div class="card reveal">
+        <div class="card-icon">🎯</div>
+        <h3 class="card-title">Specialty Workflows</h3>
+        <ul class="feature-list">
+          <li>CTR — Cardiothoracic Ratio</li>
+          <li>Flatfoot Assessment</li>
+          <li>Goniometry (joint angles)</li>
+          <li>TT-TG Distance (knee)</li>
+          <li>ETDRS Grid (ophthalmology)</li>
+          <li>Spine Labelling (C1-S5)</li>
+          <li>Volume Calculations</li>
+        </ul>
+      </div>
+      <!-- Cine & Protocols -->
+      <div class="card reveal">
+        <div class="card-icon">🎬</div>
+        <h3 class="card-title">Cine & Hanging Protocols</h3>
+        <ul class="feature-list">
+          <li>Cine playback (adjustable FPS)</li>
+          <li>Auto-play for dynamic studies</li>
+          <li>Hanging protocol engine</li>
+          <li>Per-modality display rules</li>
+          <li>Prior comparison auto-load</li>
+          <li>Radiologist-configurable presets</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FILM PREP TAB ===== -->
+  <div class="tab-content" id="tab-film">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Professional Film Composition & Print</h2>
+      <p class="section-subtitle">10+ layout presets, 4 standard film sizes, per-slot W/L control, 150-600 DPI rendering. Export to PDF, JPEG, PNG, or native DICOM Print SCU.</p>
+    </div>
+
+    <div class="feature-grid stagger">
+      <div class="card reveal">
+        <div class="card-icon">🖼️</div>
+        <h3 class="card-title">Layout Presets</h3>
+        <ul class="feature-list">
+          <li>1×1 — Single key image display</li>
+          <li>1×2 / 2×1 — Comparison layouts</li>
+          <li>2×2 — Standard multi-view</li>
+          <li>2×3 / 3×3 — Dense overview</li>
+          <li>3×4 / 4×5 — Maximum density</li>
+          <li>Focus — Hero image + thumbnails</li>
+          <li>Attention — Key + context layout</li>
+          <li>Custom grid creation</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">📏</div>
+        <h3 class="card-title">Film Sizes & Quality</h3>
+        <ul class="feature-list">
+          <li>8×10" — Extremity, dental</li>
+          <li>10×12" — Chest, abdomen</li>
+          <li>11×14" — Spine, pelvis</li>
+          <li>14×17" — Full body, chest PA</li>
+          <li>Portrait / Landscape orientation</li>
+          <li>150 DPI (screen) to 600 DPI (print)</li>
+          <li>DICOM Part 14 GSDF rendering</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🎛️</div>
+        <h3 class="card-title">Per-Slot Controls</h3>
+        <ul class="feature-list">
+          <li>Independent W/L per image slot</li>
+          <li>Drag-and-drop image assignment</li>
+          <li>Smart fill: auto-select key slices</li>
+          <li>Modality-specific W/L presets</li>
+          <li>Zoom & pan within each slot</li>
+          <li>Image swap between slots</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">📝</div>
+        <h3 class="card-title">Overlay & Branding</h3>
+        <ul class="feature-list">
+          <li>Patient name, ID, DOB overlay</li>
+          <li>Study date, modality, series info</li>
+          <li>Institution name & logo</li>
+          <li>Custom watermark placement</li>
+          <li>Ruler overlay &amp; scale bar</li>
+          <li>Arrow annotations on film</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">📤</div>
+        <h3 class="card-title">Export & Print</h3>
+        <ul class="feature-list">
+          <li>PDF export (multi-page support)</li>
+          <li>JPEG / PNG high-resolution export</li>
+          <li>Native DICOM Print SCU protocol</li>
+          <li>Network printer queue support</li>
+          <li>Batch printing (multi-study)</li>
+          <li>Print job tracking &amp; reprint</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">📋</div>
+        <h3 class="card-title">Auto Protocol Templates</h3>
+        <ul class="feature-list">
+          <li>Chest X-ray → 1×1, 14×17"</li>
+          <li>Spine → 1×2, 14×17"</li>
+          <li>Extremity → 2×2, 10×12"</li>
+          <li>CT/MRI → 3×4, 14×17"</li>
+          <li>Custom template library</li>
+          <li>Per-technician preferences</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BOOKLET TAB ===== -->
+  <div class="tab-content" id="tab-booklet">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Branded 4-Page Patient Booklets</h2>
+      <p class="section-subtitle">101 configurable fields. Your logo, your design, your quality. Live PDF preview, 150-600 DPI, JPEG embedding at full clinical quality.</p>
+    </div>
+
+    <div class="reveal" style="display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;">
+      <div class="card" style="flex:1;min-width:200px;max-width:280px;text-align:center;">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">📘</div>
+        <h3 class="card-title text-teal">Page 1: Cover</h3>
+        <ul class="feature-list" style="text-align:left;">
+          <li>Custom background image upload</li>
+          <li>Centre logo &amp; branding</li>
+          <li>Patient info table (name, age, sex)</li>
+          <li>Study details (date, modality, ID)</li>
+          <li>Referring doctor info</li>
+          <li>Configurable margins &amp; fonts</li>
+        </ul>
+      </div>
+      <div class="card" style="flex:1;min-width:200px;max-width:280px;text-align:center;">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">🖼️</div>
+        <h3 class="card-title text-teal">Page 2-3: DICOM Images</h3>
+        <ul class="feature-list" style="text-align:left;">
+          <li>2×6 image grid (12 images/page)</li>
+          <li>Independent W/L per slot</li>
+          <li>Auto key-slice selection</li>
+          <li>Manual image pick override</li>
+          <li>Header/footer overlay text</li>
+          <li>150-600 DPI rendering</li>
+        </ul>
+      </div>
+      <div class="card" style="flex:1;min-width:200px;max-width:280px;text-align:center;">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">📄</div>
+        <h3 class="card-title text-teal">Page 3: Report</h3>
+        <ul class="feature-list" style="text-align:left;">
+          <li>Radiologist findings</li>
+          <li>Impression &amp; recommendations</li>
+          <li>Digital signature zone</li>
+          <li>Structured or free-text format</li>
+          <li>Auto-populated from report module</li>
+          <li>Custom font &amp; layout</li>
+        </ul>
+      </div>
+      <div class="card" style="flex:1;min-width:200px;max-width:280px;text-align:center;">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">🏥</div>
+        <h3 class="card-title text-teal">Page 4: Back Cover</h3>
+        <ul class="feature-list" style="text-align:left;">
+          <li>Centre branding &amp; contact</li>
+          <li>Location map embed</li>
+          <li>Partner insurance logos</li>
+          <li>Custom background upload</li>
+          <li>QR code for digital copy</li>
+          <li>Disclaimer &amp; legal text</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-grid stagger" style="max-width:var(--max-width);margin:0 auto;">
+      <div class="card reveal">
+        <h3 class="card-title text-teal">🎨 101 Configurable Fields</h3>
+        <p class="card-text">Page size, margins, grid layout, image quality, DPI, colours, fonts, logos, overlays, text positions, header/footer content, patient info selection — every element is customizable through the admin panel.</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title text-teal">👁️ Live PDF Preview</h3>
+        <p class="card-text">Dispatcher sees real-time preview before PDF generation. Adjust grid arrangement, page orientation, margins on-the-fly. WebSocket-powered instant rendering — no page refresh needed.</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title text-teal">🖨️ Print-Quality Output</h3>
+        <p class="card-text">Full-quality JPEG embedding (no lossy re-compression). DICOM Part 14 GSDF-compliant rendering. Works with any standard A3/A4 printer, no special equipment. Batch generation for high-volume centres.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BILLING TAB ===== -->
+  <div class="tab-content" id="tab-billing">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Complete Billing & Revenue Management</h2>
+      <p class="section-subtitle">GST e-Invoice ready, ABHA ID support, doctor/referral commission tracking, multi-payment modes. No Tally exports needed.</p>
+    </div>
+
+    <div class="feature-grid stagger">
+      <div class="card reveal">
+        <div class="card-icon">🧾</div>
+        <h3 class="card-title">GST e-Invoice (NIC)</h3>
+        <ul class="feature-list">
+          <li>Direct NIC portal integration</li>
+          <li>Auto GSTIN validation</li>
+          <li>B2B/B2C invoice types</li>
+          <li>Credit &amp; debit notes</li>
+          <li>GSTR-1 data export</li>
+          <li>HSN code mapping</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">💰</div>
+        <h3 class="card-title">Payment & Collections</h3>
+        <ul class="feature-list">
+          <li>Cash, card, UPI, NEFT/RTGS</li>
+          <li>Split payment (partial advance)</li>
+          <li>Insurance / TPA billing</li>
+          <li>Outstanding &amp; aging reports</li>
+          <li>Receipt generation &amp; print</li>
+          <li>Refund &amp; cancellation workflow</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">👨‍⚕️</div>
+        <h3 class="card-title">Doctor & Referral Management</h3>
+        <ul class="feature-list">
+          <li>Referring doctor registry</li>
+          <li>Commission &amp; rate card per doctor</li>
+          <li>Monthly commission statements</li>
+          <li>Referral source tracking</li>
+          <li>Doctor-wise revenue analytics</li>
+          <li>Auto SMS/WhatsApp reports</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">📊</div>
+        <h3 class="card-title">MIS & Analytics</h3>
+        <ul class="feature-list">
+          <li>Daily collection summary</li>
+          <li>Modality-wise revenue breakup</li>
+          <li>Doctor-wise / referral-wise reports</li>
+          <li>Monthly P&amp;L overview</li>
+          <li>Test-wise pricing &amp; volume reports</li>
+          <li>Export to Excel / PDF</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WORKFLOW TAB ===== -->
+  <div class="tab-content" id="tab-workflow">
+    <div class="text-center mb-4">
+      <h2 class="section-title">14-Stage Study Lifecycle</h2>
+      <p class="section-subtitle">From patient registration to final archive — every step tracked, automated, and auditable. WebSocket real-time updates across all dashboards.</p>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-dot">📝</div>
+        <div class="timeline-content"><h4>1. Registered</h4><p>Patient &amp; study created at reception. Demographics, modality, referring doctor, billing captured. PCPNDT Form F auto-triggered for ultrasound.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">⏳</div>
+        <div class="timeline-content"><h4>2. Waiting</h4><p>Patient in queue. Technician sees prioritized worklist. SMS/WhatsApp appointment reminders sent. Estimated wait time displayed.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">✅</div>
+        <div class="timeline-content"><h4>3. Checked-In</h4><p>Patient arrives, identity verified (ABHA/Aadhaar). Consent captured. Study assigned to modality room. Preparation instructions sent.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">📡</div>
+        <div class="timeline-content"><h4>4. Acquired</h4><p>Modality sends images via DICOM C-STORE. DicoFlow DICOM SCP receives &amp; routes. Automatic DICOM header reconciliation with worklist.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">📥</div>
+        <div class="timeline-content"><h4>5. Received</h4><p>Images stored, indexed, checksummed. Technician QA: verify slice count, coverage, patient positioning. Flag for re-scan if needed.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">👁️</div>
+        <div class="timeline-content"><h4>6. Under Review</h4><p>Radiologist opens in DICOM viewer. Prior studies auto-loaded. Hanging protocol applied. AI inference runs in background (T4).</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">📄</div>
+        <div class="timeline-content"><h4>7. Report Drafted</h4><p>Radiologist dictates findings (Whisper voice) or uses templates. Structured reporting per modality. Key measurements auto-populated.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">✍️</div>
+        <div class="timeline-content"><h4>8. Verified</h4><p>Senior radiologist reviews &amp; co-signs. Digital signature applied. Report locked — no further edits without addendum workflow.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">📖</div>
+        <div class="timeline-content"><h4>9. Booklet Generated</h4><p>Dispatcher creates branded 4-page booklet. Cover page, DICOM images, report, back cover. Live PDF preview before generation.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">🖨️</div>
+        <div class="timeline-content"><h4>10. Printed</h4><p>Film preparation + booklet print. Print queue managed. DICOM Print SCU for dry-film printers. PDF for regular printers.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">📲</div>
+        <div class="timeline-content"><h4>11. Shared</h4><p>WhatsApp / email delivery to patient &amp; referring doctor. Secure link with time-limited access. QR code on printed booklet.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">📨</div>
+        <div class="timeline-content"><h4>12. Submitted</h4><p>Insurance / TPA claim submitted. Supporting documents attached. Claim tracking dashboard. Auto-follow-up on pending claims.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">💰</div>
+        <div class="timeline-content"><h4>13. Paid</h4><p>Payment reconciled. GST invoice finalized. Doctor commission calculated. Revenue recognized. Outstanding flagged for collection.</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">🗄️</div>
+        <div class="timeline-content"><h4>14. Archived</h4><p>Study moved to long-term archive. Lossless compression applied. Checksum verified. Retrievable for comparison with future studies.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== COMPLIANCE TAB ===== -->
+  <div class="tab-content" id="tab-compliance">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Indian Compliance. Automated.</h2>
+      <p class="section-subtitle">PCPNDT, GST, DPDP Act, NABH, ABDM — every regulation automated, not just supported. Built-in from day one.</p>
+    </div>
+
+    <div class="feature-grid stagger">
+      <div class="card reveal">
+        <div class="card-icon">📋</div>
+        <h3 class="card-title">PCPNDT Form F</h3>
+        <ul class="feature-list">
+          <li>Auto-triggered for every US referral</li>
+          <li>Pre-filled from patient demographics</li>
+          <li>Digital storage with audit trail</li>
+          <li>Print-ready for inspector</li>
+          <li>Tamper-proof — hash-chain protected</li>
+          <li><strong style="color:var(--danger);">Non-compliance: ₹5L fine + imprisonment</strong></li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🧾</div>
+        <h3 class="card-title">GST e-Invoice</h3>
+        <ul class="feature-list">
+          <li>Direct NIC portal integration</li>
+          <li>Auto B2B / B2C categorization</li>
+          <li>Credit / debit note support</li>
+          <li>GSTR-1 data auto-export</li>
+          <li>HSN code mapping per test</li>
+          <li><strong style="color:var(--danger);">Late filing: ₹10K+ per return</strong></li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🆔</div>
+        <h3 class="card-title">ABDM / ABHA</h3>
+        <ul class="feature-list">
+          <li>ABHA ID patient linking</li>
+          <li>Aadhaar verification support</li>
+          <li>Health record sharing (future)</li>
+          <li>National health data standards</li>
+          <li>FHIR R4 interoperability ready</li>
+          <li><strong style="color:var(--warning);">Upcoming mandate for all facilities</strong></li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔐</div>
+        <h3 class="card-title">DPDP Act 2023</h3>
+        <ul class="feature-list">
+          <li>AES-256-GCM envelope encryption</li>
+          <li>Consent management framework</li>
+          <li>Data sovereignty (on-premise)</li>
+          <li>Right to erasure support</li>
+          <li>Immutable audit trail</li>
+          <li><strong style="color:var(--danger);">Penalties up to ₹250 Crore</strong></li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🏥</div>
+        <h3 class="card-title">NABH / NABL</h3>
+        <ul class="feature-list">
+          <li>IHE ATNA-compliant audit trail</li>
+          <li>Time-stamped workflow tracking</li>
+          <li>Traceable reporting chain</li>
+          <li>Document control &amp; versioning</li>
+          <li>Quality metrics dashboard</li>
+          <li><strong style="color:var(--teal);">Required for insurance empanelment</strong></li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🛡️</div>
+        <h3 class="card-title">Immutable Hash Chain</h3>
+        <ul class="feature-list">
+          <li>SHA-512 hash of every audit event</li>
+          <li>Ed25519 checkpoint signatures</li>
+          <li>Cryptographic chain linking</li>
+          <li>Tamper detection &amp; alerting</li>
+          <li>Court-admissible evidence</li>
+          <li>Full provenance tracking</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ENTERPRISE TAB ===== -->
+  <div class="tab-content" id="tab-enterprise">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Enterprise-Grade Platform</h2>
+      <p class="section-subtitle">Multi-branch management, HL7/FHIR integration, AI inference, SLA management, self-healing subsystems, 70+ granular permissions.</p>
+    </div>
+
+    <div class="feature-grid stagger">
+      <div class="card reveal">
+        <div class="card-icon">🏗️</div>
+        <h3 class="card-title">Multi-Branch Management</h3>
+        <ul class="feature-list">
+          <li>Centralized admin dashboard</li>
+          <li>Per-branch configuration</li>
+          <li>Cross-branch study sharing</li>
+          <li>Consolidated MIS reports</li>
+          <li>Branch-wise P&amp;L analytics</li>
+          <li>Unified patient record</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔗</div>
+        <h3 class="card-title">Interoperability</h3>
+        <ul class="feature-list">
+          <li>HL7 v2.x MLLP (ADT, ORM, ORU)</li>
+          <li>FHIR R4 REST API</li>
+          <li>DICOMweb (WADO-RS, QIDO-RS, STOW-RS)</li>
+          <li>IHE ATNA syslog export</li>
+          <li>SIEM / CEF integration</li>
+          <li>HIS / EMR bidirectional sync</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🧠</div>
+        <h3 class="card-title">AI Inference (ONNX)</h3>
+        <ul class="feature-list">
+          <li>Built-in ONNX Runtime engine</li>
+          <li>Lung nodule detection (included)</li>
+          <li>Mammography AI (plugin)</li>
+          <li>Stroke detection (plugin)</li>
+          <li>Fracture detection (plugin)</li>
+          <li>No cloud dependency — runs locally</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">📊</div>
+        <h3 class="card-title">SLA & Performance</h3>
+        <ul class="feature-list">
+          <li>SLA target configuration per modality</li>
+          <li>Real-time TAT monitoring</li>
+          <li>Breach alerting (SMS/email/WhatsApp)</li>
+          <li>Radiologist performance dashboard</li>
+          <li>Technician efficiency metrics</li>
+          <li>Historical SLA reports</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔄</div>
+        <h3 class="card-title">Self-Healing Architecture</h3>
+        <ul class="feature-list">
+          <li>7-subsystem auto-monitoring</li>
+          <li>Database health checks</li>
+          <li>Storage integrity verification</li>
+          <li>DICOM listener auto-restart</li>
+          <li>Processing queue recovery</li>
+          <li>Zero-IT intervention required</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">👥</div>
+        <h3 class="card-title">Role-Based Access</h3>
+        <ul class="feature-list">
+          <li>70+ granular permissions</li>
+          <li>6 default roles (admin, radiologist, tech, dispatch, billing, reception)</li>
+          <li>Custom role creation</li>
+          <li>Per-module access control</li>
+          <li>WebSocket real-time dashboards</li>
+          <li>Audit trail per user action</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECURITY TAB ===== -->
+  <div class="tab-content" id="tab-security">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Bank-Grade Security Architecture</h2>
+      <p class="section-subtitle">Multi-layer encryption, immutable audit chain, zero-trust authentication. Your patient data is safer than in most banks.</p>
+    </div>
+
+    <div class="feature-grid stagger">
+      <div class="card reveal">
+        <div class="card-icon">🔑</div>
+        <h3 class="card-title">Authentication</h3>
+        <ul class="feature-list">
+          <li>Ed25519 JWT tokens</li>
+          <li>Argon2id password hashing</li>
+          <li>Refresh token rotation</li>
+          <li>Session timeout enforcement</li>
+          <li>Brute-force protection</li>
+          <li>IP allowlisting (optional)</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔒</div>
+        <h3 class="card-title">Data Encryption</h3>
+        <ul class="feature-list">
+          <li>AES-256-GCM envelope encryption</li>
+          <li>KEK/DEK key hierarchy</li>
+          <li>PHI field-level encryption</li>
+          <li>Encrypted search (range queries)</li>
+          <li>Key rotation without downtime</li>
+          <li>TLS 1.3 in transit</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🛡️</div>
+        <h3 class="card-title">Audit & Integrity</h3>
+        <ul class="feature-list">
+          <li>SHA-512 hash chain</li>
+          <li>Ed25519 checkpoint signatures</li>
+          <li>Tamper detection &amp; alerting</li>
+          <li>Every action logged (who, what, when)</li>
+          <li>Court-admissible audit trail</li>
+          <li>SIEM / CEF export</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">💾</div>
+        <h3 class="card-title">Data Protection</h3>
+        <ul class="feature-list">
+          <li>On-premise first — data stays local</li>
+          <li>Automatic encrypted backups</li>
+          <li>Checksum verification on restore</li>
+          <li>File integrity monitoring</li>
+          <li>Soft-delete with retention policies</li>
+          <li>Disaster recovery procedures</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title reveal">Ready to See These Features <span class="gradient" style="background:var(--gradient-text);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">in Action?</span></h2>
+  <p class="cta-desc reveal">Book a 30-minute live demo — we'll show you the exact features for your tier.</p>
+  <div class="cta-buttons reveal">
+    <a href="pricing.html" class="btn btn-primary btn-lg">View Pricing →</a>
+    <a href="compare.html" class="btn btn-outline btn-lg">Compare with Competitors</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/animations.js"></script>
+</body>
+</html>

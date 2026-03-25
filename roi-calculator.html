@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROI Calculator — DicoFlow</title>
+<meta name="description" content="Calculate your return on investment with DicoFlow. See payback period, 3-year savings, and recommended tier based on your centre's profile.">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<section class="hero" style="padding-top:5rem;padding-bottom:2rem;">
+  <div class="hero-inner">
+    <div class="section-badge" style="animation:fadeInUp .6s ease both;">ROI Calculator</div>
+    <h1 class="hero-title">See Your <span class="gradient">Return on Investment</span></h1>
+    <p class="hero-desc">Enter your centre's data. See exact payback period, 3-year savings, and how DicoFlow compares to your current costs and competitors.</p>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section>
+  <div style="max-width:800px;margin:0 auto;">
+    <div class="card reveal" style="padding:2.5rem;">
+      <h3 class="card-title text-teal mb-3">📊 Your Centre Profile</h3>
+
+      <div class="grid-2" style="gap:1.5rem;">
+        <div class="form-group">
+          <label class="form-label">DicoFlow Tier</label>
+          <select class="form-input" id="roi-tier">
+            <option value="T1_BILLING">T1 — Billing (₹75K)</option>
+            <option value="T2_PACS" selected>T2 — PACS (₹1.5L)</option>
+            <option value="T3_RADIOLOGY">T3 — Radiology (₹3.5L)</option>
+            <option value="T4_ENTERPRISE">T4 — Enterprise (₹7.5L)</option>
+            <option value="T5_BILLING_PACS">T5 — Billing+PACS (₹2.25L)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Studies per Month</label>
+          <input type="number" class="form-input" id="roi-studies" value="500" min="50" max="50000">
+        </div>
+      </div>
+
+      <div class="grid-2 mt-3" style="gap:1.5rem;">
+        <div class="form-group">
+          <label class="form-label">Monthly Film Cost (₹)</label>
+          <input type="number" class="form-input" id="roi-film" value="150000" min="0" step="5000">
+          <small style="color:var(--text-muted);font-size:.75rem;">Current monthly spending on X-ray/CT/MRI film. Enter 0 if N/A.</small>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Monthly Revenue (₹)</label>
+          <input type="number" class="form-input" id="roi-revenue" value="800000" min="50000" step="10000">
+          <small style="color:var(--text-muted);font-size:.75rem;">Gross monthly billing revenue from diagnostics.</small>
+        </div>
+      </div>
+
+      <div class="grid-2 mt-3" style="gap:1.5rem;">
+        <div class="form-group">
+          <label class="form-label">Staff Count</label>
+          <input type="number" class="form-input" id="roi-staff" value="8" min="1" max="200">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Avg Staff Salary (₹/month)</label>
+          <input type="number" class="form-input" id="roi-salary" value="25000" min="10000" step="1000">
+        </div>
+      </div>
+
+      <div class="grid-2 mt-3" style="gap:1.5rem;">
+        <div class="form-group">
+          <label class="form-label">Current Billing Leakage Estimate</label>
+          <select class="form-input" id="roi-leakage">
+            <option value="5">5% — Well managed, few missed charges</option>
+            <option value="10" selected>10% — Typical for manual/basic systems</option>
+            <option value="15">15% — Significant missed charges / duplicates</option>
+            <option value="20">20% — Major leakage / no tracking</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Film Reduction Expectation</label>
+          <select class="form-input" id="roi-film-reduction">
+            <option value="50">50% — Conservative (still print many films)</option>
+            <option value="70" selected>70% — Moderate (CD/USB for most patients)</option>
+            <option value="85">85% — Aggressive (digital-first, minimal print)</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-top:2rem;" onclick="calculateROI()">Calculate My ROI →</button>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="roi-results" style="display:none;">
+  <div class="text-center mb-4">
+    <div class="section-badge">Your ROI Analysis</div>
+    <h2 class="section-title" id="roi-headline">Results</h2>
+  </div>
+
+  <!-- KEY METRICS -->
+  <div class="stats-row" style="max-width:var(--max-width);margin:0 auto 3rem;flex-wrap:wrap;">
+    <div class="stat"><span class="stat-number" id="roi-payback" style="color:var(--success);">—</span><span class="stat-label">Payback Period</span></div>
+    <div class="stat"><span class="stat-number" id="roi-monthly-savings" style="color:var(--success);">—</span><span class="stat-label">Monthly Savings</span></div>
+    <div class="stat"><span class="stat-number" id="roi-annual-savings" style="color:var(--success);">—</span><span class="stat-label">Annual Savings</span></div>
+    <div class="stat"><span class="stat-number" id="roi-3yr-savings" style="color:var(--success);">—</span><span class="stat-label">3-Year Net Savings</span></div>
+  </div>
+
+  <!-- BREAKDOWN -->
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="card" style="padding:2rem;">
+      <h3 class="card-title text-teal mb-3">Savings Breakdown</h3>
+      <div id="roi-breakdown"></div>
+    </div>
+
+    <!-- INVESTMENT -->
+    <div class="card mt-3" style="padding:2rem;">
+      <h3 class="card-title text-teal mb-3">Investment Required</h3>
+      <div id="roi-investment"></div>
+    </div>
+
+    <!-- VS COMPETITORS -->
+    <div class="card mt-3" style="padding:2rem;">
+      <h3 class="card-title text-teal mb-3">vs Competitor Cost</h3>
+      <div id="roi-competitor"></div>
+    </div>
+
+    <!-- INTANGIBLES -->
+    <div class="card mt-3" style="padding:2rem;">
+      <h3 class="card-title text-teal mb-3">🛡️ Risk & Compliance Value (Not Counted Above)</h3>
+      <div id="roi-intangibles"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL-STYLE SCENARIOS -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Typical Scenarios</div>
+    <h2 class="section-title reveal">Real Numbers from Real Centre Profiles</h2>
+  </div>
+  <div class="feature-grid stagger" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="card reveal">
+      <h3 class="card-title text-teal">🏥 Small X-ray Clinic</h3>
+      <p class="card-text text-sm"><strong>Tier 1 — ₹75K investment</strong><br>Revenue: ₹3L/mo | Film: ₹10K/mo<br>Billing recovery: ₹30K/mo<br>Payback: <strong style="color:var(--success);">2.5 months</strong></p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title text-teal">🏥 CT/MRI Centre</h3>
+      <p class="card-text text-sm"><strong>Tier 2 — ₹1.5L investment</strong><br>Revenue: ₹8L/mo | Film: ₹1.5L/mo<br>Film savings: ₹1.05L/mo | Billing: ₹80K/mo<br>Payback: <strong style="color:var(--success);">< 1 month</strong></p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title text-teal">🏗️ Hospital Chain (3 branches)</h3>
+      <p class="card-text text-sm"><strong>Tier 4 — ₹7.5L investment</strong><br>Revenue: ₹25L/mo combined | Film: ₹4L/mo<br>Combined savings: ₹5.8L/mo<br>Payback: <strong style="color:var(--success);">1.3 months</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2 class="cta-title reveal">Like What You See? <span class="gradient" style="background:var(--gradient-text);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Let's Talk.</span></h2>
+  <div class="cta-buttons reveal">
+    <a href="pricing.html" class="btn btn-primary btn-lg">View Pricing →</a>
+    <a href="infrastructure.html" class="btn btn-outline btn-lg">Infrastructure Costs →</a>
+    <a href="compare.html" class="btn btn-outline btn-lg">Compare Competitors →</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/calculators.js"></script>
+<script>
+function calculateROI() {
+  const tier = document.getElementById('roi-tier').value;
+  const studies = parseInt(document.getElementById('roi-studies').value) || 500;
+  const filmCost = parseInt(document.getElementById('roi-film').value) || 0;
+  const revenue = parseInt(document.getElementById('roi-revenue').value) || 500000;
+  const staff = parseInt(document.getElementById('roi-staff').value) || 5;
+  const salary = parseInt(document.getElementById('roi-salary').value) || 25000;
+  const leakage = parseInt(document.getElementById('roi-leakage').value) || 10;
+  const filmReduction = parseInt(document.getElementById('roi-film-reduction').value) || 70;
+  const fmt = window.DicoFlowCalculators.formatINR;
+
+  const TIERS = window.DicoFlowCalculators.TIERS || {
+    T1_BILLING: { licence: 75000, impl: 15000, amc: 15000 },
+    T2_PACS: { licence: 150000, impl: 25000, amc: 30000 },
+    T3_RADIOLOGY: { licence: 350000, impl: 40000, amc: 60000 },
+    T4_ENTERPRISE: { licence: 750000, impl: 75000, amc: 125000 },
+    T5_BILLING_PACS: { licence: 225000, impl: 30000, amc: 40000 }
+  };
+
+  const t = TIERS[tier];
+  const totalInvestment = t.licence + (t.impl || 0);
+  const yearlyAMC = t.amc;
+
+  // Savings
+  const filmSaving = Math.round(filmCost * (filmReduction / 100));
+  const billingRecovery = Math.round(revenue * (leakage / 100) * 0.7); // recover 70% of leakage
+  const staffEfficiency = Math.round(staff * salary * 0.08); // 8% staff time saved
+  const complianceSaving = tier === 'T1_BILLING' ? 5000 : 10000; // monthly risk value
+
+  const monthlySavings = filmSaving + billingRecovery + staffEfficiency;
+  const annualSavings = monthlySavings * 12;
+  const threeYearSavings = (annualSavings * 3) - totalInvestment - (yearlyAMC * 3);
+  const paybackDays = monthlySavings > 0 ? Math.ceil(totalInvestment / (monthlySavings / 30)) : 999;
+
+  // Competitor comparison
+  const competitorMultiplier = tier === 'T4_ENTERPRISE' ? 2.5 : 2.0;
+  const competitorCost = Math.round(t.licence * competitorMultiplier);
+  const competitorSavings = competitorCost - t.licence;
+
+  // Display
+  document.getElementById('roi-headline').textContent = paybackDays < 90 ? `Payback in ${paybackDays} Days — Incredible ROI` :
+    paybackDays < 180 ? `Payback in ${paybackDays} Days — Strong ROI` : `Your ROI Analysis`;
+
+  document.getElementById('roi-payback').textContent = paybackDays < 30 ? '< 1 month' :
+    paybackDays < 365 ? Math.round(paybackDays / 30) + ' months' : Math.round(paybackDays / 365 * 10) / 10 + ' years';
+  document.getElementById('roi-monthly-savings').textContent = fmt(monthlySavings);
+  document.getElementById('roi-annual-savings').textContent = fmt(annualSavings);
+  document.getElementById('roi-3yr-savings').textContent = fmt(threeYearSavings);
+
+  const maxSaving = Math.max(filmSaving, billingRecovery, staffEfficiency);
+  document.getElementById('roi-breakdown').innerHTML = `
+    <table class="data-table">
+      <tr><td>Film cost reduction (${filmReduction}% of ${fmt(filmCost)})</td><td style="text-align:right;color:var(--success);font-weight:600;">${fmt(filmSaving)}/mo</td></tr>
+      <tr><td>Billing leakage recovery (70% of ${leakage}% leakage on ${fmt(revenue)})</td><td style="text-align:right;color:var(--success);font-weight:600;">${fmt(billingRecovery)}/mo</td></tr>
+      <tr><td>Staff efficiency gains (8% of ${staff} staff × ${fmt(salary)})</td><td style="text-align:right;color:var(--success);font-weight:600;">${fmt(staffEfficiency)}/mo</td></tr>
+      <tr style="font-weight:700;"><td>Total Monthly Savings</td><td style="text-align:right;color:var(--success);">${fmt(monthlySavings)}/mo</td></tr>
+      <tr style="font-weight:700;"><td>Total Annual Savings</td><td style="text-align:right;color:var(--success);">${fmt(annualSavings)}/yr</td></tr>
+    </table>
+    <p class="text-sm text-muted mt-2">* Compliance risk avoidance (PCPNDT: ₹5L, DPDP: up to ₹250Cr) not included in financial calculations above.</p>
+  `;
+
+  document.getElementById('roi-investment').innerHTML = `
+    <table class="data-table">
+      <tr><td>Software Licence</td><td style="text-align:right;">${fmt(t.licence)}</td></tr>
+      <tr><td>Implementation & Training</td><td style="text-align:right;">${fmt(t.impl || 0)}</td></tr>
+      <tr style="font-weight:700;"><td>Total Upfront</td><td style="text-align:right;">${fmt(totalInvestment)}</td></tr>
+      <tr><td>Annual AMC</td><td style="text-align:right;">${fmt(yearlyAMC)}/yr</td></tr>
+      <tr><td>3-Year Total Cost (Licence + 3yr AMC)</td><td style="text-align:right;">${fmt(totalInvestment + yearlyAMC * 3)}</td></tr>
+      <tr style="font-weight:700;color:var(--success);"><td>3-Year Net Savings (Savings - Costs)</td><td style="text-align:right;">${fmt(threeYearSavings)}</td></tr>
+    </table>
+    <p class="text-sm text-muted mt-2">Early Adopter: 30% off licence = ${fmt(Math.round(t.licence * 0.7))} (save ${fmt(Math.round(t.licence * 0.3))})</p>
+  `;
+
+  document.getElementById('roi-competitor').innerHTML = `
+    <div class="compare-bar"><div class="compare-bar-label">DicoFlow</div><div class="compare-bar-track"><div class="compare-bar-fill dicoflow" style="width:${(t.licence/competitorCost*90)}%;">${fmt(t.licence)}</div></div></div>
+    <div class="compare-bar"><div class="compare-bar-label">Avg Competitor</div><div class="compare-bar-track"><div class="compare-bar-fill competitor" style="width:90%;">${fmt(competitorCost)}</div></div></div>
+    <p class="text-sm mt-2" style="color:var(--success);">💰 You save <strong>${fmt(competitorSavings)}</strong> vs average competitor on licence alone. That's a <strong>${Math.round((1 - t.licence / competitorCost) * 100)}% discount</strong>.</p>
+  `;
+
+  document.getElementById('roi-intangibles').innerHTML = `
+    <table class="data-table">
+      <tr><td>PCPNDT violation avoidance</td><td style="text-align:right;color:var(--danger);">₹5,00,000 fine + imprisonment risk</td></tr>
+      <tr><td>DPDP Act 2023 compliance</td><td style="text-align:right;color:var(--danger);">Up to ₹250 Crore penalty risk</td></tr>
+      <tr><td>GST late-filing avoidance</td><td style="text-align:right;">₹10,000+/return</td></tr>
+      <tr><td>Data breach prevention</td><td style="text-align:right;">Reputation + legal liability</td></tr>
+      <tr><td>NABH/NABL readiness</td><td style="text-align:right;">Insurance empanelment eligibility</td></tr>
+      <tr><td>Business continuity (self-healing)</td><td style="text-align:right;">99.9% uptime target</td></tr>
+    </table>
+    <p class="text-sm text-muted mt-2">These risks are real and imminent. DicoFlow eliminates all of them at no additional cost.</p>
+  `;
+
+  document.getElementById('roi-results').style.display = 'block';
+  document.getElementById('roi-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

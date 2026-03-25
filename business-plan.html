@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Plan & Revenue Projections — DicoFlow</title>
+<meta name="description" content="Complete 12-month business plan: weekly milestones, tier-specific sales projections, revenue forecasts, profit models, marketing calendar, and execution strategy for DicoFlow.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  /* Page-specific styles for data tables and calendar */
+  .plan-table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+  .plan-table th { background:rgba(77,208,225,.08); color:var(--teal-light); padding:0.6rem 0.5rem; text-align:right; font-weight:600; white-space:nowrap; border-bottom:1px solid var(--border-teal); }
+  .plan-table th:first-child { text-align:left; }
+  .plan-table td { padding:0.55rem 0.5rem; text-align:right; border-bottom:1px solid var(--border); color:var(--text-secondary); }
+  .plan-table td:first-child { text-align:left; color:var(--text-primary); font-weight:500; }
+  .plan-table tr:hover td { background:rgba(77,208,225,.03); }
+  .plan-table .total-row td { font-weight:700; color:var(--teal-light); border-top:2px solid var(--border-teal); background:rgba(77,208,225,.04); }
+  .plan-table .highlight-row td { background:rgba(38,166,154,.06); }
+  .plan-table .section-header td { background:rgba(77,208,225,.06); color:var(--teal); font-weight:600; text-align:left; letter-spacing:.03em; }
+  .scenario-card { border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem; background:var(--bg-card); transition:all var(--transition); }
+  .scenario-card:hover { border-color:var(--border-teal-hover); background:var(--bg-card-hover); }
+  .scenario-card.active { border-color:var(--teal); box-shadow:0 0 20px rgba(77,208,225,.15); }
+  .scenario-label { font-size:0.75rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:0.5rem; }
+  .scenario-value { font-size:1.8rem; font-weight:800; color:var(--teal-light); }
+  .milestone-grid { display:grid; grid-template-columns:auto 1fr; gap:0; }
+  .milestone-week { padding:0.75rem 1rem; font-weight:600; color:var(--teal); font-size:0.85rem; border-right:2px solid var(--border-teal); position:relative; white-space:nowrap; }
+  .milestone-week::after { content:''; position:absolute; right:-6px; top:50%; transform:translateY(-50%); width:10px; height:10px; border-radius:50%; background:var(--teal); }
+  .milestone-content { padding:0.75rem 1rem 0.75rem 1.5rem; border-bottom:1px solid var(--border); font-size:0.85rem; color:var(--text-secondary); }
+  .milestone-content strong { color:var(--text-primary); }
+  .bar-visual { display:flex; align-items:center; gap:0.5rem; margin:0.3rem 0; }
+  .bar-fill { height:18px; border-radius:9px; background:var(--gradient-teal); position:relative; min-width:2px; transition:width 0.8s ease; }
+  .bar-label { font-size:0.72rem; color:var(--text-muted); white-space:nowrap; }
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:1rem; }
+  .kpi-box { text-align:center; padding:1.2rem; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--bg-card); }
+  .kpi-number { font-size:1.6rem; font-weight:800; color:var(--teal-light); }
+  .kpi-label { font-size:0.72rem; color:var(--text-muted); margin-top:0.3rem; text-transform:uppercase; letter-spacing:.05em; }
+  .cal-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:1rem; }
+  .cal-month { border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; background:var(--bg-card); }
+  .cal-month-name { font-weight:700; color:var(--teal-light); margin-bottom:0.5rem; font-size:0.9rem; }
+  .cal-item { font-size:0.75rem; color:var(--text-secondary); padding:0.2rem 0; border-left:2px solid var(--border-teal); padding-left:0.5rem; margin-bottom:0.3rem; }
+  .cal-item.t2 { border-left-color:#4dd0e1; }
+  .cal-item.t4 { border-left-color:#ffd700; }
+  .cal-item.general { border-left-color:#66bb6a; }
+  .cal-item.revenue { border-left-color:#ef5350; }
+  @media(max-width:768px) {
+    .cal-grid { grid-template-columns:1fr 1fr; }
+    .kpi-grid { grid-template-columns:repeat(2, 1fr); }
+  }
+  @media(max-width:480px) {
+    .cal-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:5rem;padding-bottom:2rem;">
+  <div class="hero-inner">
+    <div class="section-badge" style="animation:fadeInUp .6s ease both;">📊 Master Business Plan</div>
+    <h1 class="hero-title">12-Month <span class="gradient">Revenue Roadmap</span></h1>
+    <p class="hero-desc">Week-by-week milestones, tier-specific sales projections, profit models, marketing calendar, and execution strategy. The complete playbook for a marketing &amp; sales person to follow from Day 1.</p>
+    <div class="stats-row" style="animation:fadeInUp .8s ease .4s both;">
+      <div class="stat"><span class="stat-number" style="color:var(--teal-light);">₹1.33 Cr</span><span class="stat-label">Year 1 Target</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--teal-light);">36</span><span class="stat-label">Deals Year 1</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--success);">₹3.75 Cr</span><span class="stat-label">3-Year Pipeline</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--success);">62%</span><span class="stat-label">Gross Margin</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXECUTIVE SUMMARY KPIs ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Executive Summary</div>
+    <h2 class="section-title reveal">Year 1 at a Glance</h2>
+  </div>
+  <div class="kpi-grid reveal" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="kpi-box"><div class="kpi-number">₹82.2L</div><div class="kpi-label">Seed Investment</div></div>
+    <div class="kpi-box"><div class="kpi-number">₹1.33 Cr</div><div class="kpi-label">Year 1 Revenue</div></div>
+    <div class="kpi-box"><div class="kpi-number">36</div><div class="kpi-label">Year 1 Deals</div></div>
+    <div class="kpi-box"><div class="kpi-number">₹82.5L</div><div class="kpi-label">Year 1 Gross Profit</div></div>
+    <div class="kpi-box"><div class="kpi-number">8-9 mo</div><div class="kpi-label">Break-Even Point</div></div>
+    <div class="kpi-box"><div class="kpi-number">62%</div><div class="kpi-label">Gross Margin</div></div>
+    <div class="kpi-box"><div class="kpi-number">3 per mo</div><div class="kpi-label">Avg Deals/Month</div></div>
+    <div class="kpi-box"><div class="kpi-number">₹3.7L</div><div class="kpi-label">Avg Deal Size</div></div>
+  </div>
+</section>
+
+<!-- ===== SCENARIO SELECTOR ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Revenue Scenarios</div>
+    <h2 class="section-title reveal">Conservative vs Moderate vs Aggressive</h2>
+    <p class="section-subtitle reveal">Click a scenario to see detailed projections below. All numbers are Year 1 targets.</p>
+  </div>
+  <div class="grid-3 stagger" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="scenario-card reveal" id="sc-conservative" onclick="selectScenario('conservative')">
+      <div class="scenario-label">🐢 Conservative</div>
+      <div class="scenario-value">₹85L</div>
+      <p style="color:var(--text-muted);font-size:0.82rem;margin-top:0.5rem;">24 deals/year &nbsp;|&nbsp; 2/month avg<br>Focus: T1 + T2 only<br>Risk: Minimal — survival mode</p>
+    </div>
+    <div class="scenario-card active reveal" id="sc-moderate" onclick="selectScenario('moderate')">
+      <div class="scenario-label">🎯 Moderate (Recommended)</div>
+      <div class="scenario-value">₹1.33 Cr</div>
+      <p style="color:var(--text-muted);font-size:0.82rem;margin-top:0.5rem;">36 deals/year &nbsp;|&nbsp; 3/month avg<br>Mix: T1, T2, T3, T4<br>Target: Profitable within 9 months</p>
+    </div>
+    <div class="scenario-card reveal" id="sc-aggressive" onclick="selectScenario('aggressive')">
+      <div class="scenario-label">🚀 Aggressive</div>
+      <div class="scenario-value">₹2.1 Cr</div>
+      <p style="color:var(--text-muted);font-size:0.82rem;margin-top:0.5rem;">54 deals/year &nbsp;|&nbsp; 4.5/month avg<br>All tiers + multi-site chains<br>Requires: 2nd sales rep by Month 4</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MONTH-BY-MONTH REVENUE TABLE ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Monthly Revenue Projections</div>
+    <h2 class="section-title reveal">12-Month Sales Forecast — <span id="scenario-label-title">Moderate Scenario</span></h2>
+  </div>
+  <div class="reveal" style="max-width:1100px;margin:0 auto;overflow-x:auto;">
+    <table class="plan-table" id="revenue-table">
+      <thead>
+        <tr><th>Month</th><th>T1 Billing<br><small>₹75K</small></th><th>T2 PACS<br><small>₹1.5L</small></th><th>T3 Radiology<br><small>₹3.5L</small></th><th>T4 Enterprise<br><small>₹7.5L</small></th><th>T5 Bundle<br><small>₹2.25L</small></th><th>Total Deals</th><th>Revenue</th><th>Cumulative</th></tr>
+      </thead>
+      <tbody id="revenue-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== TIER-SPECIFIC PROFIT BREAKDOWN ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">Profit per Deal</div>
+      <h2 class="section-title reveal">Tier-by-Tier Profit Analysis</h2>
+      <p class="section-subtitle reveal">Revenue, costs, and gross profit per single deal. These margins make DicoFlow a sustainable business.</p>
+    </div>
+
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="plan-table">
+        <thead><tr><th>Metric</th><th>T1 Billing</th><th>T2 PACS</th><th>T3 Radiology</th><th>T4 Enterprise</th><th>T5 Bundle</th></tr></thead>
+        <tbody>
+          <tr><td>Licence Revenue</td><td>₹75,000</td><td>₹1,50,000</td><td>₹3,50,000</td><td>₹7,50,000</td><td>₹2,25,000</td></tr>
+          <tr><td>Implementation Revenue</td><td>₹10,000</td><td>₹25,000</td><td>₹50,000</td><td>₹1,00,000</td><td>₹35,000</td></tr>
+          <tr><td><strong>Total Deal Revenue</strong></td><td><strong>₹85,000</strong></td><td><strong>₹1,75,000</strong></td><td><strong>₹4,00,000</strong></td><td><strong>₹8,50,000</strong></td><td><strong>₹2,60,000</strong></td></tr>
+          <tr class="section-header"><td colspan="6">COSTS</td></tr>
+          <tr><td>Implementation Cost (mandays)</td><td>₹10,000</td><td>₹25,000</td><td>₹40,000</td><td>₹80,000</td><td>₹30,000</td></tr>
+          <tr><td>Training Cost</td><td>₹5,000</td><td>₹10,000</td><td>₹15,000</td><td>₹25,000</td><td>₹12,000</td></tr>
+          <tr><td>Travel & On-site</td><td>₹2,000</td><td>₹5,000</td><td>₹8,000</td><td>₹15,000</td><td>₹5,000</td></tr>
+          <tr><td>Sales Commission (10%)</td><td>₹8,500</td><td>₹17,500</td><td>₹40,000</td><td>₹85,000</td><td>₹26,000</td></tr>
+          <tr><td><strong>Total Cost per Deal</strong></td><td><strong>₹25,500</strong></td><td><strong>₹57,500</strong></td><td><strong>₹1,03,000</strong></td><td><strong>₹2,05,000</strong></td><td><strong>₹73,000</strong></td></tr>
+          <tr class="section-header"><td colspan="6">PROFIT</td></tr>
+          <tr style="color:var(--success);font-weight:700;"><td>Gross Profit per Deal</td><td>₹59,500</td><td>₹1,17,500</td><td>₹2,97,000</td><td>₹6,45,000</td><td>₹1,87,000</td></tr>
+          <tr style="color:var(--success);font-weight:700;"><td>Gross Margin %</td><td>70%</td><td>67%</td><td>74%</td><td>76%</td><td>72%</td></tr>
+          <tr class="section-header"><td colspan="6">RECURRING REVENUE (AMC)</td></tr>
+          <tr><td>Annual AMC</td><td>₹15,000</td><td>₹30,000</td><td>₹60,000</td><td>₹1,25,000</td><td>₹40,000</td></tr>
+          <tr><td>AMC Margin (~85%)</td><td>₹12,750</td><td>₹25,500</td><td>₹51,000</td><td>₹1,06,250</td><td>₹34,000</td></tr>
+          <tr class="section-header"><td colspan="6">3-YEAR TOTAL VALUE PER CUSTOMER</td></tr>
+          <tr style="color:var(--teal-light);font-weight:800;"><td>Licence + 3yr AMC</td><td>₹1,30,000</td><td>₹2,65,000</td><td>₹5,80,000</td><td>₹12,25,000</td><td>₹3,80,000</td></tr>
+          <tr style="color:var(--success);font-weight:800;"><td>3-Year Gross Profit</td><td>₹97,750</td><td>₹1,94,000</td><td>₹4,50,000</td><td>₹9,63,750</td><td>₹2,89,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WEEK-BY-WEEK MILESTONES (First 8 Weeks — T2 & T4 Focus) ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">🎯 First 60 Days — Critical Launch Phase</div>
+    <h2 class="section-title reveal">Week-by-Week Milestones</h2>
+    <p class="section-subtitle reveal">Primary focus: <strong style="color:var(--teal);">T2 PACS</strong> (highest volume) and <strong style="color:#ffd700;">T4 Enterprise</strong> (highest value). These two tiers drive 70% of Year 1 revenue.</p>
+  </div>
+
+  <div class="reveal" style="max-width:900px;margin:0 auto;">
+    <div class="milestone-grid">
+      <div class="milestone-week">Week 1</div>
+      <div class="milestone-content"><strong>Foundation & Territory Mapping</strong><br>• Map all CT/MRI centres within 100 km radius (target 50+ T2 prospects)<br>• Identify top 10 hospital chains for T4 enterprise outreach<br>• Complete product training: T2 PACS demo flow + T4 Enterprise demo flow<br>• Set up CRM with centre profiles, modality type, current vendor<br><span class="badge badge-teal" style="font-size:.65rem;">KPI: 50 T2 + 10 T4 prospects identified</span></div>
+
+      <div class="milestone-week">Week 2</div>
+      <div class="milestone-content"><strong>T2 PACS Blitz — Cold Outreach</strong><br>• 25 cold calls/day to CT/MRI centres (25 × 5 = 125 contacts)<br>• WhatsApp Business: send film cost savings calculator to centre managers<br>• LinkedIn: connect with 50 radiology centre owners/managers<br>• Book first 5 demos for Week 3<br><span class="badge badge-teal" style="font-size:.65rem;">KPI: 125 contacts, 8 demos booked (T2)</span></div>
+
+      <div class="milestone-week">Week 3</div>
+      <div class="milestone-content"><strong>T2 Demos + T4 Introduction</strong><br>• Execute 5-8 T2 PACS demos (30 min: pain → film cost → viewer → ROI)<br>• Send T4 Enterprise intro emails to hospital CIOs/IT heads<br>• WhatsApp follow-up within 24 hours of each demo<br>• Start Google Ads: "PACS software India" + "CT centre software"<br><span class="badge badge-teal" style="font-size:.65rem;">KPI: 6 demos done, 2 proposals sent (T2)</span></div>
+
+      <div class="milestone-week">Week 4</div>
+      <div class="milestone-content"><strong>First T2 Close + T4 Demo Booking</strong><br>• Follow up on 2 T2 proposals — push for Early Adopter close (30% off)<br>• <strong style="color:var(--success);">Target: 1st T2 PACS deal closed (₹1.5L)</strong><br>• Book 2-3 T4 Enterprise discovery meetings<br>• Collect first customer testimonial/case study<br><span class="badge badge-success" style="font-size:.65rem;">MILESTONE: First revenue — ₹1.5L (T2)</span></div>
+
+      <div class="milestone-week">Week 5</div>
+      <div class="milestone-content"><strong>T4 Enterprise Deep Dive</strong><br>• 2-3 T4 on-site visits to hospitals (bring demo laptop with real DICOM data)<br>• Show 14-stage workflow, multi-branch, HL7/FHIR integration<br>• T2 pipeline: 10 more cold calls/day, book 3-4 demos<br>• Implement first T2 customer (parallel track)<br><span class="badge badge-teal" style="font-size:.65rem;">KPI: 2 T4 demos, 2 more T2 deals in pipeline</span></div>
+
+      <div class="milestone-week">Week 6</div>
+      <div class="milestone-content"><strong>Acceleration — Multi-Tier</strong><br>• <strong style="color:var(--success);">Target: 2nd T2 PACS close (₹1.5L)</strong><br>• Send T4 Enterprise proposals to 2 hospitals<br>• Open T1 Billing channel: approach pathology labs, small clinics<br>• Launch referral programme: ₹10K per conversion<br><span class="badge badge-success" style="font-size:.65rem;">MILESTONE: Cumulative ₹3L revenue</span></div>
+
+      <div class="milestone-week">Week 7</div>
+      <div class="milestone-content"><strong>T4 Negotiation + Pipeline Building</strong><br>• T4 hospital follow-ups: address procurement, IT integration questions<br>• T2: 3 more demos, push pipeline deals to close<br>• First T1 Billing demo to clinic owners (₹75K is impulse buy territory)<br>• Publish first blog post: "How DicoFlow Reduces Film Costs by 70%"<br><span class="badge badge-teal" style="font-size:.65rem;">KPI: T4 proposal in negotiation, 5 total T2 proposals out</span></div>
+
+      <div class="milestone-week">Week 8</div>
+      <div class="milestone-content"><strong>🏆 Month 2 Close — Target: ₹12L+ Cumulative</strong><br>• <strong style="color:var(--success);">Target: 1st T4 Enterprise close (₹7.5L) — GAME CHANGER</strong><br>• <strong style="color:var(--success);">Target: 3rd T2 PACS close (₹1.5L)</strong><br>• T1 Billing: close 1-2 quick deals (₹75K each)<br>• Month 2 review: refine pitch, optimize channels<br><span class="badge badge-success" style="font-size:.65rem;">MILESTONE: ₹12-15L cumulative — approaching break-even trajectory</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FORTNIGHTLY MILESTONES (Months 3-12) ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">Months 3-12 Milestones</div>
+      <h2 class="section-title reveal">Fortnightly Execution Milestones</h2>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">M3</div><div class="timeline-content"><h4>Month 3 (Week 9-12)</h4><p><strong>Scale T2 + Land T3:</strong> Close 3 T2, 1 T3 Radiology. Attend first IRIA chapter meeting. Launch T3 demos targeting radiology departments needing reporting + booklets. Cumulative: <strong style="color:var(--success);">₹25-30L</strong></p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">M4</div><div class="timeline-content"><h4>Month 4 (Week 13-16)</h4><p><strong>Pipeline Maturation:</strong> Close 3 T2, 1 T4, 1 T1. Second T4 deal expected from referral. Hire second sales rep for T1/T2 volume. Cumulative: <strong style="color:var(--success);">₹45-50L</strong></p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">M5</div><div class="timeline-content"><h4>Month 5 (Week 17-20)</h4><p><strong>Multi-City Expansion:</strong> Expand territory to adjacent city. Target medical device distributors as channel partners. Close 3 T2, 1 T3. First webinar: 50+ registrations. Cumulative: <strong style="color:var(--success);">₹60-65L</strong></p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">M6</div><div class="timeline-content"><h4>Month 6 — Half-Year Review (Week 21-24)</h4><p><strong>🎯 Mid-Year Target: ₹75L+</strong><br>Close 2 T2, 1 T4, 1 T5 Bundle. Publish 3 customer case studies. Review conversion rates: optimize worst-performing channel. AMC revenue starts flowing (₹2-3L/yr base). Cumulative: <strong style="color:var(--success);">₹75-82L</strong></p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--emerald);">M7-8</div><div class="timeline-content"><h4>Months 7-8 (Week 25-32)</h4><p><strong>Steady State — 4 deals/month:</strong> Mix of T1 (1), T2 (2), T3/T4 (1). Trade show presence (Medicall / RSNA India). Partner channel deals starting to close. Cumulative: <strong style="color:var(--success);">₹95L - ₹1.05 Cr</strong></p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--emerald);">M9-10</div><div class="timeline-content"><h4>Months 9-10 (Week 33-40)</h4><p><strong>🏆 Break-Even Achieved:</strong> Monthly revenue exceeds monthly burn rate. Focus on T4 enterprise pipeline — 3-6 month sales cycle starting to yield. Volume discounts for 3+ site chains. Cumulative: <strong style="color:var(--success);">₹1.1 - ₹1.2 Cr</strong></p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--success);">M11-12</div><div class="timeline-content"><h4>Months 11-12 — Year End (Week 41-48)</h4><p><strong>🏆 Year 1 Target: ₹1.33 Cr | 36 deals</strong><br>Accelerate closings before year-end. Renew Early Adopter AMCs. Plan Year 2 expansion: new cities, new verticals (dental, ophthalmology). Hire implementation team.<br><span style="color:var(--success);font-weight:700;">Net Profit Year 1: ₹30-40L after all expenses</span></p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUARTERLY P&L ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Quarterly P&L</div>
+    <h2 class="section-title reveal">Projected Profit & Loss — Year 1</h2>
+  </div>
+  <div class="reveal" style="max-width:900px;margin:0 auto;overflow-x:auto;">
+    <table class="plan-table">
+      <thead><tr><th>Item</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Year 1 Total</th></tr></thead>
+      <tbody>
+        <tr class="section-header"><td colspan="6">REVENUE</td></tr>
+        <tr><td>Licence + Implementation</td><td>₹15.6L</td><td>₹32.5L</td><td>₹40.0L</td><td>₹45.0L</td><td>₹1.33 Cr</td></tr>
+        <tr><td>AMC (pro-rated arrivals)</td><td>₹0.5L</td><td>₹1.5L</td><td>₹3.0L</td><td>₹4.5L</td><td>₹9.5L</td></tr>
+        <tr style="font-weight:700;color:var(--teal-light);"><td>Total Revenue</td><td>₹16.1L</td><td>₹34.0L</td><td>₹43.0L</td><td>₹49.5L</td><td>₹1.43 Cr</td></tr>
+        <tr class="section-header"><td colspan="6">COST OF SALES</td></tr>
+        <tr><td>Implementation & Training</td><td>₹3.5L</td><td>₹6.0L</td><td>₹7.5L</td><td>₹8.0L</td><td>₹25.0L</td></tr>
+        <tr><td>Sales Commission (10%)</td><td>₹1.6L</td><td>₹3.4L</td><td>₹4.3L</td><td>₹5.0L</td><td>₹14.3L</td></tr>
+        <tr><td>Travel & On-site</td><td>₹0.8L</td><td>₹1.5L</td><td>₹2.0L</td><td>₹2.0L</td><td>₹6.3L</td></tr>
+        <tr class="section-header"><td colspan="6">OPERATING EXPENSES</td></tr>
+        <tr><td>Founder Salary</td><td>₹3.0L</td><td>₹3.0L</td><td>₹3.0L</td><td>₹3.0L</td><td>₹12.0L</td></tr>
+        <tr><td>Sales Rep Salary</td><td>₹1.5L</td><td>₹1.5L</td><td>₹3.0L</td><td>₹3.0L</td><td>₹9.0L</td></tr>
+        <tr><td>Marketing & Ads</td><td>₹2.0L</td><td>₹2.5L</td><td>₹3.0L</td><td>₹3.0L</td><td>₹10.5L</td></tr>
+        <tr><td>Office, Tools, Infrastructure</td><td>₹1.0L</td><td>₹1.0L</td><td>₹1.0L</td><td>₹1.0L</td><td>₹4.0L</td></tr>
+        <tr style="font-weight:700;"><td>Total Expenses</td><td>₹13.4L</td><td>₹18.9L</td><td>₹23.8L</td><td>₹25.0L</td><td>₹81.1L</td></tr>
+        <tr class="total-row"><td>NET PROFIT (LOSS)</td><td style="color:var(--danger);">₹+2.7L</td><td style="color:var(--success);">₹+15.1L</td><td style="color:var(--success);">₹+19.2L</td><td style="color:var(--success);">₹+24.5L</td><td style="color:var(--success);">₹+61.5L</td></tr>
+        <tr><td>Cumulative P&L</td><td style="color:var(--success);">₹+2.7L</td><td style="color:var(--success);">₹+17.8L</td><td style="color:var(--success);">₹+37.0L</td><td style="color:var(--success);">₹+61.5L</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 12-MONTH MARKETING CALENDAR ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">Marketing Calendar</div>
+      <h2 class="section-title reveal">12-Month Marketing & Revenue Calendar</h2>
+      <p class="section-subtitle reveal"><span style="color:#4dd0e1;">■</span> T2 PACS &nbsp; <span style="color:#ffd700;">■</span> T4 Enterprise &nbsp; <span style="color:#66bb6a;">■</span> General &nbsp; <span style="color:#ef5350;">■</span> Revenue Milestone</p>
+    </div>
+
+    <div class="cal-grid reveal">
+      <div class="cal-month">
+        <div class="cal-month-name">Month 1 — April</div>
+        <div class="cal-item general">Team training & CRM setup</div>
+        <div class="cal-item t2">Map 50 CT/MRI centres</div>
+        <div class="cal-item t4">Identify 10 hospital chains</div>
+        <div class="cal-item t2">125 cold calls (T2)</div>
+        <div class="cal-item t2">8 T2 demos booked</div>
+        <div class="cal-item revenue">Target: ₹1.5-3L (1-2 T2)</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 2 — May</div>
+        <div class="cal-item t2">T2 demo blitz (8-10)</div>
+        <div class="cal-item t4">T4 on-site visits (3)</div>
+        <div class="cal-item t2">Google Ads launch</div>
+        <div class="cal-item general">Referral programme live</div>
+        <div class="cal-item revenue">Target: ₹7.5-11L (T2+T4)</div>
+        <div class="cal-item revenue">Cumulative: ₹12-15L</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 3 — June</div>
+        <div class="cal-item t2">T2 pipeline: 15+ prospects</div>
+        <div class="cal-item t4">T4 proposal follow-ups</div>
+        <div class="cal-item general">IRIA chapter meeting</div>
+        <div class="cal-item general">First case study published</div>
+        <div class="cal-item revenue">Target: ₹10-12L</div>
+        <div class="cal-item revenue">Cumulative: ₹25-30L</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 4 — July</div>
+        <div class="cal-item t2">Hire 2nd sales rep (T1/T2)</div>
+        <div class="cal-item t4">2nd T4 close expected</div>
+        <div class="cal-item general">T1 clinic channel opened</div>
+        <div class="cal-item general">Blog: 3 SEO articles</div>
+        <div class="cal-item revenue">Target: ₹12-15L</div>
+        <div class="cal-item revenue">Cumulative: ₹40-50L</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 5 — August</div>
+        <div class="cal-item t2">Adjacent city expansion</div>
+        <div class="cal-item general">First webinar (50+ reg)</div>
+        <div class="cal-item general">Distributor partnerships</div>
+        <div class="cal-item revenue">Target: ₹10-12L</div>
+        <div class="cal-item revenue">Cumulative: ₹55-62L</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 6 — September</div>
+        <div class="cal-item revenue">🎯 MID-YEAR: ₹75L+</div>
+        <div class="cal-item general">3 case studies published</div>
+        <div class="cal-item general">Channel review & optimize</div>
+        <div class="cal-item t4">T4 pipeline refresh</div>
+        <div class="cal-item general">AMC revenue: ₹3L/yr base</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 7 — October</div>
+        <div class="cal-item general">Medicall trade show</div>
+        <div class="cal-item t4">T4 hospital chain deals</div>
+        <div class="cal-item general">4 deals/month steady</div>
+        <div class="cal-item revenue">Target: ₹12-15L</div>
+        <div class="cal-item revenue">Cumulative: ₹85-95L</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 8 — November</div>
+        <div class="cal-item general">RSNA India (if scheduled)</div>
+        <div class="cal-item t2">T2 volume: 3-4/month</div>
+        <div class="cal-item t4">Volume discount negotiations</div>
+        <div class="cal-item revenue">Cumulative: ₹1.0-1.05 Cr</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 9 — December</div>
+        <div class="cal-item revenue">🏆 BREAK-EVEN ACHIEVED</div>
+        <div class="cal-item general">Monthly revenue > burn rate</div>
+        <div class="cal-item general">Year-end purchase urgency</div>
+        <div class="cal-item revenue">Cumulative: ₹1.1-1.15 Cr</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 10 — January (Y2)</div>
+        <div class="cal-item general">Year 2 planning begins</div>
+        <div class="cal-item general">Hire implementation team</div>
+        <div class="cal-item t4">3rd city expansion</div>
+        <div class="cal-item revenue">Target: ₹12-15L</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 11 — February</div>
+        <div class="cal-item general">Budget season — push T4</div>
+        <div class="cal-item general">AMC renewals (first batch)</div>
+        <div class="cal-item revenue">Target: ₹12-15L</div>
+        <div class="cal-item revenue">Cumulative: ₹1.2-1.3 Cr</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">Month 12 — March</div>
+        <div class="cal-item revenue">🏆 YEAR 1: ₹1.33 Cr</div>
+        <div class="cal-item revenue">36 cumulative deals</div>
+        <div class="cal-item general">Year-end push (tax saving)</div>
+        <div class="cal-item general">Year 2 team scaling</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMBINATION SCENARIOS ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Scenario Modelling</div>
+    <h2 class="section-title reveal">What If? — Revenue by Combination</h2>
+    <p class="section-subtitle reveal">Different sales mix scenarios. See monthly revenue, quarterly profit, and annual projections for each combination.</p>
+  </div>
+
+  <div class="reveal" style="max-width:1100px;margin:0 auto;overflow-x:auto;">
+    <table class="plan-table">
+      <thead><tr><th>Scenario</th><th>T1/mo</th><th>T2/mo</th><th>T3/mo</th><th>T4/mo</th><th>T5/mo</th><th>Monthly Rev</th><th>Quarterly Rev</th><th>Annual Rev</th><th>Annual Profit</th></tr></thead>
+      <tbody>
+        <tr><td>🐢 T2-Only Start</td><td>0</td><td>2</td><td>0</td><td>0</td><td>0</td><td>₹3.5L</td><td>₹10.5L</td><td>₹42.0L</td><td style="color:var(--success);">₹23.5L</td></tr>
+        <tr class="highlight-row"><td>🎯 T2 + T4 Focus</td><td>0</td><td>2</td><td>0</td><td>1</td><td>0</td><td>₹11.0L</td><td>₹33.0L</td><td>₹1.32 Cr</td><td style="color:var(--success);">₹82.0L</td></tr>
+        <tr><td>📊 Balanced Mix</td><td>1</td><td>2</td><td>1</td><td>0</td><td>0</td><td>₹7.75L</td><td>₹23.3L</td><td>₹93.0L</td><td style="color:var(--success);">₹57.7L</td></tr>
+        <tr><td>🏗️ Enterprise Heavy</td><td>0</td><td>1</td><td>0</td><td>2</td><td>0</td><td>₹18.75L</td><td>₹56.3L</td><td>₹2.25 Cr</td><td style="color:var(--success);">₹1.41 Cr</td></tr>
+        <tr><td>🔗 Bundle Push</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>₹7.45L</td><td>₹22.4L</td><td>₹89.4L</td><td style="color:var(--success);">₹55.0L</td></tr>
+        <tr class="highlight-row"><td>🚀 Full Spectrum</td><td>1</td><td>2</td><td>1</td><td>1</td><td>1</td><td>₹18.35L</td><td>₹55.1L</td><td>₹2.20 Cr</td><td style="color:var(--success);">₹1.37 Cr</td></tr>
+        <tr><td>🏆 Aggressive T4</td><td>1</td><td>3</td><td>1</td><td>2</td><td>1</td><td>₹29.85L</td><td>₹89.6L</td><td>₹3.58 Cr</td><td style="color:var(--success);">₹2.23 Cr</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="text-center text-muted text-sm mt-3 reveal">Revenue = licence + implementation per deal. Profit = revenue minus 38% average cost (implementation, commission, travel, overhead). AMC recurring not included — adds ~₹15-20L/year at scale.</p>
+</section>
+
+<!-- ===== THINGS TO AVOID ===== -->
+<section style="background:var(--danger-bg);border-radius:var(--radius-xl);margin:2rem auto;max-width:var(--max-width);">
+  <div class="text-center mb-4">
+    <div class="section-badge reveal" style="background:var(--danger-bg);border-color:rgba(239,83,80,0.25);color:var(--danger);">⚠️ Things to Avoid</div>
+    <h2 class="section-title reveal">Sales Traps & Tricky Situations</h2>
+    <p class="section-subtitle reveal">These mistakes can kill deals, damage reputation, or waste months. Learn them before you start.</p>
+  </div>
+
+  <div class="feature-grid stagger">
+    <div class="card reveal" style="border-color:rgba(239,83,80,0.2);">
+      <h3 class="card-title" style="color:#ef9a9a;">❌ Don't Over-Discount</h3>
+      <p class="card-text">Early Adopter 30% off is the maximum. Never go beyond. If they push, add value (extra training, faster SLA) instead of cutting price. Once you discount beyond 30%, every future customer will expect it.</p>
+    </div>
+    <div class="card reveal" style="border-color:rgba(239,83,80,0.2);">
+      <h3 class="card-title" style="color:#ef9a9a;">❌ Don't Sell T4 to Small Clinics</h3>
+      <p class="card-text">A 2-doctor X-ray clinic doesn't need enterprise. They need T1 or T2. Over-selling creates unhappy customers who feel they overpaid. Right-size every deal. Upsell later when they genuinely need it.</p>
+    </div>
+    <div class="card reveal" style="border-color:rgba(239,83,80,0.2);">
+      <h3 class="card-title" style="color:#ef9a9a;">❌ Don't Promise Custom Features</h3>
+      <p class="card-text">Never promise "we'll add that feature for you" during a sale. Every custom feature delays the roadmap and creates support debt. Show what exists. If they need something specific, log it as a request — don't commit.</p>
+    </div>
+    <div class="card reveal" style="border-color:rgba(239,83,80,0.2);">
+      <h3 class="card-title" style="color:#ef9a9a;">❌ Don't Skip the Demo</h3>
+      <p class="card-text">Never send a proposal without a live demo. The product sells itself when they see it. A proposal without a demo converts at 5%. With demo: 25-35%. Always book the demo first.</p>
+    </div>
+    <div class="card reveal" style="border-color:rgba(239,83,80,0.2);">
+      <h3 class="card-title" style="color:#ef9a9a;">❌ Don't Trash Competitors Directly</h3>
+      <p class="card-text">Never say "MedSynapse is bad." Instead: "They're a good product — but they don't have PCPNDT automation, they're cloud-only, and they cost 2x more." Let the comparison chart do the work. Stay professional.</p>
+    </div>
+    <div class="card reveal" style="border-color:rgba(239,83,80,0.2);">
+      <h3 class="card-title" style="color:#ef9a9a;">❌ Don't Ignore Follow-Up Timing</h3>
+      <p class="card-text">Follow up within 24 hours of a demo. Within 48 hours max. After 72 hours, the deal cools by 50%. After 1 week, it's almost dead. Set calendar reminders for every follow-up. Use CRM religiously.</p>
+    </div>
+    <div class="card reveal" style="border-color:rgba(239,83,80,0.2);">
+      <h3 class="card-title" style="color:#ef9a9a;">❌ Don't Quote Infra Cost Without Profit</h3>
+      <p class="card-text">When quoting Azure/AWS/GCP managed hosting, ALWAYS include the 25% DicoFlow margin. Never show raw cloud pricing. The infrastructure calculator already includes this. Use the calculator in front of the client.</p>
+    </div>
+    <div class="card reveal" style="border-color:rgba(239,83,80,0.2);">
+      <h3 class="card-title" style="color:#ef9a9a;">❌ Don't Let Implementation Slip</h3>
+      <p class="card-text">Promise 7-14 day implementation. Deliver in 7. Late implementation → unhappy customer → no referral → no case study. The first 10 customers are your marketing engine. Treat them like gold.</p>
+    </div>
+    <div class="card reveal" style="border-color:rgba(239,83,80,0.2);">
+      <h3 class="card-title" style="color:#ef9a9a;">❌ Don't Ignore Government Red Tape (T4)</h3>
+      <p class="card-text">Hospital chains and government hospitals have procurement processes: tender, committee, 3-quote comparison, PO approval. This takes 2-6 months. Factor it into the T4 pipeline. Start early, be patient.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INVESTOR TALKING POINTS ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Investor Story</div>
+    <h2 class="section-title reveal">Key Numbers for Investor Conversations</h2>
+  </div>
+  <div class="feature-grid-4 stagger" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="card reveal text-center"><div style="font-size:2.5rem;margin-bottom:.5rem;">₹45K Cr</div><div class="kpi-label">TAM — Indian Diagnostic Market</div></div>
+    <div class="card reveal text-center"><div style="font-size:2.5rem;margin-bottom:.5rem;">80K+</div><div class="kpi-label">Diagnostic Centres in India</div></div>
+    <div class="card reveal text-center"><div style="font-size:2.5rem;margin-bottom:.5rem;">15-20%</div><div class="kpi-label">Current Digital Adoption</div></div>
+    <div class="card reveal text-center"><div style="font-size:2.5rem;margin-bottom:.5rem;">62-76%</div><div class="kpi-label">Gross Margin Range</div></div>
+    <div class="card reveal text-center"><div style="font-size:2.5rem;margin-bottom:.5rem;">85%</div><div class="kpi-label">AMC Recurring Margin</div></div>
+    <div class="card reveal text-center"><div style="font-size:2.5rem;margin-bottom:.5rem;">₹3.7L</div><div class="kpi-label">Average Deal Size</div></div>
+    <div class="card reveal text-center"><div style="font-size:2.5rem;margin-bottom:.5rem;">8-9 mo</div><div class="kpi-label">Break-Even Point</div></div>
+    <div class="card reveal text-center"><div style="font-size:2.5rem;margin-bottom:.5rem;">₹3.75 Cr</div><div class="kpi-label">3-Year Revenue Target</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title reveal">The Plan is Clear. <span class="gradient" style="background:var(--gradient-text);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Now Execute.</span></h2>
+  <div class="cta-buttons reveal">
+    <a href="strategy-planner.html" class="btn btn-primary btn-lg">🧠 Deep Strategy Planner →</a>
+    <a href="total-cost.html" class="btn btn-outline btn-lg">End-User Pitch Sheet →</a>
+    <a href="sales-playbook.html" class="btn btn-outline btn-lg">Sales Playbook →</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/animations.js"></script>
+<script>
+// ===== SCENARIO DATA =====
+const SCENARIOS = {
+  conservative: {
+    label: 'Conservative Scenario',
+    months: [
+      { t1:0,t2:1,t3:0,t4:0,t5:0 },
+      { t1:0,t2:2,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:0,t5:1 },
+      { t1:1,t2:2,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:0,t5:1 },
+    ]
+  },
+  moderate: {
+    label: 'Moderate Scenario (Recommended)',
+    months: [
+      { t1:0,t2:1,t3:0,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:1,t5:0 },
+      { t1:1,t2:3,t3:1,t4:0,t5:0 },
+      { t1:1,t2:3,t3:0,t4:1,t5:1 },
+      { t1:1,t2:2,t3:1,t4:0,t5:0 },
+      { t1:1,t2:2,t3:0,t4:1,t5:1 },
+      { t1:1,t2:2,t3:1,t4:0,t5:0 },
+      { t1:1,t2:3,t3:0,t4:1,t5:0 },
+      { t1:1,t2:2,t3:1,t4:0,t5:1 },
+      { t1:1,t2:2,t3:0,t4:1,t5:0 },
+      { t1:1,t2:3,t3:1,t4:0,t5:0 },
+      { t1:1,t2:3,t3:0,t4:1,t5:1 },
+    ]
+  },
+  aggressive: {
+    label: 'Aggressive Scenario',
+    months: [
+      { t1:1,t2:2,t3:0,t4:1,t5:0 },
+      { t1:1,t2:3,t3:1,t4:1,t5:1 },
+      { t1:2,t2:3,t3:1,t4:1,t5:1 },
+      { t1:2,t2:4,t3:1,t4:1,t5:1 },
+      { t1:2,t2:3,t3:1,t4:2,t5:1 },
+      { t1:2,t2:4,t3:1,t4:1,t5:1 },
+      { t1:2,t2:3,t3:2,t4:1,t5:1 },
+      { t1:2,t2:4,t3:1,t4:2,t5:1 },
+      { t1:2,t2:4,t3:1,t4:1,t5:1 },
+      { t1:2,t2:3,t3:2,t4:2,t5:1 },
+      { t1:2,t2:4,t3:1,t4:1,t5:1 },
+      { t1:3,t2:4,t3:2,t4:2,t5:1 },
+    ]
+  }
+};
+
+const PRICES = { t1: 85000, t2: 175000, t3: 400000, t4: 850000, t5: 260000 };
+const MONTH_NAMES = ['Month 1','Month 2','Month 3','Month 4','Month 5','Month 6','Month 7','Month 8','Month 9','Month 10','Month 11','Month 12'];
+
+function fmtL(n) {
+  if (n >= 10000000) return '₹' + (n/10000000).toFixed(2) + ' Cr';
+  if (n >= 100000) return '₹' + (n/100000).toFixed(1) + 'L';
+  return '₹' + Math.round(n).toLocaleString('en-IN');
+}
+
+function selectScenario(key) {
+  document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('sc-' + key).classList.add('active');
+  document.getElementById('scenario-label-title').textContent = SCENARIOS[key].label;
+  renderTable(key);
+}
+
+function renderTable(key) {
+  const s = SCENARIOS[key];
+  const tbody = document.getElementById('revenue-body');
+  let cumulative = 0;
+  let totalDeals = 0;
+  let html = '';
+  s.months.forEach((m, i) => {
+    const rev = m.t1*PRICES.t1 + m.t2*PRICES.t2 + m.t3*PRICES.t3 + m.t4*PRICES.t4 + m.t5*PRICES.t5;
+    const deals = m.t1+m.t2+m.t3+m.t4+m.t5;
+    cumulative += rev;
+    totalDeals += deals;
+    const isQ = (i+1)%3===0;
+    html += `<tr${isQ?' style="border-bottom:2px solid rgba(77,208,225,0.2);"':''}>
+      <td>${MONTH_NAMES[i]}</td><td>${m.t1||'—'}</td><td>${m.t2||'—'}</td><td>${m.t3||'—'}</td><td>${m.t4||'—'}</td><td>${m.t5||'—'}</td>
+      <td><strong>${deals}</strong></td><td style="color:var(--teal-light);font-weight:600;">${fmtL(rev)}</td><td style="color:var(--success);font-weight:600;">${fmtL(cumulative)}</td></tr>`;
+  });
+  const totalRev = s.months.reduce((a,m)=>a+m.t1*PRICES.t1+m.t2*PRICES.t2+m.t3*PRICES.t3+m.t4*PRICES.t4+m.t5*PRICES.t5,0);
+  html += `<tr class="total-row"><td>YEAR 1 TOTAL</td><td>${s.months.reduce((a,m)=>a+m.t1,0)}</td><td>${s.months.reduce((a,m)=>a+m.t2,0)}</td><td>${s.months.reduce((a,m)=>a+m.t3,0)}</td><td>${s.months.reduce((a,m)=>a+m.t4,0)}</td><td>${s.months.reduce((a,m)=>a+m.t5,0)}</td><td><strong>${totalDeals}</strong></td><td style="color:var(--teal-light);">${fmtL(totalRev)}</td><td style="color:var(--success);">${fmtL(totalRev)}</td></tr>`;
+  tbody.innerHTML = html;
+}
+
+// Init
+selectScenario('moderate');
+</script>
+</body>
+</html>

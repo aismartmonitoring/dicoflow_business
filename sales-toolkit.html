@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Toolkit — Templates, Battle Cards, Territory Planner — DicoFlow</title>
+<meta name="description" content="Ready-to-use email templates, WhatsApp scripts, competitive battle cards, territory planning framework, proposal templates, and pricing negotiation guide for DicoFlow sales.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .tmpl-card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;background:var(--bg-card);transition:all var(--transition);position:relative;}
+  .tmpl-card:hover{border-color:var(--border-teal-hover);transform:translateY(-2px);}
+  .tmpl-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .tmpl-tag{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;padding:.2rem .6rem;border-radius:12px;border:1px solid var(--border-teal);color:var(--teal);}
+  .tmpl-tag.whatsapp{border-color:rgba(37,211,102,.3);color:#25d366;}
+  .tmpl-tag.email{border-color:rgba(66,133,244,.3);color:#4285f4;}
+  .tmpl-tag.battle{border-color:rgba(239,83,80,.3);color:#ef5350;}
+  .tmpl-tag.proposal{border-color:rgba(255,215,0,.3);color:#ffd700;}
+  .tmpl-body{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 1.25rem;font-size:.82rem;line-height:1.7;color:var(--text-secondary);font-family:'Segoe UI',system-ui,sans-serif;white-space:pre-line;}
+  .tmpl-body strong{color:var(--text-primary);}
+  .tmpl-body .var{color:var(--teal);font-weight:600;font-style:italic;}
+  .tmpl-note{font-size:.72rem;color:var(--text-muted);margin-top:.75rem;padding:.5rem .75rem;background:rgba(77,208,225,.03);border-radius:var(--radius-sm);border-left:3px solid var(--border-teal);}
+  .copy-btn{position:absolute;top:1rem;right:1rem;padding:.3rem .6rem;font-size:.65rem;background:rgba(77,208,225,.1);border:1px solid var(--border-teal);border-radius:var(--radius-sm);color:var(--teal);cursor:pointer;transition:all var(--transition);}
+  .copy-btn:hover{background:rgba(77,208,225,.2);}
+  .battle-card{border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;background:var(--bg-card);}
+  .battle-header{background:rgba(239,83,80,.08);padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(239,83,80,.15);}
+  .battle-name{font-size:1.1rem;font-weight:800;color:var(--text-primary);}
+  .battle-price{color:#ef5350;font-weight:700;font-size:.9rem;}
+  .battle-body{padding:1.5rem;}
+  .battle-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .battle-col h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem;}
+  .battle-col.weak h4{color:#ef5350;}
+  .battle-col.strong h4{color:var(--success);}
+  .battle-col ul{list-style:none;padding:0;font-size:.8rem;color:var(--text-secondary);}
+  .battle-col ul li{padding:.3rem 0;padding-left:1.2rem;position:relative;}
+  .battle-col ul li::before{content:'';position:absolute;left:0;top:.55rem;width:8px;height:8px;border-radius:50%;}
+  .battle-col.weak ul li::before{background:#ef5350;}
+  .battle-col.strong ul li::before{background:var(--success);}
+  .battle-counter{margin-top:1rem;padding:1rem;background:rgba(77,208,225,.05);border-radius:var(--radius-md);border-left:3px solid var(--teal);}
+  .battle-counter h4{color:var(--teal-light);font-size:.85rem;margin-bottom:.5rem;}
+  .battle-counter p{font-size:.82rem;color:var(--text-secondary);line-height:1.6;}
+  .terr-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+  .terr-table th{background:rgba(77,208,225,.08);color:var(--teal-light);padding:.6rem .5rem;text-align:left;font-weight:600;border-bottom:1px solid var(--border-teal);}
+  .terr-table td{padding:.55rem .5rem;border-bottom:1px solid var(--border);color:var(--text-secondary);}
+  .terr-table .priority-1{border-left:3px solid var(--success);}
+  .terr-table .priority-2{border-left:3px solid var(--teal);}
+  .terr-table .priority-3{border-left:3px solid var(--text-muted);}
+  .negot-row{display:grid;grid-template-columns:200px 1fr 1fr;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);font-size:.82rem;}
+  .negot-label{font-weight:600;color:var(--text-primary);}
+  .negot-do{color:var(--success);}
+  .negot-dont{color:#ef5350;}
+  .stab-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;justify-content:center;}
+  .stab-btn{padding:.5rem 1rem;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-card);color:var(--text-muted);cursor:pointer;font-size:.8rem;font-weight:600;transition:all var(--transition);}
+  .stab-btn:hover{border-color:var(--border-teal-hover);color:var(--text-primary);}
+  .stab-btn.active{border-color:var(--teal);color:var(--teal-light);background:rgba(77,208,225,.08);}
+  .stab-panel{display:none;}
+  .stab-panel.active{display:block;}
+  @media(max-width:768px){.battle-grid{grid-template-columns:1fr;}.negot-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:5rem;padding-bottom:2rem;">
+  <div class="hero-inner">
+    <div class="section-badge" style="animation:fadeInUp .6s ease both;">🧰 Sales Toolkit</div>
+    <h1 class="hero-title">Ready-to-Use <span class="gradient">Sales Arsenal</span></h1>
+    <p class="hero-desc">Copy-paste email templates, WhatsApp scripts, competitive battle cards, territory planning, proposal structure, and pricing negotiation rules. Everything a salesperson needs to close deals — prepared and ready.</p>
+  </div>
+</section>
+
+<!-- JUMP NAV -->
+<section style="padding-top:0;">
+  <div class="stab-nav">
+    <a href="#sec-email" class="stab-btn active">📧 Email Templates</a>
+    <a href="#sec-whatsapp" class="stab-btn">💬 WhatsApp Scripts</a>
+    <a href="#sec-battle" class="stab-btn">⚔️ Battle Cards</a>
+    <a href="#sec-territory" class="stab-btn">🗺️ Territory Planner</a>
+    <a href="#sec-proposal" class="stab-btn">📄 Proposal Template</a>
+    <a href="#sec-negotiate" class="stab-btn">💰 Negotiation Guide</a>
+    <a href="#sec-verticals" class="stab-btn">🏥 Industry Verticals</a>
+    <a href="#sec-faq" class="stab-btn">❓ FAQ by Tier</a>
+  </div>
+</section>
+
+<!-- ===== SECTION 1: EMAIL TEMPLATES ===== -->
+<section id="sec-email">
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">📧 Email Templates</div>
+    <h2 class="section-title reveal">8 Ready-to-Send Email Templates</h2>
+    <p class="section-subtitle reveal">Copy, personalize the <span style="color:var(--teal);font-style:italic;">[variables]</span>, and send. Covers the full sales cycle: cold → follow-up → proposal → close.</p>
+  </div>
+
+  <div class="grid-2 stagger" style="max-width:var(--max-width);margin:0 auto;">
+    <!-- Cold Outreach T2 -->
+    <div class="tmpl-card reveal">
+      <div class="tmpl-header"><h3 style="font-size:.95rem;color:var(--teal-light);">Cold Outreach — T2 PACS</h3><span class="tmpl-tag email">Email</span></div>
+      <div class="tmpl-body"><strong>Subject:</strong> Eliminate ₹<span class="var">[monthly_film_cost]</span>/month in film costs — <span class="var">[centre_name]</span>
+
+Dear <span class="var">[Dr./Mr./Ms. Name]</span>,
+
+I noticed <span class="var">[centre_name]</span> runs <span class="var">[modality: CT/MRI/X-ray]</span> imaging. Quick question — how much are you spending on X-ray films per month?
+
+Most centres your size spend ₹15,000–25,000/month on films alone. DicoFlow PACS eliminates 70-85% of that cost — usually paying for itself within 5-6 months.
+
+<strong>What you get for ₹1,50,000 (one-time, no subscription):</strong>
+• DICOM Viewer with 50+ professional tools
+• Film Preparation — digital print in 60 seconds
+• PCPNDT Form F auto-generation (avoid ₹5L fine)
+• Store all images digitally — no films lost or degraded
+
+Would a 20-minute demo this <span class="var">[day]</span> work? I can show you the ROI with your actual numbers.
+
+<strong>Early Adopter Offer:</strong> First 50 customers get 30% off (₹1,05,000 instead of ₹1,50,000). Only <span class="var">[X]</span> spots remaining.
+
+Best regards,
+<span class="var">[Your Name]</span>
+<span class="var">[Phone/WhatsApp]</span></div>
+      <div class="tmpl-note">💡 <strong>When to use:</strong> First contact with CT/MRI centres. Personalise film cost estimate based on centre size (20 studies/day ≈ ₹15K/mo, 50 studies ≈ ₹40K/mo)</div>
+    </div>
+
+    <!-- Cold Outreach T4 -->
+    <div class="tmpl-card reveal">
+      <div class="tmpl-header"><h3 style="font-size:.95rem;color:var(--teal-light);">Cold Outreach — T4 Enterprise</h3><span class="tmpl-tag email">Email</span></div>
+      <div class="tmpl-body"><strong>Subject:</strong> DicoFlow Enterprise RIS/PACS — 50-70% less than MedSynapse
+
+Dear <span class="var">[CIO/IT Director Name]</span>,
+
+I'm reaching out because <span class="var">[Hospital Name]</span> likely faces challenges managing imaging across <span class="var">[X]</span> branches — workflow coordination, DICOM archiving, compliance reporting, and vendor fragmentation.
+
+DicoFlow Enterprise solves all of this in one platform at <strong>₹7.5L</strong> — compared to ₹18-25L for MedSynapse or ₹12-18L for PostDICOM.
+
+<strong>What makes us different:</strong>
+• 14-stage study workflow (register → archive), fully automated
+• HL7/FHIR integration (ADT, ORM, ORU)
+• Multi-branch management with role-based dashboards
+• PCPNDT + GST + NABH + DPDP compliance built-in
+• On-premise: your data never leaves your hospital
+
+I'd value 30 minutes with your team to demonstrate how this works with your actual workflow. Would <span class="var">[date]</span> work?
+
+Regards,
+<span class="var">[Your Name]</span></div>
+      <div class="tmpl-note">💡 <strong>When to use:</strong> First contact with hospital CIOs/IT heads. Research the hospital before sending — mention their specific branches/challenges.</div>
+    </div>
+
+    <!-- Demo Follow-Up -->
+    <div class="tmpl-card reveal">
+      <div class="tmpl-header"><h3 style="font-size:.95rem;color:var(--teal-light);">Post-Demo Follow-Up (Same Day)</h3><span class="tmpl-tag email">Email</span></div>
+      <div class="tmpl-body"><strong>Subject:</strong> Your DicoFlow demo today — next steps for <span class="var">[centre_name]</span>
+
+Dear <span class="var">[Name]</span>,
+
+Thank you for your time today! As discussed, here's a summary of what DicoFlow <span class="var">[Tier]</span> will do for <span class="var">[centre_name]</span>:
+
+<strong>Your Numbers:</strong>
+• Current monthly film cost: ₹<span class="var">[X]</span>
+• Expected savings (70% reduction): ₹<span class="var">[Y]</span>/month
+• DicoFlow investment: ₹<span class="var">[price]</span> (one-time)
+• Payback period: <span class="var">[Z]</span> months
+• Annual net savings: ₹<span class="var">[A]</span>
+
+<strong>Next Steps:</strong>
+1. I'll send the formal proposal by <span class="var">[tomorrow/date]</span>
+2. We can schedule a 7-day trial with your actual DICOM data
+3. Implementation takes 7-14 days after confirmation
+
+Early Adopter pricing (30% off) is available until <span class="var">[date]</span>. I'll follow up on <span class="var">[day]</span> to answer any questions.
+
+Best,
+<span class="var">[Name]</span></div>
+      <div class="tmpl-note">💡 <strong>CRITICAL:</strong> Send within 4 hours of demo. Include their actual numbers from the ROI calculator.</div>
+    </div>
+
+    <!-- Proposal Cover -->
+    <div class="tmpl-card reveal">
+      <div class="tmpl-header"><h3 style="font-size:.95rem;color:var(--teal-light);">Proposal Cover Email</h3><span class="tmpl-tag email">Email</span></div>
+      <div class="tmpl-body"><strong>Subject:</strong> DicoFlow <span class="var">[Tier]</span> Proposal for <span class="var">[Centre Name]</span> — ₹<span class="var">[price]</span>
+
+Dear <span class="var">[Name]</span>,
+
+Please find attached the formal proposal for DicoFlow <span class="var">[Tier Name]</span> for <span class="var">[centre_name]</span>.
+
+<strong>Investment Summary:</strong>
+• Software Licence: ₹<span class="var">[price]</span>
+• Implementation & Training: ₹<span class="var">[impl_price]</span> (included)
+• Annual Maintenance: ₹<span class="var">[amc]</span>/year
+• Go-Live Timeline: 7-14 days
+
+<strong>Early Adopter Discount (30% off):</strong> ₹<span class="var">[ea_price]</span> — valid until <span class="var">[date]</span> or first 50 customers, whichever comes first.
+
+<strong>Payment Options:</strong>
+A) Full upfront — 5% extra off implementation
+B) 50/50 — 50% now, 50% at go-live
+C) 3-part EMI — 33/33/33 over 60 days
+
+I'm available to discuss any questions on <span class="var">[phone]</span>. Shall we schedule a follow-up call for <span class="var">[date]</span>?
+
+Best regards,
+<span class="var">[Name]</span></div>
+      <div class="tmpl-note">💡 <strong>Attach:</strong> PDF proposal + ROI calculation + comparison vs competitors. Always include payment options.</div>
+    </div>
+
+    <!-- Follow-Up Nudge (3 days) -->
+    <div class="tmpl-card reveal">
+      <div class="tmpl-header"><h3 style="font-size:.95rem;color:var(--teal-light);">Follow-Up Nudge (3 Days After Proposal)</h3><span class="tmpl-tag email">Email</span></div>
+      <div class="tmpl-body"><strong>Subject:</strong> Quick check — DicoFlow proposal for <span class="var">[centre_name]</span>
+
+Hi <span class="var">[Name]</span>,
+
+Just checking if you had a chance to review the DicoFlow proposal I sent on <span class="var">[date]</span>.
+
+A few things that might help your decision:
+• <strong>7-day trial:</strong> We can install DicoFlow with your real DICOM data — zero risk
+• <strong>Current customers:</strong> <span class="var">[nearby_centre]</span> went live last month and already saved ₹<span class="var">[X]</span> in films
+• <strong>Early Adopter:</strong> Only <span class="var">[X]</span> spots left at 30% off
+
+Would it help if I connected you with <span class="var">[existing_customer_name]</span> for a reference call?
+
+Happy to jump on a quick call whenever convenient.
+
+<span class="var">[Name]</span></div>
+      <div class="tmpl-note">💡 <strong>Timing:</strong> Send exactly 3 days after proposal. If no response, follow up with WhatsApp (see below).</div>
+    </div>
+
+    <!-- Closing Push -->
+    <div class="tmpl-card reveal">
+      <div class="tmpl-header"><h3 style="font-size:.95rem;color:var(--teal-light);">Closing Push (7 Days)</h3><span class="tmpl-tag email">Email</span></div>
+      <div class="tmpl-body"><strong>Subject:</strong> Last 2 Early Adopter spots in <span class="var">[city]</span> — <span class="var">[centre_name]</span>
+
+Dear <span class="var">[Name]</span>,
+
+Quick update — we have only <span class="var">[X]</span> Early Adopter spots remaining in <span class="var">[city/region]</span>.
+
+You showed strong interest during our demo on <span class="var">[date]</span>, and I'd hate for <span class="var">[centre_name]</span> to miss the 30% discount.
+
+<strong>What this means for you:</strong>
+• Save ₹<span class="var">[discount_amount]</span> on the licence
+• Priority implementation (within 7 days)
+• Direct phone support line during onboarding
+
+Can I get a confirmation this week? I can block the spot with just a 25% advance.
+
+<span class="var">[Name]</span></div>
+      <div class="tmpl-note">💡 <strong>Scarcity principle:</strong> Genuine urgency. Don't overuse. Only when Early Adopter spots are actually dwindling.</div>
+    </div>
+
+    <!-- Lost Deal Revival -->
+    <div class="tmpl-card reveal">
+      <div class="tmpl-header"><h3 style="font-size:.95rem;color:var(--teal-light);">Lost Deal Revival (30 Days)</h3><span class="tmpl-tag email">Email</span></div>
+      <div class="tmpl-body"><strong>Subject:</strong> New update at DicoFlow — thought of <span class="var">[centre_name]</span>
+
+Hi <span class="var">[Name]</span>,
+
+We spoke <span class="var">[X weeks]</span> ago about DicoFlow for <span class="var">[centre_name]</span>. I understand the timing wasn't right then.
+
+Since our last conversation, we've:
+• <span class="var">[Added feature/Fixed concern they raised]</span>
+• Onboarded <span class="var">[X]</span> new centres in <span class="var">[region]</span>
+• Published a case study: <span class="var">[centre_name]</span> saved ₹<span class="var">[X]</span>/month
+
+Would you be open to a 15-minute catch-up? No pressure — just want to show you what's changed.
+
+<span class="var">[Name]</span></div>
+      <div class="tmpl-note">💡 <strong>When to use:</strong> 30-60 days after a "no" or ghosting. Always bring new value — never just re-pitch the same thing.</div>
+    </div>
+
+    <!-- Referral Request -->
+    <div class="tmpl-card reveal">
+      <div class="tmpl-header"><h3 style="font-size:.95rem;color:var(--teal-light);">Referral Request (After Successful Go-Live)</h3><span class="tmpl-tag email">Email</span></div>
+      <div class="tmpl-body"><strong>Subject:</strong> Quick favour — and ₹10,000 for you 😊
+
+Dear <span class="var">[Dr./Name]</span>,
+
+I'm thrilled that DicoFlow is working well for <span class="var">[centre_name]</span>! It's been <span class="var">[X weeks]</span> since go-live and I see your team is using <span class="var">[key_feature]</span> daily.
+
+Quick favour — do you know any other centre owners or radiology colleagues who face similar challenges with films, compliance, or imaging management?
+
+<strong>Our Referral Reward:</strong> ₹10,000 for every referral that converts to a sale. No limit on referrals.
+
+Just share their name + phone/email, and I'll take it from there. Or forward this email — I'll handle the rest.
+
+Thank you for being an early customer. Your success is our best marketing.
+
+<span class="var">[Name]</span></div>
+      <div class="tmpl-note">💡 <strong>Timing:</strong> 2-4 weeks after successful go-live, when the customer is happiest. Always pair with a quick "how's it going?" check-in.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 2: WHATSAPP SCRIPTS ===== -->
+<section id="sec-whatsapp" style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal" style="border-color:rgba(37,211,102,.3);color:#25d366;">💬 WhatsApp Scripts</div>
+      <h2 class="section-title reveal">7 WhatsApp Messages — Copy & Send</h2>
+      <p class="section-subtitle reveal">Short, punchy, WhatsApp-optimised. These get opened at 85%+ rate vs 20% for email.</p>
+    </div>
+
+    <div class="grid-2 stagger">
+      <div class="tmpl-card reveal">
+        <div class="tmpl-header"><h3 style="font-size:.9rem;color:var(--teal-light);">Cold Intro (T2 Centre Owner)</h3><span class="tmpl-tag whatsapp">WhatsApp</span></div>
+        <div class="tmpl-body">🏥 Namaste <span class="var">[Dr. Name]</span>!
+
+I'm <span class="var">[Name]</span> from DicoFlow — we make PACS software for CT/MRI centres.
+
+Quick question: How much does <span class="var">[centre_name]</span> spend on X-ray films per month? 🎞️
+
+Most centres save ₹15-25K/month by going digital with DicoFlow. One-time cost ₹1.5L — no monthly subscription.
+
+Can I show you a 20-min demo? 📱
+
+Early adopter offer: 30% off for first 50 customers! ⏰</div>
+      </div>
+
+      <div class="tmpl-card reveal">
+        <div class="tmpl-header"><h3 style="font-size:.9rem;color:var(--teal-light);">Film Cost Calculator Share</h3><span class="tmpl-tag whatsapp">WhatsApp</span></div>
+        <div class="tmpl-body">📊 <span class="var">[Dr. Name]</span>, I made a quick calculation for your centre:
+
+Your estimated film cost: *₹<span class="var">[X]</span>/month*
+With DicoFlow: *₹<span class="var">[Y]</span>/month* (70% reduction)
+Annual savings: *₹<span class="var">[Z]</span>*
+
+DicoFlow pays for itself in <span class="var">[N]</span> months! 💰
+
+Want to see how? I can show you in 20 min on a video call or visit your centre.
+
+🔗 Full ROI calculator: <span class="var">[roi-calculator link]</span></div>
+      </div>
+
+      <div class="tmpl-card reveal">
+        <div class="tmpl-header"><h3 style="font-size:.9rem;color:var(--teal-light);">Post-Demo Thank You</h3><span class="tmpl-tag whatsapp">WhatsApp</span></div>
+        <div class="tmpl-body">🙏 Thank you for the demo today, <span class="var">[Name]</span>!
+
+Here's a quick summary:
+✅ Film savings: ₹<span class="var">[X]</span>/month
+✅ PCPNDT compliance: Automated
+✅ Payback: <span class="var">[N]</span> months
+✅ Price: ₹<span class="var">[price]</span> (EA: ₹<span class="var">[ea_price]</span>)
+
+I'll send the proposal by tomorrow 📄
+
+Any questions? Just reply here — I'm available! 😊</div>
+      </div>
+
+      <div class="tmpl-card reveal">
+        <div class="tmpl-header"><h3 style="font-size:.9rem;color:var(--teal-light);">Gentle Nudge (3 Days)</h3><span class="tmpl-tag whatsapp">WhatsApp</span></div>
+        <div class="tmpl-body">Hi <span class="var">[Name]</span>, hope you're well! 🙏
+
+Just checking — did you get a chance to review the DicoFlow proposal?
+
+Happy to clarify anything over a quick call. Also, we just onboarded <span class="var">[centre_name]</span> nearby — they're saving ₹<span class="var">[X]</span>/month in films already! 🎉
+
+Let me know? 😊</div>
+      </div>
+
+      <div class="tmpl-card reveal">
+        <div class="tmpl-header"><h3 style="font-size:.9rem;color:var(--teal-light);">Urgency Close</h3><span class="tmpl-tag whatsapp">WhatsApp</span></div>
+        <div class="tmpl-body">⚡ <span class="var">[Name]</span>, quick update!
+
+Only *<span class="var">[X]</span> Early Adopter spots* left in <span class="var">[city]</span>. 30% off won't last long.
+
+For <span class="var">[centre_name]</span>, that's ₹<span class="var">[discount]</span> saved.
+
+Should I block a spot? Just need 25% advance to hold it. 🎯
+
+Implementation can start within 7 days! 🚀</div>
+      </div>
+
+      <div class="tmpl-card reveal">
+        <div class="tmpl-header"><h3 style="font-size:.9rem;color:var(--teal-light);">Case Study Share</h3><span class="tmpl-tag whatsapp">WhatsApp</span></div>
+        <div class="tmpl-body">📋 <span class="var">[Name]</span>, thought you'd find this interesting!
+
+<span class="var">[Customer Centre]</span> in <span class="var">[city]</span> switched to DicoFlow <span class="var">[X]</span> weeks ago:
+
+Before: ₹<span class="var">[X]</span>/month in films
+After: ₹<span class="var">[Y]</span>/month (digital)
+Saved: *₹<span class="var">[Z]</span>/month* 🎉
+
+They're using <span class="var">[key_feature]</span> daily. Happy to connect you with their owner for a reference call!
+
+Interested? 🙏</div>
+      </div>
+
+      <div class="tmpl-card reveal">
+        <div class="tmpl-header"><h3 style="font-size:.9rem;color:var(--teal-light);">Referral Ask</h3><span class="tmpl-tag whatsapp">WhatsApp</span></div>
+        <div class="tmpl-body">🙏 <span class="var">[Dr. Name]</span>, thank you for being a DicoFlow customer!
+
+Quick request — do you know any other centre owner who struggles with:
+• Film costs 🎞️
+• PCPNDT compliance 📋
+• Slow reports ⏱️
+
+We give *₹10,000* for every successful referral! No limit. 💰
+
+Just share their number and I'll take it from there. 😊</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 3: COMPETITIVE BATTLE CARDS ===== -->
+<section id="sec-battle">
+  <div class="text-center mb-4">
+    <div class="section-badge reveal" style="border-color:rgba(239,83,80,.3);color:#ef5350;">⚔️ Competitive Battle Cards</div>
+    <h2 class="section-title reveal">Beat Every Competitor — One Card Per Rival</h2>
+    <p class="section-subtitle reveal">Pull up the right card before every meeting where a competitor is mentioned. Know their weaknesses. Know your counters.</p>
+  </div>
+
+  <div style="max-width:var(--max-width);margin:0 auto;display:flex;flex-direction:column;gap:2rem;">
+    <!-- MedSynapse -->
+    <div class="battle-card reveal">
+      <div class="battle-header"><span class="battle-name">⚔️ vs MedSynapse</span><span class="battle-price">Their Price: ₹3.5L+ (PACS) | ₹18-25L (Enterprise)</span></div>
+      <div class="battle-body">
+        <div class="battle-grid">
+          <div class="battle-col weak"><h4>❌ Their Weaknesses</h4><ul>
+            <li>Cloud-only — requires stable internet (India = outages)</li>
+            <li>No PCPNDT Form F automation</li>
+            <li>No film preparation module</li>
+            <li>No branded patient booklets</li>
+            <li>Monthly subscription trap (₹25-50K/mo)</li>
+            <li>Data stored on their servers (DPDP compliance risk)</li>
+            <li>2-3x more expensive than DicoFlow at every tier</li>
+            <li>No self-healing architecture</li>
+          </ul></div>
+          <div class="battle-col strong"><h4>✅ Our Advantages</h4><ul>
+            <li>On-premise + offline capability (zero internet dependency)</li>
+            <li>PCPNDT Form F auto-generation — avoid ₹5L fine</li>
+            <li>Professional film prep with 10+ layouts</li>
+            <li>4-page branded booklets (101 fields)</li>
+            <li>One-time licence — own forever</li>
+            <li>Data on YOUR server (DPDP compliant by default)</li>
+            <li>40-60% cheaper at every tier</li>
+            <li>7 self-healing subsystems (T4)</li>
+          </ul></div>
+        </div>
+        <div class="battle-counter"><h4>💬 Counter Script:</h4><p>"MedSynapse is a good product for cloud-first setups. But for an Indian diagnostic centre, you need three things they don't offer: PCPNDT compliance (₹5L fine risk), film preparation (your patients still need physical prints), and data sovereignty (DPDP Act requires local storage). DicoFlow gives you all three — plus it's 50% cheaper. Would you like to see a side-by-side comparison?"</p></div>
+      </div>
+    </div>
+
+    <!-- PostDICOM -->
+    <div class="battle-card reveal">
+      <div class="battle-header"><span class="battle-name">⚔️ vs PostDICOM</span><span class="battle-price">Their Price: ₹3L+ (PACS) | ₹12-18L (Enterprise)</span></div>
+      <div class="battle-body">
+        <div class="battle-grid">
+          <div class="battle-col weak"><h4>❌ Their Weaknesses</h4><ul>
+            <li>Cloud-only, US-hosted servers (data leaves India)</li>
+            <li>No Indian compliance module (no PCPNDT, no GST)</li>
+            <li>No billing module — you need separate billing software</li>
+            <li>No booklet generation</li>
+            <li>Limited film prep (basic PDF export only)</li>
+            <li>USD pricing — exchange rate fluctuation risk</li>
+            <li>Support timezone: US hours (problems at 2pm = wait till midnight)</li>
+            <li>No HL7/FHIR for Indian HIS integration</li>
+          </ul></div>
+          <div class="battle-col strong"><h4>✅ Our Advantages</h4><ul>
+            <li>On-premise, your data stays in India</li>
+            <li>Full PCPNDT + GST + ABHA + DPDP compliance</li>
+            <li>Integrated billing (T1/T5) — one vendor, one system</li>
+            <li>Professional booklet generation (4-page branded)</li>
+            <li>Advanced film prep (10+ layouts, DICOM Print SCU)</li>
+            <li>INR pricing — fixed, no forex headache</li>
+            <li>Indian support (Mon-Sat, 9am-6pm IST, 4-hr critical SLA)</li>
+            <li>HL7 v2.x + FHIR R4 for Indian HIS/LIS</li>
+          </ul></div>
+        </div>
+        <div class="battle-counter"><h4>💬 Counter Script:</h4><p>"PostDICOM is a great viewer for international markets. But it's built for US/EU healthcare — not India. You'll still need separate billing software, separate PCPNDT compliance, and your data sits on US servers (DPDP violation risk). DicoFlow is built ground-up for Indian diagnostics — everything in one platform, data on your premises, support in your timezone."</p></div>
+      </div>
+    </div>
+
+    <!-- Meddiff -->
+    <div class="battle-card reveal">
+      <div class="battle-header"><span class="battle-name">⚔️ vs Meddiff</span><span class="battle-price">Their Price: ₹2L+ (PACS) | ₹8-12L (Enterprise)</span></div>
+      <div class="battle-body">
+        <div class="battle-grid">
+          <div class="battle-col weak"><h4>❌ Their Weaknesses</h4><ul>
+            <li>Older architecture — no GPU-accelerated viewer</li>
+            <li>Limited viewer tools (20-30 vs our 50+)</li>
+            <li>No booklet system</li>
+            <li>Basic film prep (2-3 layouts vs our 10+)</li>
+            <li>No hash chain audit (compliance gap)</li>
+            <li>No self-healing subsystems</li>
+            <li>Limited compliance (partial PCPNDT, no DPDP)</li>
+            <li>Smaller support team, slower response</li>
+          </ul></div>
+          <div class="battle-col strong"><h4>✅ Our Advantages</h4><ul>
+            <li>Modern GPU-accelerated DICOM rendering</li>
+            <li>50+ tools (specialty tools like CTR, goniometry, flatfoot)</li>
+            <li>Full booklet system (4 pages, 101 configurable fields)</li>
+            <li>10+ film prep layouts with per-slot W/L control</li>
+            <li>SHA-512 hash chain — tamper-proof audit trail</li>
+            <li>7 self-healing subsystems (T4)</li>
+            <li>Complete: PCPNDT + GST + ABHA + DPDP + NABH</li>
+            <li>Direct support with AMC (Mon-Sat, 4-hr critical)</li>
+          </ul></div>
+        </div>
+        <div class="battle-counter"><h4>💬 Counter Script:</h4><p>"Meddiff is a decent product for basic PACS. Where DicoFlow pulls ahead is in three areas: our viewer has 50+ professional tools versus their basic set, we generate branded patient booklets automatically (no competitor does this), and we have a tamper-proof hash chain audit trail that NABH auditors love. Price is competitive too — would you like to see a head-to-head demo?"</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 4: TERRITORY PLANNING ===== -->
+<section id="sec-territory" style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">🗺️ Territory Planning Framework</div>
+      <h2 class="section-title reveal">How to Prioritise Your Market</h2>
+      <p class="section-subtitle reveal">Use this scoring matrix to decide which centres to target first. Score each prospect 1-5 on these criteria, then sort by total score.</p>
+    </div>
+
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="terr-table">
+        <thead><tr><th>Criteria</th><th>Weight</th><th>Score 1 (Low)</th><th>Score 3 (Medium)</th><th>Score 5 (High)</th><th>Why It Matters</th></tr></thead>
+        <tbody>
+          <tr class="priority-1"><td><strong>Modality Count</strong></td><td>×3</td><td>X-ray only</td><td>CT or MRI</td><td>CT + MRI + USG</td><td>More modalities = higher tier, more revenue</td></tr>
+          <tr class="priority-1"><td><strong>Daily Study Volume</strong></td><td>×3</td><td>< 10/day</td><td>20-50/day</td><td>100+/day</td><td>Higher volume = more film savings = easier ROI pitch</td></tr>
+          <tr class="priority-1"><td><strong>Current System</strong></td><td>×2</td><td>Happy with vendor</td><td>Using but frustrated</td><td>Paper/manual/broken</td><td>Pain level = purchase urgency</td></tr>
+          <tr class="priority-2"><td><strong>Branch Count</strong></td><td>×2</td><td>Single location</td><td>2-3 branches</td><td>5+ branches</td><td>Multi-branch = T4 enterprise deal</td></tr>
+          <tr class="priority-2"><td><strong>Decision Maker Access</strong></td><td>×2</td><td>No contact</td><td>Have phone/email</td><td>Personal connection</td><td>Direct access = faster close</td></tr>
+          <tr class="priority-2"><td><strong>Film Usage</strong></td><td>×1</td><td>Low (< ₹5K/mo)</td><td>Medium (₹10-25K)</td><td>High (₹25K+/mo)</td><td>Higher film cost = faster payback story</td></tr>
+          <tr class="priority-3"><td><strong>Geography</strong></td><td>×1</td><td>> 100km away</td><td>50-100km</td><td>< 50km (local)</td><td>Closer = easier demo, faster implementation</td></tr>
+          <tr class="priority-3"><td><strong>Compliance Pressure</strong></td><td>×1</td><td>No audits pending</td><td>Occasional inspections</td><td>Recent fine/audit</td><td>Compliance fear = urgent purchase</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2 stagger" style="margin-top:2rem;">
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--success);">🟢 Priority 1 (Score 30+)</h3>
+        <p class="card-text">Contact this week. Multi-modality CT/MRI centres, 50+ studies/day, frustrated with current system or manual. These are your T2/T3 buyers. Aim for demo within 7 days.</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--teal);">🔵 Priority 2 (Score 20-29)</h3>
+        <p class="card-text">Contact within 2 weeks. Good prospects but may need nurturing. Single CT/MRI, medium volume, have some system in place. Send WhatsApp film calculator first.</p>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-title" style="color:var(--text-muted);">⚪ Priority 3 (Score < 20)</h3>
+        <p class="card-text">Long-term pipeline. Small X-ray clinics, low volume, far away, or committed to current vendor. Add to CRM for quarterly follow-up. Might convert in 6-12 months.</p>
+      </div>
+      <div class="card reveal" style="border-color:rgba(255,215,0,.2);">
+        <h3 class="card-title" style="color:#ffd700;">⭐ T4 Enterprise Prospects</h3>
+        <p class="card-text">Hospitals with 3+ branches score automatically as Priority 1 regardless of other criteria. These are ₹7.5L deals. Even 1 per quarter changes everything. Track separately in CRM.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 5: PROPOSAL TEMPLATE ===== -->
+<section id="sec-proposal">
+  <div class="text-center mb-4">
+    <div class="section-badge reveal" style="border-color:rgba(255,215,0,.3);color:#ffd700;">📄 Proposal Structure</div>
+    <h2 class="section-title reveal">What to Include in Every Proposal</h2>
+    <p class="section-subtitle reveal">Follow this exact structure. A well-structured proposal converts 3x better than a plain price quote.</p>
+  </div>
+
+  <div style="max-width:800px;margin:0 auto;">
+    <div class="timeline reveal">
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">1</div><div class="timeline-content"><h4>Cover Page</h4><p>DicoFlow logo + Customer centre name + Date + "Prepared by [Your Name]" + Confidential label. Keep it clean and professional.</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">2</div><div class="timeline-content"><h4>Understanding Your Needs (1 page)</h4><p>Reference the demo conversation. List their specific pain points: film cost, compliance gaps, manual processes. Show you listened. Use THEIR numbers (studies/day, monthly film spend, staff count).</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">3</div><div class="timeline-content"><h4>Proposed Solution (1-2 pages)</h4><p>DicoFlow [Tier Name] — list the top 8-10 features most relevant to THEIR centre. Don't list all 50+ features. Focus on what solves their stated problems. Include 2-3 screenshots.</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">4</div><div class="timeline-content"><h4>ROI Analysis (1 page)</h4><p>Copy their numbers from the ROI calculator. Film savings, billing recovery, compliance protection. Show payback period prominently. <strong>"DicoFlow pays for itself in [X] months."</strong></p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">5</div><div class="timeline-content"><h4>Investment Summary (1 page)</h4><p>Licence price → Implementation → AMC → Infrastructure (if applicable). Show Early Adopter discount crossed-out vs regular. Include all 3 payment options. <strong>Make the total very clear.</strong></p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">6</div><div class="timeline-content"><h4>Implementation Timeline (half page)</h4><p>Day 1-2: Server/NAS setup → Day 3-5: Software install + DICOM router → Day 6-7: Training → Day 8: Go-Live → Day 9-14: Support & fine-tuning. Total: 7-14 days.</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--teal);">7</div><div class="timeline-content"><h4>Why DicoFlow? (half page)</h4><p>4 bullet points: On-premise + Indian compliance + 50% cheaper + One platform. Optionally: quick comparison against the competitor they mentioned during the demo.</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--success);">8</div><div class="timeline-content"><h4>Next Steps + Terms</h4><p>"To proceed: Sign this proposal + 50% advance → Implementation starts within 48 hours." Validity: 15 days. Payment terms. AMC starts Year 2. Support included Year 1.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 6: PRICING NEGOTIATION GUIDE ===== -->
+<section id="sec-negotiate" style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">💰 Pricing Negotiation Framework</div>
+      <h2 class="section-title reveal">When to Discount. When to Hold. When to Walk.</h2>
+    </div>
+
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="terr-table">
+        <thead><tr><th>Situation</th><th style="color:var(--success);">✅ DO This</th><th style="color:#ef5350;">❌ DON'T Do This</th></tr></thead>
+        <tbody>
+          <tr><td><strong>"It's too expensive"</strong></td><td>Show ROI calculator, break down per-study cost (₹12/study), compare vs competitor pricing</td><td>Don't immediately offer a discount. Reducing price without justification devalues the product</td></tr>
+          <tr><td><strong>"Can you do 40-50% off?"</strong></td><td>"Maximum is 30% Early Adopter discount. Instead, I can add extended training or faster implementation for free"</td><td>Don't go below 30%. Every customer who gets 40% will tell 5 others. Price anchoring is permanent</td></tr>
+          <tr><td><strong>"Competitor quoted ₹X less"</strong></td><td>Pull up the battle card. Show what competitor is MISSING (film prep, booklets, PCPNDT, on-premise). Total cost of ownership is DicoFlow's advantage</td><td>Don't match competitor price. DicoFlow has MORE features. Matching price implies equal value</td></tr>
+          <tr><td><strong>Multi-site deal (3+ branches)</strong></td><td>Offer volume discount: 10% for 3-5, 15% for 6-10, 20% for 11-20, 25% for 20+. This is pre-approved</td><td>Don't stack volume + Early Adopter. Pick one. Volume discount is for chains, EA is for early movers</td></tr>
+          <tr><td><strong>"We need to think about it"</strong></td><td>Book a follow-up date on the spot: "Let's reconnect [specific day]. I'll hold your EA spot until then"</td><td>Don't just say "ok" and wait. 80% of "we'll think" = dead deal if you don't set a follow-up</td></tr>
+          <tr><td><strong>Government hospital tender</strong></td><td>Provide L1/L2 quote as required. Factor in compliance value (PCPNDT, NABH) as differentiator. Be prepared for 3-6 month cycle</td><td>Don't quote below cost to win tender. Government deals need sustainability. Under-priced = bad support = bad reputation</td></tr>
+          <tr><td><strong>"Can we pay in instalments?"</strong></td><td>Yes! 3 options: Full upfront (5% impl discount), 50/50 (standard), 3-part EMI (no interest). Flexible = more conversions</td><td>Don't stretch beyond 60 days for full payment. Cash flow matters. Beyond 60 days = risk of non-payment</td></tr>
+          <tr><td><strong>"We want customisation"</strong></td><td>"The product includes [list features]. For anything beyond, we'll log it as a feature request for future updates"</td><td>Don't promise custom development to close a deal. Custom code = support nightmare × tech debt × delayed roadmap</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card reveal" style="margin-top:2rem;border-color:rgba(255,215,0,.2);">
+      <h3 class="card-title" style="color:#ffd700;">💎 Golden Rules of DicoFlow Pricing</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;font-size:.85rem;color:var(--text-secondary);margin-top:1rem;">
+        <div><strong style="color:var(--text-primary);">Rule 1:</strong> Never discount more than 30%. Add value instead (training, priority support, faster go-live)</div>
+        <div><strong style="color:var(--text-primary);">Rule 2:</strong> Always show ROI before price. Savings anchor the perception of value</div>
+        <div><strong style="color:var(--text-primary);">Rule 3:</strong> Price is one-time, not subscription. Emphasise this — it's DicoFlow's #1 advantage vs cloud vendors</div>
+        <div><strong style="color:var(--text-primary);">Rule 4:</strong> Never pay-what-you-want. Fixed tiers protect margin and set expectations</div>
+        <div><strong style="color:var(--text-primary);">Rule 5:</strong> Walk away from bad deals. A customer who paid too little will always demand too much</div>
+        <div><strong style="color:var(--text-primary);">Rule 6:</strong> Volume discount OR Early Adopter — never both. Pick the one that makes them feel special</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 7: INDUSTRY VERTICALS ===== -->
+<section id="sec-verticals">
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">🏥 Industry Verticals</div>
+    <h2 class="section-title reveal">Pitch Strategy by Centre Type</h2>
+    <p class="section-subtitle reveal">Different centres buy differently. Adapt your pitch to their world.</p>
+  </div>
+
+  <div class="feature-grid stagger" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">🦴 CT/MRI Scan Centre</h3>
+      <p class="card-text"><strong>Best Tier:</strong> T2 PACS (₹1.5L)<br><strong>Lead with:</strong> Film cost savings calculator<br><strong>Pain points:</strong> ₹15-40K/mo films, slow reporting, PCPNDT compliance<br><strong>Decision maker:</strong> Centre owner/manager<br><strong>Sales cycle:</strong> 2-4 weeks<br><strong>Close trigger:</strong> Film cost ROI < 6 months</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">🔬 Pathology Lab</h3>
+      <p class="card-text"><strong>Best Tier:</strong> T1 Billing (₹75K)<br><strong>Lead with:</strong> GST e-Invoice + billing recovery<br><strong>Pain points:</strong> Manual billing, receipt management, GST compliance<br><strong>Decision maker:</strong> Lab owner<br><strong>Sales cycle:</strong> 1-2 weeks (impulse buy)<br><strong>Close trigger:</strong> ₹75K = 3 months of billing recovery</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">🏥 Hospital Chain (5+ branches)</h3>
+      <p class="card-text"><strong>Best Tier:</strong> T4 Enterprise (₹7.5L)<br><strong>Lead with:</strong> Multi-branch workflow + 50-70% cheaper vs competitors<br><strong>Pain points:</strong> Fragmented systems, no central dashboard, compliance across branches<br><strong>Decision maker:</strong> CIO / IT Head / Admin Director<br><strong>Sales cycle:</strong> 3-6 months<br><strong>Close trigger:</strong> Budget allocation + competitor comparison</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">👶 Ultrasound / OB-GYN Clinic</h3>
+      <p class="card-text"><strong>Best Tier:</strong> T2 PACS or T5 Bundle<br><strong>Lead with:</strong> PCPNDT Form F automation (₹5L fine risk!)<br><strong>Pain points:</strong> PCPNDT register maintenance, record keeping for inspections<br><strong>Decision maker:</strong> Clinic owner<br><strong>Sales cycle:</strong> 2-3 weeks<br><strong>Close trigger:</strong> PCPNDT compliance fear</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">📋 Radiology Department</h3>
+      <p class="card-text"><strong>Best Tier:</strong> T3 Radiology (₹3.5L)<br><strong>Lead with:</strong> Booklet generation + structured reporting<br><strong>Pain points:</strong> Manual report formatting, delayed delivery, no branded booklets<br><strong>Decision maker:</strong> Radiology HOD / Chief Radiologist<br><strong>Sales cycle:</strong> 4-8 weeks<br><strong>Close trigger:</strong> Booklet demo (visual wow-factor)</p>
+    </div>
+    <div class="card reveal">
+      <h3 class="card-title" style="color:var(--teal-light);">🦷 Dental / Ortho / Eye Clinic</h3>
+      <p class="card-text"><strong>Best Tier:</strong> T1 Billing or T2 PACS<br><strong>Lead with:</strong> Billing automation + digital image storage<br><strong>Pain points:</strong> Paper records, lost X-rays, manual billing<br><strong>Decision maker:</strong> Clinic owner (usually the doctor)<br><strong>Sales cycle:</strong> 1-2 weeks<br><strong>Close trigger:</strong> Low price point (₹75K-1.5L)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 8: FAQ BY TIER ===== -->
+<section id="sec-faq" style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">❓ FAQ by Tier — Customer Questions</div>
+      <h2 class="section-title reveal">What Customers Ask at Every Stage</h2>
+    </div>
+
+    <div class="stab-nav" id="faq-tabs">
+      <button class="stab-btn active" onclick="showFaqTier('general')">General</button>
+      <button class="stab-btn" onclick="showFaqTier('t1')">T1 Billing</button>
+      <button class="stab-btn" onclick="showFaqTier('t2')">T2 PACS</button>
+      <button class="stab-btn" onclick="showFaqTier('t3')">T3 Radiology</button>
+      <button class="stab-btn" onclick="showFaqTier('t4')">T4 Enterprise</button>
+    </div>
+
+    <div class="stab-panel active" id="faq-general">
+      <div class="accordion">
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>Is DicoFlow a subscription or one-time purchase?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>One-time perpetual licence. You own it forever. No monthly fees. Annual Maintenance Contract (AMC) starts from Year 2 (15-20% of licence) and covers updates, bug fixes, and support. Year 1 support is included free.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>Do I need internet to use DicoFlow?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>No. DicoFlow runs entirely on-premise. Zero internet dependency. Your data stays on YOUR server/NAS. Internet is only needed if you want cloud backup (optional) or DicoFlow managed hosting. Most Indian centres have unreliable internet — DicoFlow works perfectly offline.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>How long does implementation take?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>7-14 days. Day 1-2: Server/NAS setup. Day 3-5: Software installation + DICOM router configuration. Day 6-7: Staff training. Day 8: Go-live. Day 9-14: Support during stabilisation period.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>Can I start with T1 and upgrade later?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>Yes. You pay only the difference. T1 (₹75K) → T2 costs ₹75K more. T2 (₹1.5L) → T3 costs ₹2L more. T3 → T4 costs ₹4L more. No penalty. Your data, configuration, and patient records carry forward seamlessly.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>Is my data secure?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>Bank-grade security: AES-256-GCM encryption at rest, Ed25519 JWT authentication, Argon2id password hashing (same used by cryptocurrency), SHA-512 hash chain for tamper-proof audit trail. Data stays on YOUR server — not in any cloud unless you choose managed hosting.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>What hardware do I need?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>T1: Any modern desktop PC. T2-T3: PC + NAS (Synology 2-bay, ~₹40K) or existing server. T4: Server + NAS/SAN for multi-branch. We provide sizing recommendations with the infrastructure calculator — exact specs based on your study volume.</p></div></div>
+      </div>
+    </div>
+
+    <div class="stab-panel" id="faq-t1">
+      <div class="accordion">
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>Does T1 include DICOM viewing?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>No. T1 is billing-only: patient registration, worklist, GST e-Invoice, PCPNDT Form F, payment tracking, doctor management, MIS reports. For DICOM viewing, you need T2 or higher. You can upgrade anytime for just ₹75K more.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>Can T1 handle multiple modalities?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>Yes. T1 billing supports registering patients for any modality — X-ray, ultrasound, pathology, ECG, etc. It manages the workflow from registration to payment. It just doesn't store or display DICOM images.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>What if PCPNDT inspection happens?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>DicoFlow T1 auto-generates Form F with all required fields, maintains the digital register, and can print reports for inspectors instantly. Every entry is timestamp-secured. You'll be the most compliant centre the inspector has seen.</p></div></div>
+      </div>
+    </div>
+
+    <div class="stab-panel" id="faq-t2">
+      <div class="accordion">
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>How does DicoFlow receive images from my CT/MRI?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>DicoFlow acts as a DICOM SCP (Service Class Provider). We configure your modality to send images to DicoFlow's IP address. This is standard DICOM C-STORE. Works with ANY modality brand: GE, Siemens, Philips, Canon, Shimadzu, Allengers, etc. Setup takes 15-30 minutes per modality.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>Can patients still get physical prints?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>Yes! Film Preparation module creates professional print layouts (10+ templates). You can print to regular printers (paper/A3), DICOM printers, or export as PDF. Most centres reduce film by 70-85% — only printing when the patient specifically asks.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>How much storage space do I need?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>Depends on modality: CT averages 200MB/study, MRI 500MB, X-ray 10MB, Ultrasound 30MB. For a typical CT centre doing 40 studies/day: ~240GB/month, ~14.4TB for 5 years (PCPNDT retention). A 16TB NAS (₹55-75K) handles this easily with room to spare.</p></div></div>
+      </div>
+    </div>
+
+    <div class="stab-panel" id="faq-t3">
+      <div class="accordion">
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>How does the booklet system work?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>4-page branded booklet: Page 1 (centre logo, patient info, QR), Page 2 (DICOM images in 2×6 grid), Page 3 (structured report with digital signature), Page 4 (centre branding, QR for digital access). 101 configurable fields. Generate + print in 60 seconds. No competitor has this.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>Does T3 include voice dictation?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>Yes. Whisper-based local voice dictation with 95%+ accuracy. Runs entirely on-premise (no data sent to cloud). Radiologists can dictate reports directly into structured templates. Supports dictation in English with medical terminology awareness.</p></div></div>
+      </div>
+    </div>
+
+    <div class="stab-panel" id="faq-t4">
+      <div class="accordion">
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>How does multi-branch management work?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>Central server manages all branches. Each branch has local DICOM reception + caching. Central dashboard shows real-time status of all branches. Role-based access: HQ admin sees everything, branch admin sees only their branch. Patient records sync across branches automatically.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>Does T4 integrate with our existing HIS?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>Yes. T4 includes HL7 v2.x (MLLP) and FHIR R4 integration. Supports ADT (patient registration), ORM (orders), ORU (results), and DICOMweb (WADO-RS, STOW-RS). We'll work with your HIS vendor during implementation to configure the interface.</p></div></div>
+        <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')"><span>What is the self-healing architecture?</span><span class="accordion-icon">+</span></div><div class="accordion-body"><p>7 independent subsystems that auto-detect and recover from failures: Database (auto-repair, WAL recovery), Storage (integrity checks, redundancy), DICOM engine (auto-restart on crash), Queue system (job recovery), Encryption (key rotation, auto-rekey), Audit system (hash chain repair), WebSocket (auto-reconnect). Zero manual intervention for 95% of issues.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title reveal">Armed and <span class="gradient" style="background:var(--gradient-text);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Ready to Sell.</span></h2>
+  <div class="cta-buttons reveal">
+    <a href="sales-playbook.html" class="btn btn-primary btn-lg">Sales Playbook →</a>
+    <a href="strategy-planner.html" class="btn btn-outline btn-lg">Strategy Planner →</a>
+    <a href="total-cost.html" class="btn btn-outline btn-lg">Total Cost Sheet →</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/animations.js"></script>
+<script>
+function showFaqTier(tier) {
+  document.querySelectorAll('#faq-tabs .stab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('#sec-faq .stab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('faq-' + tier).classList.add('active');
+}
+</script>
+</body>
+</html>

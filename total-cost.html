@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Total Cost for End Users — DicoFlow</title>
+<meta name="description" content="Complete cost breakdown per tier for end users. Licence, implementation, AMC, infrastructure — everything a customer needs to see before buying DicoFlow.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .cost-card { border:1px solid var(--border); border-radius:var(--radius-xl); padding:2rem; background:var(--bg-card); transition:all var(--transition); position:relative; overflow:hidden; }
+  .cost-card:hover { border-color:var(--border-teal-hover); transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,.3); }
+  .cost-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--gradient-teal); }
+  .cost-card.popular::before { height:4px; background:linear-gradient(90deg, #ffd700, #ffaa00); }
+  .cost-card.popular { border-color:rgba(255,215,0,0.25); }
+  .cost-tag { display:inline-block; font-size:0.7rem; text-transform:uppercase; letter-spacing:.08em; padding:0.25rem 0.75rem; border-radius:20px; border:1px solid var(--border-teal); color:var(--teal); background:rgba(77,208,225,.05); margin-bottom:1rem; }
+  .cost-tag.gold { border-color:rgba(255,215,0,.3); color:#ffd700; background:rgba(255,215,0,.05); }
+  .cost-tier-name { font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-bottom:0.3rem; }
+  .cost-price { font-size:2.5rem; font-weight:900; color:var(--teal-light); margin:0.5rem 0; }
+  .cost-price small { font-size:0.5em; color:var(--text-muted); font-weight:400; }
+  .cost-early { font-size:1.1rem; color:var(--success); font-weight:700; margin-bottom:1rem; display:block; }
+  .cost-breakdown { list-style:none; padding:0; margin:1.5rem 0; }
+  .cost-breakdown li { display:flex; justify-content:space-between; padding:0.5rem 0; border-bottom:1px solid var(--border); font-size:0.85rem; }
+  .cost-breakdown li:last-child { border-bottom:none; }
+  .cost-breakdown .cb-label { color:var(--text-secondary); }
+  .cost-breakdown .cb-value { color:var(--text-primary); font-weight:600; }
+  .cost-breakdown .cb-total { color:var(--teal-light); font-weight:800; font-size:1rem; border-top:2px solid var(--border-teal); padding-top:0.75rem; }
+  .cost-breakdown .cb-total .cb-value { color:var(--teal-light); font-size:1rem; }
+  .ideal-for { background:rgba(77,208,225,.05); border:1px solid rgba(77,208,225,.1); border-radius:var(--radius-md); padding:0.75rem 1rem; margin-top:1rem; font-size:0.82rem; color:var(--text-secondary); }
+  .ideal-for strong { color:var(--teal); }
+  .infra-rec { background:rgba(38,166,154,.05); border:1px solid rgba(38,166,154,.1); border-radius:var(--radius-md); padding:0.75rem 1rem; margin-top:0.75rem; font-size:0.82rem; }
+  .infra-rec .ir-title { color:var(--emerald); font-weight:600; margin-bottom:0.3rem; }
+  .infra-rec .ir-cost { color:var(--success); font-weight:700; }
+  .value-bar { display:flex; align-items:center; gap:0.75rem; margin:0.3rem 0; }
+  .value-bar-label { font-size:0.78rem; color:var(--text-muted); min-width:120px; }
+  .value-bar-track { flex:1; height:6px; border-radius:3px; background:rgba(255,255,255,.06); overflow:hidden; }
+  .value-bar-fill { height:100%; border-radius:3px; background:var(--gradient-teal); transition:width 1s ease; }
+  .value-bar-fill.competitor { background:linear-gradient(90deg,#ef5350,#ff7043); }
+  .pitch-box { background:linear-gradient(135deg, rgba(77,208,225,.08), rgba(38,166,154,.05)); border:1px solid var(--border-teal); border-radius:var(--radius-lg); padding:1.5rem; margin-top:1.5rem; }
+  .pitch-box h4 { color:var(--teal-light); font-size:0.9rem; margin-bottom:0.75rem; }
+  .pitch-box p { font-size:0.85rem; color:var(--text-secondary); line-height:1.6; }
+  .pitch-box .pitch-line { color:var(--text-primary); font-weight:600; font-style:italic; }
+  .avoid-card { border:1px solid rgba(239,83,80,.2); border-radius:var(--radius-lg); padding:1.25rem; background:rgba(239,83,80,.03); }
+  .avoid-card h4 { color:#ef9a9a; font-size:0.9rem; margin-bottom:0.5rem; }
+  .avoid-card p { font-size:0.82rem; color:var(--text-secondary); line-height:1.6; }
+  .tco-table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+  .tco-table th { background:rgba(77,208,225,.08); color:var(--teal-light); padding:0.6rem 0.5rem; text-align:right; font-weight:600; border-bottom:1px solid var(--border-teal); }
+  .tco-table th:first-child { text-align:left; }
+  .tco-table td { padding:0.55rem 0.5rem; text-align:right; border-bottom:1px solid var(--border); color:var(--text-secondary); }
+  .tco-table td:first-child { text-align:left; color:var(--text-primary); font-weight:500; }
+  .tco-table .total-row td { font-weight:700; color:var(--teal-light); border-top:2px solid var(--border-teal); background:rgba(77,208,225,.04); }
+  @media(max-width:768px) {
+    .cost-card { padding:1.25rem; }
+    .cost-price { font-size:1.8rem; }
+  }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:5rem;padding-bottom:2rem;">
+  <div class="hero-inner">
+    <div class="section-badge" style="animation:fadeInUp .6s ease both;">💰 End-User Pricing Guide</div>
+    <h1 class="hero-title">Total Cost of <span class="gradient">Ownership</span></h1>
+    <p class="hero-desc">Everything your customer needs to know — licence, implementation, training, annual maintenance, and infrastructure. Transparent. Justifiable. Impressive. Show this page during your pitch.</p>
+    <div class="stats-row" style="animation:fadeInUp .8s ease .4s both;">
+      <div class="stat"><span class="stat-number" style="color:var(--teal-light);">₹75K</span><span class="stat-label">Starting From</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--teal-light);">30%</span><span class="stat-label">Early Adopter Discount</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--success);">50-70%</span><span class="stat-label">Cheaper Than Competitors</span></div>
+      <div class="stat"><span class="stat-number" style="color:var(--success);">7-14 days</span><span class="stat-label">Go Live</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TIER COST CARDS ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Complete Pricing</div>
+    <h2 class="section-title reveal">What Your Customer Pays — Per Tier</h2>
+    <p class="section-subtitle reveal">All prices include GST where applicable. Early Adopter pricing available for first 50 customers.</p>
+  </div>
+
+  <!-- T1 BILLING -->
+  <div class="grid-2 stagger" style="max-width:var(--max-width);margin:0 auto 3rem;">
+    <div class="cost-card reveal">
+      <div class="cost-tag">Tier 1</div>
+      <div class="cost-tier-name">DicoFlow Billing</div>
+      <div class="cost-price">₹75,000 <small>one-time licence</small></div>
+      <span class="cost-early">Early Adopter: ₹52,500 (30% OFF)</span>
+      <ul class="cost-breakdown">
+        <li><span class="cb-label">Software Licence</span><span class="cb-value">₹75,000</span></li>
+        <li><span class="cb-label">Implementation & Setup</span><span class="cb-value">₹10,000</span></li>
+        <li><span class="cb-label">Training (1 day on-site)</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">Annual Maintenance (AMC)</span><span class="cb-value">₹15,000/yr</span></li>
+        <li class="cb-total"><span class="cb-label">Year 1 Total</span><span class="cb-value">₹1,00,000</span></li>
+      </ul>
+      <div class="ideal-for"><strong>Ideal For:</strong> Single-modality X-ray clinics, pathology labs, small diagnostic centres with 10-30 patients/day. No PACS needed — just billing, receipts, PCPNDT compliance.</div>
+      <div class="infra-rec">
+        <div class="ir-title">📦 Recommended Infrastructure</div>
+        <p>Standard desktop PC (₹25-35K) or existing system. NAS optional at ₹15-25K for backups. No cloud required.</p>
+        <p><strong>Total with infra (Year 1):</strong> <span class="ir-cost">₹1.25-1.60L</span></p>
+      </div>
+    </div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="pitch-box">
+        <h4>🎙️ Sales Pitch for T1</h4>
+        <p class="pitch-line">"For less than ₹1 lakh, you get a complete billing system with PCPNDT compliance built-in. Most centres spend ₹50K/year on register maintenance alone."</p>
+        <p style="margin-top:0.75rem;"><strong>Key value:</strong> PCPNDT Form F auto-generation saves ₹3-5K/month in compliance admin. ROI in 6-8 months from avoided penalties alone.</p>
+      </div>
+      <div class="pitch-box" style="border-color:rgba(38,166,154,.25);">
+        <h4>📊 Value Justification</h4>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1rem;line-height:2;">
+          <li>₹3-5K/month saved on PCPNDT compliance → ₹36-60K/yr</li>
+          <li>₹2K/month saved on manual billing → ₹24K/yr</li>
+          <li>₹0 penalty risk (vs ₹5L+ for non-compliance)</li>
+          <li>Total annual savings: <strong style="color:var(--success);">₹60-84K</strong></li>
+          <li>Payback period: <strong style="color:var(--success);">12-16 months</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- T2 PACS (POPULAR) -->
+  <div class="grid-2 stagger" style="max-width:var(--max-width);margin:0 auto 3rem;">
+    <div class="cost-card popular reveal">
+      <div class="cost-tag gold">⭐ Tier 2 — Most Popular</div>
+      <div class="cost-tier-name">DicoFlow PACS</div>
+      <div class="cost-price">₹1,50,000 <small>one-time licence</small></div>
+      <span class="cost-early">Early Adopter: ₹1,05,000 (30% OFF)</span>
+      <ul class="cost-breakdown">
+        <li><span class="cb-label">Software Licence (Billing + PACS)</span><span class="cb-value">₹1,50,000</span></li>
+        <li><span class="cb-label">Implementation & Setup</span><span class="cb-value">₹25,000</span></li>
+        <li><span class="cb-label">Training (2 days on-site)</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">DICOM Router Configuration</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">Annual Maintenance (AMC)</span><span class="cb-value">₹30,000/yr</span></li>
+        <li class="cb-total"><span class="cb-label">Year 1 Total</span><span class="cb-value">₹2,05,000</span></li>
+      </ul>
+      <div class="ideal-for"><strong>Ideal For:</strong> CT/MRI scan centres, multi-modality radiology centres, 20-80 studies/day. Need DICOM viewing, film cost elimination, and digital reports.</div>
+      <div class="infra-rec">
+        <div class="ir-title">📦 Recommended Infrastructure</div>
+        <p><strong>Option A — NAS:</strong> Synology 2-bay NAS (₹30-45K) + 2× 4TB drives (₹16K) = ₹46-61K. Stores ~50K CT studies.</p>
+        <p><strong>Option B — Cloud:</strong> Azure/AWS managed hosting ₹8-15K/month depending on study volume.</p>
+        <p><strong>Total with infra (Year 1):</strong> <span class="ir-cost">₹2.5-3.5L (NAS) | ₹3.0-4.0L (Cloud)</span></p>
+      </div>
+    </div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="pitch-box">
+        <h4>🎙️ Sales Pitch for T2</h4>
+        <p class="pitch-line">"Your centre spends ₹15-25K per month on X-ray films. DicoFlow PACS eliminates that completely — that's ₹1.8-3L savings in the first year alone. The software pays for itself in 6 months."</p>
+        <p style="margin-top:0.75rem;"><strong>Film savings math (show to customer):</strong></p>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1rem;line-height:2;">
+          <li>CT film: ₹80-120 per study × 40 studies/day = ₹96-144K/month</li>
+          <li>X-ray film: ₹30-60 per film × variable</li>
+          <li>70% film reduction realistic target</li>
+        </ul>
+      </div>
+      <div class="pitch-box" style="border-color:rgba(38,166,154,.25);">
+        <h4>📊 Value Justification</h4>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1rem;line-height:2;">
+          <li>₹15-25K/month film savings → ₹1.8-3.0L/yr</li>
+          <li>₹5-10K/month faster reporting → ₹60K-1.2L/yr</li>
+          <li>₹2-3K/month PCPNDT savings → ₹24-36K/yr</li>
+          <li>Store images forever (no films lost/degraded)</li>
+          <li>Total annual savings: <strong style="color:var(--success);">₹2.64-4.56L</strong></li>
+          <li>Payback period: <strong style="color:var(--success);">5-8 months</strong></li>
+        </ul>
+      </div>
+      <div style="background:rgba(77,208,225,.05);border:1px solid rgba(77,208,225,.15);border-radius:var(--radius-md);padding:1rem;">
+        <h4 style="color:var(--teal-light);font-size:0.85rem;margin-bottom:0.5rem;">🏆 vs Competition</h4>
+        <div class="value-bar"><span class="value-bar-label">DicoFlow T2</span><div class="value-bar-track"><div class="value-bar-fill" style="width:22%;"></div></div><span style="font-size:.75rem;color:var(--teal);">₹1.5L</span></div>
+        <div class="value-bar"><span class="value-bar-label">Meddiff</span><div class="value-bar-track"><div class="value-bar-fill competitor" style="width:30%;"></div></div><span style="font-size:.75rem;color:#ef5350;">₹2L+</span></div>
+        <div class="value-bar"><span class="value-bar-label">PostDICOM</span><div class="value-bar-track"><div class="value-bar-fill competitor" style="width:45%;"></div></div><span style="font-size:.75rem;color:#ef5350;">₹3L+</span></div>
+        <div class="value-bar"><span class="value-bar-label">MedSynapse</span><div class="value-bar-track"><div class="value-bar-fill competitor" style="width:52%;"></div></div><span style="font-size:.75rem;color:#ef5350;">₹3.5L+</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T3 RADIOLOGY -->
+  <div class="grid-2 stagger" style="max-width:var(--max-width);margin:0 auto 3rem;">
+    <div class="cost-card reveal">
+      <div class="cost-tag">Tier 3</div>
+      <div class="cost-tier-name">DicoFlow Radiology</div>
+      <div class="cost-price">₹3,50,000 <small>one-time licence</small></div>
+      <span class="cost-early">Early Adopter: ₹2,45,000 (30% OFF)</span>
+      <ul class="cost-breakdown">
+        <li><span class="cb-label">Software Licence (Full RIS)</span><span class="cb-value">₹3,50,000</span></li>
+        <li><span class="cb-label">Implementation & Setup</span><span class="cb-value">₹50,000</span></li>
+        <li><span class="cb-label">Training (3 days on-site)</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">Booklet Template Customisation</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">DICOM Router + Modality Config</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">Annual Maintenance (AMC)</span><span class="cb-value">₹60,000/yr</span></li>
+        <li class="cb-total"><span class="cb-label">Year 1 Total</span><span class="cb-value">₹4,60,000</span></li>
+      </ul>
+      <div class="ideal-for"><strong>Ideal For:</strong> Established radiology centres, multi-location imaging chains (2-4 branches), 50-150 studies/day, need reporting + booklet generation + advanced film prep.</div>
+      <div class="infra-rec">
+        <div class="ir-title">📦 Recommended Infrastructure</div>
+        <p><strong>NAS:</strong> Synology 4-bay (₹55-75K) + 4× 8TB (₹60K) = ₹1.15-1.35L</p>
+        <p><strong>Cloud:</strong> Azure/AWS ₹15-30K/month for high-volume DICOM storage</p>
+        <p><strong>Total with infra (Year 1):</strong> <span class="ir-cost">₹5.75-6.0L (NAS) | ₹6.4-8.2L (Cloud)</span></p>
+      </div>
+    </div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="pitch-box">
+        <h4>🎙️ Sales Pitch for T3</h4>
+        <p class="pitch-line">"Your radiologists spend 2 hours/day on report formatting and booklet generation. DicoFlow automates all of it — structured reports, auto-composed booklets, branded templates. That's ₹3-5L/year in productivity gains."</p>
+      </div>
+      <div class="pitch-box" style="border-color:rgba(38,166,154,.25);">
+        <h4>📊 Value Justification</h4>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1rem;line-height:2;">
+          <li>Film savings: ₹2-4L/yr at 100 studies/day</li>
+          <li>Radiologist time savings: ₹3-5L/yr</li>
+          <li>Booklet printing automation: ₹1-2L/yr</li>
+          <li>Multi-location management: ₹1-2L/yr ops savings</li>
+          <li>Total annual savings: <strong style="color:var(--success);">₹7-13L</strong></li>
+          <li>Payback period: <strong style="color:var(--success);">4-6 months</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- T4 ENTERPRISE -->
+  <div class="grid-2 stagger" style="max-width:var(--max-width);margin:0 auto 3rem;">
+    <div class="cost-card reveal" style="border-color:rgba(255,215,0,.15);">
+      <div class="cost-tag gold">⚡ Tier 4 — Maximum Value</div>
+      <div class="cost-tier-name">DicoFlow Enterprise</div>
+      <div class="cost-price">₹7,50,000 <small>one-time licence</small></div>
+      <span class="cost-early">Early Adopter: ₹5,25,000 (30% OFF)</span>
+      <ul class="cost-breakdown">
+        <li><span class="cb-label">Software Licence (Full Enterprise)</span><span class="cb-value">₹7,50,000</span></li>
+        <li><span class="cb-label">Implementation & Setup</span><span class="cb-value">₹1,00,000</span></li>
+        <li><span class="cb-label">Training (5 days + on-going)</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">14-Stage Workflow Config</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">HL7/FHIR Integration Setup</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">Multi-Branch Config</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">Role-Based Dashboard Setup</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">Annual Maintenance (AMC)</span><span class="cb-value">₹1,25,000/yr</span></li>
+        <li class="cb-total"><span class="cb-label">Year 1 Total</span><span class="cb-value">₹9,75,000</span></li>
+      </ul>
+      <div class="ideal-for"><strong>Ideal For:</strong> Hospital chains (5+ branches), large diagnostic chains, corporate hospitals, government hospitals. 200+ studies/day total, need audit trails, role dashboards, advanced analytics.</div>
+      <div class="infra-rec">
+        <div class="ir-title">📦 Recommended Infrastructure</div>
+        <p><strong>NAS:</strong> Enterprise NAS (₹1.5-2.5L) + RAID storage</p>
+        <p><strong>Cloud:</strong> Azure/AWS managed ₹25-50K/month for enterprise-grade SLA</p>
+        <p><strong>Total with infra (Year 1):</strong> <span class="ir-cost">₹11-12.5L (NAS) | ₹12.75-15.75L (Cloud)</span></p>
+      </div>
+    </div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="pitch-box">
+        <h4>🎙️ Sales Pitch for T4</h4>
+        <p class="pitch-line">"Hospitals like yours spend ₹18-25 lakhs on MedSynapse or ₹12-18 lakhs on PostDICOM — and still need separate billing. DicoFlow Enterprise at ₹7.5L gives you everything in one unified platform. That's 50-70% less."</p>
+        <p style="margin-top:0.75rem;"><strong>Enterprise differentiator:</strong> 14-stage workflow, multi-branch, role dashboards for CEO/Admin/Technician/Radiologist, audit trails, NABH compliance — all included.</p>
+      </div>
+      <div class="pitch-box" style="border-color:rgba(38,166,154,.25);">
+        <h4>📊 Value Justification</h4>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1rem;line-height:2;">
+          <li>vs MedSynapse: Save ₹10.5-17.5L upfront</li>
+          <li>vs PostDICOM: Save ₹4.5-10.5L upfront</li>
+          <li>Film savings at scale: ₹5-10L/yr</li>
+          <li>Workflow automation: ₹5-8L/yr productivity</li>
+          <li>Single vendor (no integration cost): ₹3-5L savings</li>
+          <li>Total annual savings: <strong style="color:var(--success);">₹15-25L</strong></li>
+          <li>Payback period: <strong style="color:var(--success);">3-5 months</strong></li>
+        </ul>
+      </div>
+      <div style="background:rgba(255,215,0,.03);border:1px solid rgba(255,215,0,.15);border-radius:var(--radius-md);padding:1rem;">
+        <h4 style="color:#ffd700;font-size:0.85rem;margin-bottom:0.5rem;">🏆 vs Competition (Enterprise)</h4>
+        <div class="value-bar"><span class="value-bar-label">DicoFlow T4</span><div class="value-bar-track"><div class="value-bar-fill" style="width:18%;"></div></div><span style="font-size:.75rem;color:var(--teal);">₹7.5L</span></div>
+        <div class="value-bar"><span class="value-bar-label">Meddiff Ent.</span><div class="value-bar-track"><div class="value-bar-fill competitor" style="width:28%;"></div></div><span style="font-size:.75rem;color:#ef5350;">₹8-12L</span></div>
+        <div class="value-bar"><span class="value-bar-label">PostDICOM Ent.</span><div class="value-bar-track"><div class="value-bar-fill competitor" style="width:44%;"></div></div><span style="font-size:.75rem;color:#ef5350;">₹12-18L</span></div>
+        <div class="value-bar"><span class="value-bar-label">MedSynapse Ent.</span><div class="value-bar-track"><div class="value-bar-fill competitor" style="width:58%;"></div></div><span style="font-size:.75rem;color:#ef5350;">₹18-25L</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T5 BUNDLE -->
+  <div class="grid-2 stagger" style="max-width:var(--max-width);margin:0 auto 3rem;">
+    <div class="cost-card reveal">
+      <div class="cost-tag">Tier 5</div>
+      <div class="cost-tier-name">DicoFlow Billing+PACS Bundle</div>
+      <div class="cost-price">₹2,25,000 <small>one-time licence</small></div>
+      <span class="cost-early">Early Adopter: ₹1,57,500 (30% OFF)</span>
+      <ul class="cost-breakdown">
+        <li><span class="cb-label">Software Licence (Billing + PACS)</span><span class="cb-value">₹2,25,000</span></li>
+        <li><span class="cb-label">Implementation & Setup</span><span class="cb-value">₹35,000</span></li>
+        <li><span class="cb-label">Training (2 days on-site)</span><span class="cb-value">Included</span></li>
+        <li><span class="cb-label">Annual Maintenance (AMC)</span><span class="cb-value">₹40,000/yr</span></li>
+        <li class="cb-total"><span class="cb-label">Year 1 Total</span><span class="cb-value">₹3,00,000</span></li>
+      </ul>
+      <div class="ideal-for"><strong>Ideal For:</strong> Mid-size centres wanting both billing and PACS but don't need radiology reporting or booklets. Clean combo at ₹0 extra vs buying separately.</div>
+      <div class="infra-rec">
+        <div class="ir-title">📦 Recommended Infrastructure</div>
+        <p>Same as T2 — NAS (₹46-61K) or Cloud (₹8-15K/month)</p>
+        <p><strong>Total with infra (Year 1):</strong> <span class="ir-cost">₹3.5-3.6L (NAS) | ₹4.0-4.8L (Cloud)</span></p>
+      </div>
+    </div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="pitch-box">
+        <h4>🎙️ Sales Pitch for T5</h4>
+        <p class="pitch-line">"T5 gives you the complete billing system AND full PACS viewer at a bundled price. You save ₹0 versus T1+T2 separately — but you get unified installation and a single support channel."</p>
+      </div>
+      <div class="pitch-box" style="border-color:rgba(38,166,154,.25);">
+        <h4>📊 When to Recommend T5 vs T2</h4>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1rem;line-height:2;">
+          <li><strong>T5:</strong> Centre already has billing software they hate</li>
+          <li><strong>T5:</strong> New centre setup — needs everything from scratch</li>
+          <li><strong>T2:</strong> Centre has working billing, just needs PACS</li>
+          <li><strong>T2:</strong> Budget-conscious first purchase (start with PACS, add billing later)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3-YEAR TCO COMPARISON TABLE ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">3-Year Total Cost</div>
+      <h2 class="section-title reveal">Total Cost of Ownership — 3 Years</h2>
+      <p class="section-subtitle reveal">Complete costs including licence, implementation, 3 years AMC, and recommended infrastructure.</p>
+    </div>
+
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="tco-table">
+        <thead><tr><th>Cost Component</th><th>T1 Billing</th><th>T2 PACS</th><th>T3 Radiology</th><th>T4 Enterprise</th><th>T5 Bundle</th></tr></thead>
+        <tbody>
+          <tr><td>Software Licence</td><td>₹75,000</td><td>₹1,50,000</td><td>₹3,50,000</td><td>₹7,50,000</td><td>₹2,25,000</td></tr>
+          <tr><td>Implementation</td><td>₹10,000</td><td>₹25,000</td><td>₹50,000</td><td>₹1,00,000</td><td>₹35,000</td></tr>
+          <tr><td>Year 1 AMC</td><td>₹15,000</td><td>₹30,000</td><td>₹60,000</td><td>₹1,25,000</td><td>₹40,000</td></tr>
+          <tr><td>Year 2 AMC</td><td>₹15,000</td><td>₹30,000</td><td>₹60,000</td><td>₹1,25,000</td><td>₹40,000</td></tr>
+          <tr><td>Year 3 AMC</td><td>₹15,000</td><td>₹30,000</td><td>₹60,000</td><td>₹1,25,000</td><td>₹40,000</td></tr>
+          <tr><td>Infrastructure (NAS, 3yr)</td><td>₹25,000</td><td>₹55,000</td><td>₹1,35,000</td><td>₹2,00,000</td><td>₹55,000</td></tr>
+          <tr class="total-row"><td>3-YEAR TOTAL (NAS)</td><td>₹1,55,000</td><td>₹3,20,000</td><td>₹7,15,000</td><td>₹14,25,000</td><td>₹4,35,000</td></tr>
+          <tr class="total-row"><td>3-YEAR TOTAL (Cloud)</td><td>₹1,55,000</td><td>₹4,20,000</td><td>₹9,35,000</td><td>₹18,25,000</td><td>₹5,55,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center mt-3 reveal">
+      <p class="text-muted text-sm">Cloud estimates based on average usage patterns. NAS is one-time hardware cost with no recurring hosting fees.<br>All prices are for perpetual licences — no recurring subscription for the software itself.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EARLY ADOPTER VALUE PROPOSITION ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal" style="background:rgba(255,215,0,.05);border-color:rgba(255,215,0,.25);color:#ffd700;">🌟 Early Adopter Programme</div>
+    <h2 class="section-title reveal">First 50 Customers — 30% Off Everything</h2>
+    <p class="section-subtitle reveal">Show this to create urgency. Limited spots. Biggest savings for the earliest adopters.</p>
+  </div>
+
+  <div class="reveal" style="max-width:900px;margin:0 auto;overflow-x:auto;">
+    <table class="tco-table">
+      <thead><tr><th>Tier</th><th>Regular Price</th><th>Early Adopter (-30%)</th><th>Customer Saves</th><th>Year 1 Total (EA)</th></tr></thead>
+      <tbody>
+        <tr><td>T1 Billing</td><td>₹75,000</td><td style="color:var(--success);font-weight:700;">₹52,500</td><td style="color:var(--success);">₹22,500</td><td>₹77,500</td></tr>
+        <tr><td>T2 PACS</td><td>₹1,50,000</td><td style="color:var(--success);font-weight:700;">₹1,05,000</td><td style="color:var(--success);">₹45,000</td><td>₹1,60,000</td></tr>
+        <tr><td>T3 Radiology</td><td>₹3,50,000</td><td style="color:var(--success);font-weight:700;">₹2,45,000</td><td style="color:var(--success);">₹1,05,000</td><td>₹3,55,000</td></tr>
+        <tr><td>T4 Enterprise</td><td>₹7,50,000</td><td style="color:var(--success);font-weight:700;">₹5,25,000</td><td style="color:var(--success);">₹2,25,000</td><td>₹7,50,000</td></tr>
+        <tr><td>T5 Bundle</td><td>₹2,25,000</td><td style="color:var(--success);font-weight:700;">₹1,57,500</td><td style="color:var(--success);">₹67,500</td><td>₹2,32,500</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== THINGS TO AVOID (SALES TIPS) ===== -->
+<section style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal" style="background:var(--danger-bg);border-color:rgba(239,83,80,0.25);color:var(--danger);">⚠️ Pitching Pitfalls</div>
+      <h2 class="section-title reveal">Things to Avoid When Presenting Costs</h2>
+      <p class="section-subtitle reveal">These mistakes lose deals. Read before every pitch meeting.</p>
+    </div>
+
+    <div class="feature-grid stagger">
+      <div class="avoid-card reveal">
+        <h4>❌ Don't Show Raw Cloud Prices</h4>
+        <p>Never show customers the actual AWS/Azure/GCP console pricing. Always use DicoFlow's infrastructure calculator which includes our 25% management fee. This is justified: we handle setup, monitoring, backups, and scaling. If a customer compares raw cloud prices, explain the managed service value.</p>
+      </div>
+      <div class="avoid-card reveal">
+        <h4>❌ Don't Compare T1 to PACS Products</h4>
+        <p>T1 is a billing-only product. If the customer asks "does it have DICOM viewing?" — the answer is clear: "T1 focuses on billing and compliance. For DICOM viewing, you need T2. Let me show you the T2 demo." Don't apologise; upsell naturally.</p>
+      </div>
+      <div class="avoid-card reveal">
+        <h4>❌ Don't Quote AMC on Day 1</h4>
+        <p>Lead with the licence price and value. AMC discussion should come AFTER the demo, during the proposal stage. If asked early: "AMC starts from Year 2. Year 1 includes full support at no extra cost." This is technically true — AMC is baked into Year 1 total.</p>
+      </div>
+      <div class="avoid-card reveal">
+        <h4>❌ Don't Discount Infrastructure Separately</h4>
+        <p>The NAS hardware and cloud hosting are at market rates + margin. Never offer "free cloud for 3 months" or similar. This sets wrong expectations. Instead: "We'll help you choose the most cost-effective infrastructure for your volume."</p>
+      </div>
+      <div class="avoid-card reveal">
+        <h4>❌ Don't Promise "Unlimited" Storage</h4>
+        <p>Storage costs real money on NAS and cloud. Be transparent: help the customer estimate their actual volume, then recommend the right NAS size or cloud tier. Use the infrastructure calculator during the demo. Transparency builds trust.</p>
+      </div>
+      <div class="avoid-card reveal">
+        <h4>❌ Don't Sell Annual Payments to Cash-Tight Centres</h4>
+        <p>For smaller centres (T1, T2), offer EMI/quarterly payment options. Saying "₹1.5 lakh upfront" scares small centre owners. Instead: "Start with ₹50K, pay the rest over 6 months." Get creative with payment terms — the deal is worth more than the timeline.</p>
+      </div>
+    </div>
+
+    <div class="text-center mt-4 reveal">
+      <h3 class="section-subtitle" style="color:var(--success);font-weight:700;">✅ Instead, Always Do This</h3>
+    </div>
+    <div class="feature-grid stagger" style="margin-top:1.5rem;">
+      <div class="card reveal" style="border-color:rgba(38,166,154,.2);">
+        <h3 class="card-title" style="color:var(--success);">✅ Show the ROI Calculator First</h3>
+        <p class="card-text">Before showing any price, run the ROI calculator with the customer's actual numbers (studies/day, current film spend, staff count). Let the savings number sink in. THEN show the price.</p>
+      </div>
+      <div class="card reveal" style="border-color:rgba(38,166,154,.2);">
+        <h3 class="card-title" style="color:var(--success);">✅ Use "Cost per Study" Framing</h3>
+        <p class="card-text">₹1.5L sounds like a lot. But "₹12 per study for the first year" (at 40 studies/day) sounds like nothing. Always break it down to per-study or per-month for maximum impact.</p>
+      </div>
+      <div class="card reveal" style="border-color:rgba(38,166,154,.2);">
+        <h3 class="card-title" style="color:var(--success);">✅ Anchor Against Competitors</h3>
+        <p class="card-text">Always mention competitor pricing before DicoFlow: "MedSynapse charges ₹3.5L+ for a basic PACS. DicoFlow gives you more features at ₹1.5L." The anchor effect makes DicoFlow feel like a steal.</p>
+      </div>
+      <div class="card reveal" style="border-color:rgba(38,166,154,.2);">
+        <h3 class="card-title" style="color:var(--success);">✅ Mention "Perpetual Licence"</h3>
+        <p class="card-text">Unlike cloud-only competitors with ₹25-50K monthly subscriptions, DicoFlow is a one-time purchase. Emphasize: "You own it forever. No monthly hostage fee." This resonates deeply in the Indian market.</p>
+      </div>
+      <div class="card reveal" style="border-color:rgba(38,166,154,.2);">
+        <h3 class="card-title" style="color:var(--success);">✅ Offer the Demo Before the Proposal</h3>
+        <p class="card-text">If someone asks for a quote over email: "I'd love to send a proposal — let me show you a quick 20-minute demo first so I can customise the proposal exactly for your centre." Demo → Proposal → Close. Never skip steps.</p>
+      </div>
+      <div class="card reveal" style="border-color:rgba(38,166,154,.2);">
+        <h3 class="card-title" style="color:var(--success);">✅ Carry a Film vs Digital Print</h3>
+        <p class="card-text">Bring a physical CT film and a digital printout. Show: "This film costs ₹80. This digital version costs ₹5 and looks the same to the patient." Physical props convert. Let them hold both.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAYMENT TERMS REFERENCE ===== -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Payment Terms</div>
+    <h2 class="section-title reveal">Flexible Payment Options</h2>
+    <p class="section-subtitle reveal">Multiple payment structures to fit every customer's budget. Choose what works best for each deal.</p>
+  </div>
+
+  <div class="grid-3 stagger" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="card reveal text-center">
+      <h3 class="card-title" style="color:var(--teal-light);">Full Upfront</h3>
+      <div style="font-size:1.5rem;font-weight:800;color:var(--success);margin:1rem 0;">Best Price</div>
+      <p class="card-text">100% payment before deployment. Customer gets 5% additional discount on implementation charges.</p>
+    </div>
+    <div class="card reveal text-center" style="border-color:var(--border-teal);">
+      <h3 class="card-title" style="color:var(--teal-light);">50/50 Split</h3>
+      <div style="font-size:1.5rem;font-weight:800;color:var(--teal-light);margin:1rem 0;">Most Popular</div>
+      <p class="card-text">50% advance before deployment, 50% within 30 days of go-live. Standard pricing applies. Best for mid-size centres.</p>
+    </div>
+    <div class="card reveal text-center">
+      <h3 class="card-title" style="color:var(--teal-light);">3+3+3 EMI</h3>
+      <div style="font-size:1.5rem;font-weight:800;color:var(--text-secondary);margin:1rem 0;">For Budget-Tight</div>
+      <p class="card-text">33% advance, 33% at go-live, 33% in 60 days. No interest. Great for smaller centres (T1, T2). Creates urgency without barrier.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title reveal">Ready to <span class="gradient" style="background:var(--gradient-text);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Close Deals?</span></h2>
+  <p class="cta-desc reveal">Use the ROI Calculator to create custom proposals. Use the Compare page to destroy competitor objections.</p>
+  <div class="cta-buttons reveal">
+    <a href="roi-calculator.html" class="btn btn-primary btn-lg">ROI Calculator →</a>
+    <a href="compare.html" class="btn btn-outline btn-lg">Compare vs Competitors →</a>
+    <a href="business-plan.html" class="btn btn-outline btn-lg">Business Plan →</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/animations.js"></script>
+</body>
+</html>

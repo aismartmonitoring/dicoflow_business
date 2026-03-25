@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure Calculator — DicoFlow</title>
+<meta name="description" content="Calculate your cloud hosting cost: Azure, AWS, GCP for DicoFlow deployment. Compare with on-premise NAS. Includes DicoFlow managed hosting option.">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<section class="hero" style="padding-top:5rem;padding-bottom:2rem;">
+  <div class="hero-inner">
+    <div class="section-badge" style="animation:fadeInUp .6s ease both;">Infrastructure Calculator</div>
+    <h1 class="hero-title">Cloud vs <span class="gradient">On-Premise</span> — Real Numbers</h1>
+    <p class="hero-desc">Calculate your exact monthly infrastructure cost on Azure (Central India), AWS (Mumbai), or GCP (Mumbai). Compare with on-premise NAS. See the managed hosting option with DicoFlow.</p>
+  </div>
+</section>
+
+<!-- CALCULATOR FORM -->
+<section>
+  <div style="max-width:800px;margin:0 auto;">
+    <div class="card reveal" style="padding:2.5rem;">
+      <h3 class="card-title text-teal mb-3">📊 Configure Your Setup</h3>
+
+      <div class="form-group mb-3">
+        <label class="form-label">DicoFlow Tier</label>
+        <select class="form-input" id="calc-tier">
+          <option value="T1_BILLING">T1 — Billing (₹75K)</option>
+          <option value="T2_PACS" selected>T2 — PACS (₹1.5L)</option>
+          <option value="T3_RADIOLOGY">T3 — Radiology (₹3.5L)</option>
+          <option value="T4_ENTERPRISE">T4 — Enterprise (₹7.5L)</option>
+          <option value="T5_BILLING_PACS">T5 — Billing+PACS (₹2.25L)</option>
+        </select>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label">Studies per Month</label>
+        <input type="number" class="form-input" id="calc-studies" value="500" min="50" max="50000" step="50">
+        <small style="color:var(--text-muted);font-size:.75rem;">Typical: 200-500 for small centres, 500-2000 for medium, 2000+ for hospitals</small>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label">Average Study Size (MB)</label>
+        <input type="number" class="form-input" id="calc-avg-size" value="150" min="5" max="2000" step="5">
+        <small style="color:var(--text-muted);font-size:.75rem;">X-ray: 5-20 MB | Ultrasound: 10-50 MB | CT: 100-500 MB | MRI: 200-1000 MB</small>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label">Retention Period (Months)</label>
+        <input type="number" class="form-input" id="calc-retention" value="60" min="12" max="120" step="12">
+        <small style="color:var(--text-muted);font-size:.75rem;">PCPNDT requires 5 years (60 months) retention for ultrasound records</small>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label">Concurrent Users</label>
+        <input type="number" class="form-input" id="calc-users" value="5" min="1" max="100">
+      </div>
+
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-top:1rem;" onclick="runCalculation()">Calculate Infrastructure Cost →</button>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results-section" style="display:none;">
+  <div class="text-center mb-4">
+    <div class="section-badge">Results</div>
+    <h2 class="section-title">Your Infrastructure Cost Breakdown</h2>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tabs" style="max-width:var(--max-width);margin:0 auto 2rem;justify-content:center;" id="infra-tabs">
+    <button class="tab active" data-tab="azure-result">☁️ Azure</button>
+    <button class="tab" data-tab="aws-result">🟠 AWS</button>
+    <button class="tab" data-tab="gcp-result">🔵 GCP</button>
+    <button class="tab" data-tab="nas-result">🖥️ NAS (On-Premise)</button>
+  </div>
+
+  <!-- AZURE -->
+  <div class="tab-content active" id="tab-azure-result">
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="card" style="padding:2rem;">
+        <h3 class="card-title text-teal mb-3">☁️ Azure — Central India Region</h3>
+        <div id="azure-details"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AWS -->
+  <div class="tab-content" id="tab-aws-result">
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="card" style="padding:2rem;">
+        <h3 class="card-title text-teal mb-3">🟠 AWS — Mumbai (ap-south-1)</h3>
+        <div id="aws-details"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GCP -->
+  <div class="tab-content" id="tab-gcp-result">
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="card" style="padding:2rem;">
+        <h3 class="card-title text-teal mb-3">🔵 GCP — Mumbai (asia-south1)</h3>
+        <div id="gcp-details"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAS -->
+  <div class="tab-content" id="tab-nas-result">
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="card" style="padding:2rem;">
+        <h3 class="card-title text-teal mb-3">🖥️ On-Premise NAS</h3>
+        <div id="nas-details"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARISON SUMMARY -->
+  <div style="max-width:900px;margin:3rem auto 0;">
+    <h3 class="section-title text-center" style="font-size:1.5rem;">3-Year Total Cost of Ownership</h3>
+    <div id="tco-comparison"></div>
+  </div>
+
+  <!-- DICOFLOW MANAGED -->
+  <div style="max-width:800px;margin:3rem auto 0;">
+    <div class="card" style="padding:2rem;border-color:rgba(38,166,154,0.4);background:rgba(38,166,154,0.05);">
+      <h3 class="card-title text-teal mb-3">🤝 DicoFlow Managed Hosting — Let Us Handle It</h3>
+      <p class="card-text mb-3">Don't want to manage infrastructure? We'll host, monitor, backup, and maintain everything. You focus on patients.</p>
+      <div id="managed-details"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SIZING GUIDE -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Sizing Guide</div>
+    <h2 class="section-title reveal">What Size Do I Need?</h2>
+  </div>
+  <div class="reveal" style="max-width:900px;margin:0 auto;overflow-x:auto;">
+    <table class="data-table">
+      <thead><tr><th>Centre Type</th><th>Studies/Month</th><th>Avg Size</th><th>Monthly Data</th><th>5-Year Total</th><th>Recommended</th></tr></thead>
+      <tbody>
+        <tr><td>X-ray only clinic</td><td>200-500</td><td>10 MB</td><td>2-5 GB</td><td>120-300 GB</td><td>NAS (2 TB)</td></tr>
+        <tr><td>Ultrasound centre</td><td>300-800</td><td>30 MB</td><td>9-24 GB</td><td>540 GB-1.4 TB</td><td>NAS (4 TB)</td></tr>
+        <tr><td>CT centre</td><td>200-600</td><td>200 MB</td><td>40-120 GB</td><td>2.4-7.2 TB</td><td>NAS (16 TB)</td></tr>
+        <tr><td>MRI centre</td><td>100-400</td><td>500 MB</td><td>50-200 GB</td><td>3-12 TB</td><td>NAS (32 TB)</td></tr>
+        <tr><td>Multi-modality</td><td>500-2000</td><td>150 MB</td><td>75-300 GB</td><td>4.5-18 TB</td><td>NAS (32-64 TB)</td></tr>
+        <tr><td>Hospital chain (per branch)</td><td>1000-5000</td><td>200 MB</td><td>200-1000 GB</td><td>12-60 TB</td><td>NAS + Cloud hybrid</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- RECOMMENDATION -->
+<section>
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">Our Recommendation</div>
+    <h2 class="section-title reveal">On-Premise NAS + Cloud Backup = Best of Both</h2>
+  </div>
+  <div class="feature-grid stagger" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="card reveal"><div class="card-icon">🖥️</div><h3 class="card-title">Primary: NAS</h3><p class="card-text">50-65% cheaper than cloud for imaging workloads. Zero latency for viewer. No internet dependency. 5-year NAS lifespan. RAID-protected.</p></div>
+    <div class="card reveal"><div class="card-icon">☁️</div><h3 class="card-title">Backup: Cloud Archive</h3><p class="card-text">Azure Cool/Archive or AWS Glacier for disaster recovery. Pennies per GB/month. Compliant off-site backup. Auto-encrypted.</p></div>
+    <div class="card reveal"><div class="card-icon">🤝</div><h3 class="card-title">Managed: DicoFlow Hosting</h3><p class="card-text">If you don't want to manage any infrastructure, our managed hosting includes everything: compute, storage, backup, monitoring, 24/7 support.</p></div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2 class="cta-title reveal">Ready to Calculate Your <span class="gradient" style="background:var(--gradient-text);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Full ROI?</span></h2>
+  <div class="cta-buttons reveal">
+    <a href="roi-calculator.html" class="btn btn-primary btn-lg">ROI Calculator →</a>
+    <a href="pricing.html" class="btn btn-outline btn-lg">View Pricing</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/calculators.js"></script>
+<script>
+function runCalculation() {
+  const tier = document.getElementById('calc-tier').value;
+  const studies = parseInt(document.getElementById('calc-studies').value) || 500;
+  const avgSize = parseInt(document.getElementById('calc-avg-size').value) || 150;
+  const retention = parseInt(document.getElementById('calc-retention').value) || 60;
+  const users = parseInt(document.getElementById('calc-users').value) || 5;
+
+  const totalStorageGB = Math.ceil((studies * avgSize * retention) / 1024);
+  const monthlyDataGB = Math.ceil((studies * avgSize) / 1024);
+
+  const opts = { studies, avgSizeMB: avgSize, retentionMonths: retention, users, totalStorageGB, monthlyDataGB };
+
+  const azure = window.DicoFlowCalculators.calculateCloudCost('azure', opts);
+  const aws = window.DicoFlowCalculators.calculateCloudCost('aws', opts);
+  const gcp = window.DicoFlowCalculators.calculateCloudCost('gcp', opts);
+  const nas = window.DicoFlowCalculators.calculateNAS(opts);
+  const fmt = window.DicoFlowCalculators.formatINR;
+
+  function renderCloud(el, r, provider) {
+    el.innerHTML = `
+      <table class="data-table" style="margin-bottom:1.5rem;">
+        <tr><td>Compute (VM)</td><td style="text-align:right;">${fmt(r.compute)}/mo</td></tr>
+        <tr><td>Database</td><td style="text-align:right;">${fmt(r.database)}/mo</td></tr>
+        <tr><td>Storage (${totalStorageGB.toLocaleString()} GB growing)</td><td style="text-align:right;">${fmt(r.storage)}/mo</td></tr>
+        <tr><td>Backup</td><td style="text-align:right;">${fmt(r.backup)}/mo</td></tr>
+        <tr><td>Archive</td><td style="text-align:right;">${fmt(r.archive)}/mo</td></tr>
+        <tr style="font-weight:700;color:var(--teal-light);"><td>Monthly Total (incl. DicoFlow margin)</td><td style="text-align:right;">${fmt(r.totalMonthly)}/mo</td></tr>
+        <tr><td>Annual Cost</td><td style="text-align:right;">${fmt(r.totalMonthly * 12)}/yr</td></tr>
+        <tr style="font-weight:700;"><td>3-Year TCO</td><td style="text-align:right;">${fmt(r.totalMonthly * 36)}</td></tr>
+      </table>
+      ${r.reservedDiscount ? `<p class="text-sm text-muted">💡 With 1-year reserved instances: save ~${Math.round(r.reservedDiscount * 100)}% on compute. Effective monthly: ~${fmt(r.totalMonthly * (1 - r.reservedDiscount * 0.4))}/mo</p>` : ''}
+    `;
+  }
+
+  renderCloud(document.getElementById('azure-details'), azure, 'Azure');
+  renderCloud(document.getElementById('aws-details'), aws, 'AWS');
+  renderCloud(document.getElementById('gcp-details'), gcp, 'GCP');
+
+  // NAS
+  document.getElementById('nas-details').innerHTML = `
+    <table class="data-table" style="margin-bottom:1.5rem;">
+      <tr><td>Hardware (NAS + Drives)</td><td style="text-align:right;">${fmt(nas.hardware)} one-time</td></tr>
+      <tr><td>Annual Maintenance</td><td style="text-align:right;">${fmt(nas.annualMaintenance)}/yr</td></tr>
+      <tr><td>Electricity (~₹500-1000/mo)</td><td style="text-align:right;">~${fmt(750 * 12)}/yr</td></tr>
+      <tr style="font-weight:700;color:var(--teal-light);"><td>3-Year TCO</td><td style="text-align:right;">${fmt(nas.threeYearTCO)}</td></tr>
+      <tr><td>Monthly Equivalent</td><td style="text-align:right;">${fmt(Math.round(nas.threeYearTCO / 36))}/mo</td></tr>
+    </table>
+    <p class="text-sm" style="color:var(--success);">💰 NAS is typically <strong>50-65% cheaper</strong> than cloud for imaging workloads. Recommended for centres with stable storage needs.</p>
+  `;
+
+  // TCO Comparison
+  const azureTCO = azure.totalMonthly * 36;
+  const awsTCO = aws.totalMonthly * 36;
+  const gcpTCO = gcp.totalMonthly * 36;
+  const nasTCO = nas.threeYearTCO;
+  const maxTCO = Math.max(azureTCO, awsTCO, gcpTCO, nasTCO);
+
+  document.getElementById('tco-comparison').innerHTML = `
+    <div style="margin-top:2rem;">
+      <div class="compare-bar"><div class="compare-bar-label">NAS</div><div class="compare-bar-track"><div class="compare-bar-fill dicoflow" style="width:${(nasTCO/maxTCO*90)}%;">${fmt(nasTCO)}</div></div></div>
+      <div class="compare-bar"><div class="compare-bar-label">Azure</div><div class="compare-bar-track"><div class="compare-bar-fill competitor" style="width:${(azureTCO/maxTCO*90)}%;">${fmt(azureTCO)}</div></div></div>
+      <div class="compare-bar"><div class="compare-bar-label">AWS</div><div class="compare-bar-track"><div class="compare-bar-fill competitor" style="width:${(awsTCO/maxTCO*90)}%;">${fmt(awsTCO)}</div></div></div>
+      <div class="compare-bar"><div class="compare-bar-label">GCP</div><div class="compare-bar-track"><div class="compare-bar-fill competitor" style="width:${(gcpTCO/maxTCO*90)}%;">${fmt(gcpTCO)}</div></div></div>
+    </div>
+  `;
+
+  // Managed hosting estimate (cloud cost + 20% management fee)
+  const cheapestCloud = Math.min(azure.totalMonthly, aws.totalMonthly, gcp.totalMonthly);
+  const managedMonthly = Math.round(cheapestCloud * 1.2);
+  document.getElementById('managed-details').innerHTML = `
+    <table class="data-table">
+      <tr><td>Infrastructure (cheapest cloud)</td><td style="text-align:right;">${fmt(cheapestCloud)}/mo</td></tr>
+      <tr><td>Management Fee (20%)</td><td style="text-align:right;">${fmt(Math.round(cheapestCloud * 0.2))}/mo</td></tr>
+      <tr style="font-weight:700;color:var(--teal-light);"><td>Total Managed Hosting</td><td style="text-align:right;">${fmt(managedMonthly)}/mo</td></tr>
+    </table>
+    <p class="text-sm text-muted mt-3">Includes: server provisioning, monitoring, automated backups, security updates, 24/7 support, 99.9% SLA.</p>
+  `;
+
+  document.getElementById('results-section').style.display = 'block';
+  document.getElementById('results-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Re-init tabs for result section
+  if (window.DicoFlowAnimations) window.DicoFlowAnimations.initTabs();
+}
+</script>
+</body>
+</html>

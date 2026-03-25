@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategy Planner — Per-Week, Per-Tier, Every Combination — DicoFlow</title>
+<meta name="description" content="Complete 48-week execution plan, single-tier strategy deep-dives, interactive tier combination builder, marketing ROI per tier, fortnightly milestone tracker. The ultimate DicoFlow business analyst reference.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .plan-table{width:100%;border-collapse:collapse;font-size:.8rem;}
+  .plan-table th{background:rgba(77,208,225,.08);color:var(--teal-light);padding:.55rem .4rem;text-align:right;font-weight:600;white-space:nowrap;border-bottom:1px solid var(--border-teal);position:sticky;top:0;z-index:2;}
+  .plan-table th:first-child{text-align:left;}
+  .plan-table td{padding:.45rem .4rem;text-align:right;border-bottom:1px solid var(--border);color:var(--text-secondary);}
+  .plan-table td:first-child{text-align:left;color:var(--text-primary);font-weight:500;}
+  .plan-table tr:hover td{background:rgba(77,208,225,.03);}
+  .plan-table .total-row td{font-weight:700;color:var(--teal-light);border-top:2px solid var(--border-teal);background:rgba(77,208,225,.04);}
+  .plan-table .q-row td{background:rgba(77,208,225,.05);font-weight:600;color:var(--teal);border-top:1px solid var(--border-teal);}
+  .plan-table .section-header td{background:rgba(77,208,225,.06);color:var(--teal);font-weight:600;text-align:left;letter-spacing:.03em;}
+  .plan-table .highlight-row td{background:rgba(38,166,154,.06);}
+
+  /* Tabs */
+  .stab-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;justify-content:center;}
+  .stab-btn{padding:.5rem 1rem;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-card);color:var(--text-muted);cursor:pointer;font-size:.8rem;font-weight:600;transition:all var(--transition);}
+  .stab-btn:hover{border-color:var(--border-teal-hover);color:var(--text-primary);}
+  .stab-btn.active{border-color:var(--teal);color:var(--teal-light);background:rgba(77,208,225,.08);box-shadow:0 0 12px rgba(77,208,225,.15);}
+  .stab-panel{display:none;}
+  .stab-panel.active{display:block;}
+
+  /* Combo builder */
+  .combo-row{display:flex;align-items:center;gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--border);}
+  .combo-label{min-width:130px;font-weight:600;color:var(--text-primary);font-size:.85rem;}
+  .combo-slider{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:rgba(255,255,255,.08);outline:none;}
+  .combo-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--teal);cursor:pointer;border:2px solid var(--bg-primary);}
+  .combo-val{min-width:32px;text-align:center;font-weight:800;color:var(--teal-light);font-size:1.1rem;}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:1.5rem;}
+  .result-box{text-align:center;padding:1.2rem;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-card);}
+  .result-number{font-size:1.5rem;font-weight:800;color:var(--teal-light);}
+  .result-label{font-size:.7rem;color:var(--text-muted);margin-top:.3rem;text-transform:uppercase;letter-spacing:.05em;}
+
+  /* Strategy cards */
+  .strat-card{border:1px solid var(--border);border-radius:var(--radius-xl);padding:2rem;background:var(--bg-card);transition:all var(--transition);position:relative;overflow:hidden;}
+  .strat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-teal);}
+  .strat-card:hover{border-color:var(--border-teal-hover);transform:translateY(-2px);}
+  .strat-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;}
+  .strat-tier{font-size:1.3rem;font-weight:800;color:var(--teal-light);}
+  .strat-badge{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;padding:.25rem .6rem;border-radius:12px;border:1px solid var(--border-teal);color:var(--teal);}
+  .strat-kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1rem 0;}
+  .strat-kpi-item{text-align:center;padding:.5rem;}
+  .strat-kpi-num{font-size:1.1rem;font-weight:800;color:var(--success);}
+  .strat-kpi-lbl{font-size:.65rem;color:var(--text-muted);text-transform:uppercase;}
+  .strat-detail{font-size:.82rem;color:var(--text-secondary);line-height:1.7;}
+  .strat-detail strong{color:var(--text-primary);}
+  .strat-detail ul{padding-left:1.2rem;margin:.5rem 0;}
+  .strat-detail li{margin-bottom:.3rem;}
+
+  /* Fortnightly */
+  .fn-grid{display:grid;grid-template-columns:60px 1fr;gap:0;}
+  .fn-period{padding:.6rem .5rem;font-weight:700;color:var(--teal);font-size:.75rem;border-right:2px solid var(--border-teal);text-align:center;position:relative;}
+  .fn-period::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:var(--teal);}
+  .fn-content{padding:.6rem .75rem;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--text-secondary);}
+  .fn-content strong{color:var(--text-primary);}
+
+  /* Marketing ROI */
+  .roi-bar{display:flex;align-items:center;gap:.75rem;margin:.4rem 0;}
+  .roi-bar-label{min-width:100px;font-size:.78rem;color:var(--text-muted);}
+  .roi-bar-track{flex:1;height:16px;border-radius:8px;background:rgba(255,255,255,.06);overflow:hidden;position:relative;}
+  .roi-bar-fill{height:100%;border-radius:8px;transition:width 1s ease;}
+  .roi-bar-fill.invest{background:linear-gradient(90deg,#ef5350,#ff7043);}
+  .roi-bar-fill.return{background:var(--gradient-teal);}
+  .roi-bar-amt{font-size:.75rem;font-weight:600;min-width:60px;}
+
+  .scroll-table{max-height:500px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-md);}
+
+  @media(max-width:768px){
+    .combo-row{flex-wrap:wrap;}
+    .strat-kpi{grid-template-columns:1fr 1fr;}
+    .result-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:5rem;padding-bottom:2rem;">
+  <div class="hero-inner">
+    <div class="section-badge" style="animation:fadeInUp .6s ease both;">🧠 Strategy Planner</div>
+    <h1 class="hero-title">In-Depth <span class="gradient">Business Strategy</span> Planner</h1>
+    <p class="hero-desc">Every week. Every tier. Every combination. Single-tier focus plans, mixed-tier strategies, marketing ROI analysis, fortnightly milestones, and an interactive combination builder. The complete analyst's toolkit.</p>
+  </div>
+</section>
+
+<!-- ===== JUMP NAV ===== -->
+<section style="padding-top:0;">
+  <div class="stab-nav">
+    <a href="#sec-weekly" class="stab-btn active" onclick="jumpTo('sec-weekly')">📅 48-Week Plan</a>
+    <a href="#sec-fortnightly" class="stab-btn" onclick="jumpTo('sec-fortnightly')">📆 Fortnightly Plan</a>
+    <a href="#sec-single" class="stab-btn" onclick="jumpTo('sec-single')">🎯 Single-Tier Strategies</a>
+    <a href="#sec-combo" class="stab-btn" onclick="jumpTo('sec-combo')">🔧 Combo Builder</a>
+    <a href="#sec-presets" class="stab-btn" onclick="jumpTo('sec-presets')">📊 Preset Combos</a>
+    <a href="#sec-marketing" class="stab-btn" onclick="jumpTo('sec-marketing')">📈 Marketing ROI</a>
+    <a href="#sec-milestones" class="stab-btn" onclick="jumpTo('sec-milestones')">🏆 Milestone Targets</a>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 1: COMPLETE 48-WEEK PLAN
+     ============================================================ -->
+<section id="sec-weekly">
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">📅 Complete 48-Week Plan</div>
+    <h2 class="section-title reveal">Week-by-Week Execution for 12 Months</h2>
+    <p class="section-subtitle reveal">Every single week mapped with activities, KPIs, revenue targets. Scroll through the full year.</p>
+  </div>
+
+  <div class="reveal scroll-table" style="max-width:1100px;margin:0 auto;">
+    <table class="plan-table" id="weekly-table">
+      <thead>
+        <tr><th>Week</th><th>Period</th><th>Key Activities</th><th>T2 Pipeline</th><th>T4 Pipeline</th><th>Deals Target</th><th>Weekly Rev Target</th><th>Cumulative Rev</th></tr>
+      </thead>
+      <tbody id="weekly-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2: FORTNIGHTLY DETAILED PLAN
+     ============================================================ -->
+<section id="sec-fortnightly" style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">📆 Fortnightly (15-Day) Plan</div>
+      <h2 class="section-title reveal">24 Fortnights — Detailed Execution</h2>
+      <p class="section-subtitle reveal">Each 15-day block with specific targets, marketing activities, and revenue expectations per tier.</p>
+    </div>
+
+    <div class="reveal scroll-table" style="max-height:600px;">
+      <table class="plan-table" id="fn-table">
+        <thead><tr><th>Fortnight</th><th>Dates (Approx)</th><th>T1 Deals</th><th>T2 Deals</th><th>T3 Deals</th><th>T4 Deals</th><th>T5 Deals</th><th>Revenue</th><th>Cumulative</th><th>Key Focus</th></tr></thead>
+        <tbody id="fn-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3: SINGLE-TIER-ONLY STRATEGY DEEP DIVES
+     ============================================================ -->
+<section id="sec-single">
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">🎯 Single-Tier-Only Strategies</div>
+    <h2 class="section-title reveal">What If You Focus on Only ONE Tier?</h2>
+    <p class="section-subtitle reveal">Complete 12-month projections if you dedicate 100% effort to a single tier. Useful for territory-specific decisions or niche market entry.</p>
+  </div>
+
+  <div class="stab-nav" id="single-tier-tabs">
+    <button class="stab-btn active" onclick="showSingle('t1')">T1 Billing Only</button>
+    <button class="stab-btn" onclick="showSingle('t2')">T2 PACS Only</button>
+    <button class="stab-btn" onclick="showSingle('t3')">T3 Radiology Only</button>
+    <button class="stab-btn" onclick="showSingle('t4')">T4 Enterprise Only</button>
+    <button class="stab-btn" onclick="showSingle('t5')">T5 Bundle Only</button>
+  </div>
+
+  <!-- T1 ONLY -->
+  <div class="stab-panel active" id="panel-t1" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="strat-card">
+      <div class="strat-header"><div class="strat-tier">T1 Billing — Single Tier Strategy</div><div class="strat-badge">Lowest Risk</div></div>
+      <div class="strat-kpi">
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹85K</div><div class="strat-kpi-lbl">Revenue/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹59.5K</div><div class="strat-kpi-lbl">Profit/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">70%</div><div class="strat-kpi-lbl">Gross Margin</div></div>
+      </div>
+      <div class="strat-detail">
+        <strong>Target Market:</strong> Pathology labs, small X-ray clinics, single-doctor diagnostic centres, dental clinics, ophthalmology clinics. High volume, low ticket.
+        <ul>
+          <li><strong>Month 1-2:</strong> Map 200+ small clinics in 50km radius. WhatsApp blitz with PCPNDT compliance message. Target 3-4 demos/week. Close 2-3 deals/month. Revenue: ₹1.7-2.5L</li>
+          <li><strong>Month 3-4:</strong> Ramp to 4-5 closes/month. Partner with medical equipment dealers who sell to clinics. Referral programme kicks in. Revenue: ₹3.4-4.25L/mo</li>
+          <li><strong>Month 5-8:</strong> Steady state: 5 deals/month. Launch second city. Revenue: ₹4.25L/mo × 4 = ₹17L</li>
+          <li><strong>Month 9-12:</strong> Scale to 6/month with 2nd sales rep. Revenue: ₹5.1L/mo × 4 = ₹20.4L</li>
+        </ul>
+      </div>
+      <div class="reveal" style="overflow-x:auto;margin-top:1.5rem;">
+        <table class="plan-table">
+          <thead><tr><th>Period</th><th>Deals/mo</th><th>Revenue/mo</th><th>Profit/mo</th><th>Cumulative Rev</th><th>Cumulative Profit</th><th>Marketing Spend</th><th>Marketing ROI</th></tr></thead>
+          <tbody>
+            <tr><td>Month 1-2</td><td>2</td><td>₹1.70L</td><td>₹1.19L</td><td>₹3.40L</td><td>₹2.38L</td><td>₹0.75L</td><td>3.2x</td></tr>
+            <tr><td>Month 3-4</td><td>4</td><td>₹3.40L</td><td>₹2.38L</td><td>₹10.20L</td><td>₹7.14L</td><td>₹1.00L</td><td>4.8x</td></tr>
+            <tr><td>Month 5-8</td><td>5</td><td>₹4.25L</td><td>₹2.98L</td><td>₹27.20L</td><td>₹19.04L</td><td>₹1.50L/q</td><td>5.7x</td></tr>
+            <tr><td>Month 9-12</td><td>6</td><td>₹5.10L</td><td>₹3.57L</td><td>₹47.60L</td><td>₹33.32L</td><td>₹1.50L/q</td><td>6.8x</td></tr>
+            <tr class="total-row"><td>YEAR 1</td><td>52 deals</td><td>—</td><td>—</td><td>₹44.2L</td><td>₹30.9L</td><td>₹7.0L</td><td>6.3x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(77,208,225,.05);border-radius:var(--radius-md);font-size:.82rem;">
+        <strong style="color:var(--teal-light);">T1-Only Verdict:</strong> Low risk, predictable, but caps at ~₹44L/yr. Best as entry strategy for new sales reps or secondary territory. <strong>Break-even: Month 5-6.</strong> Not enough for ambitious growth — must upsell to T2/T5 eventually.
+      </div>
+    </div>
+  </div>
+
+  <!-- T2 ONLY -->
+  <div class="stab-panel" id="panel-t2" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="strat-card" style="--accent:#4dd0e1;">
+      <div class="strat-header"><div class="strat-tier">T2 PACS — Single Tier Strategy</div><div class="strat-badge" style="color:#4dd0e1;border-color:rgba(77,208,225,.4);">Best Volume Play</div></div>
+      <div class="strat-kpi">
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹1.75L</div><div class="strat-kpi-lbl">Revenue/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹1.18L</div><div class="strat-kpi-lbl">Profit/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">67%</div><div class="strat-kpi-lbl">Gross Margin</div></div>
+      </div>
+      <div class="strat-detail">
+        <strong>Target Market:</strong> CT/MRI scan centres, multi-modality radiology centres, ultrasound centres wanting digital archiving. Sweet spot: 20-100 studies/day.
+        <ul>
+          <li><strong>Month 1-2:</strong> Map 50+ CT/MRI centres. Film cost calculator is your secret weapon. 8-10 demos, 1-2 closes. Revenue: ₹1.75-3.5L/mo</li>
+          <li><strong>Month 3-4:</strong> Pipeline matures. 3 closes/month from demo backlog + new outreach. Google Ads generating leads. Revenue: ₹5.25L/mo</li>
+          <li><strong>Month 5-8:</strong> Expand territory. Referrals from happy T2 customers. 3-4 closes/month. Revenue: ₹5.25-7L/mo</li>
+          <li><strong>Month 9-12:</strong> Steady 4 closes/month. Channel partners contributing 1/month. Revenue: ₹7L/mo</li>
+        </ul>
+      </div>
+      <div class="reveal" style="overflow-x:auto;margin-top:1.5rem;">
+        <table class="plan-table">
+          <thead><tr><th>Period</th><th>Deals/mo</th><th>Revenue/mo</th><th>Profit/mo</th><th>Cumulative Rev</th><th>Cumulative Profit</th><th>Marketing Spend</th><th>Marketing ROI</th></tr></thead>
+          <tbody>
+            <tr><td>Month 1-2</td><td>1.5</td><td>₹2.63L</td><td>₹1.76L</td><td>₹5.25L</td><td>₹3.53L</td><td>₹1.0L</td><td>3.5x</td></tr>
+            <tr><td>Month 3-4</td><td>3</td><td>₹5.25L</td><td>₹3.53L</td><td>₹15.75L</td><td>₹10.58L</td><td>₹1.5L</td><td>4.7x</td></tr>
+            <tr><td>Month 5-8</td><td>3.5</td><td>₹6.13L</td><td>₹4.12L</td><td>₹40.25L</td><td>₹27.05L</td><td>₹2.0L/q</td><td>5.5x</td></tr>
+            <tr><td>Month 9-12</td><td>4</td><td>₹7.00L</td><td>₹4.70L</td><td>₹68.25L</td><td>₹45.85L</td><td>₹2.0L/q</td><td>6.3x</td></tr>
+            <tr class="total-row"><td>YEAR 1</td><td>37 deals</td><td>—</td><td>—</td><td>₹64.75L</td><td>₹43.50L</td><td>₹9.5L</td><td>6.8x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(77,208,225,.05);border-radius:var(--radius-md);font-size:.82rem;">
+        <strong style="color:var(--teal-light);">T2-Only Verdict:</strong> The workhorse tier. Reliable ₹65L/yr with obvious film cost ROI story. <strong>Break-even: Month 3-4.</strong> Best single-tier strategy for initial market entry. Natural upsell path to T3/T5.
+      </div>
+    </div>
+  </div>
+
+  <!-- T3 ONLY -->
+  <div class="stab-panel" id="panel-t3" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="strat-card">
+      <div class="strat-header"><div class="strat-tier">T3 Radiology — Single Tier Strategy</div><div class="strat-badge" style="color:var(--emerald);border-color:rgba(38,166,154,.4);">Mid-Market Sweet Spot</div></div>
+      <div class="strat-kpi">
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹4.00L</div><div class="strat-kpi-lbl">Revenue/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹2.97L</div><div class="strat-kpi-lbl">Profit/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">74%</div><div class="strat-kpi-lbl">Gross Margin</div></div>
+      </div>
+      <div class="strat-detail">
+        <strong>Target Market:</strong> Established radiology departments, imaging chains (2-5 branches), hospitals with in-house radiology needing reporting + booklets.
+        <ul>
+          <li><strong>Month 1-2:</strong> Identify 30 qualifying centres. Longer sales cycle (radiology HODs need demos, trials). 1 close in Month 2. Revenue: ₹4L</li>
+          <li><strong>Month 3-4:</strong> Pipeline building. 1-2 closes/month. Webinar targeting radiologists. Revenue: ₹4-8L/mo</li>
+          <li><strong>Month 5-8:</strong> Referral effect from booklet quality. 2 closes/month steady. Revenue: ₹8L/mo</li>
+          <li><strong>Month 9-12:</strong> 2-3 closes/month with chain deals. Revenue: ₹8-12L/mo</li>
+        </ul>
+      </div>
+      <div class="reveal" style="overflow-x:auto;margin-top:1.5rem;">
+        <table class="plan-table">
+          <thead><tr><th>Period</th><th>Deals/mo</th><th>Revenue/mo</th><th>Profit/mo</th><th>Cumulative Rev</th><th>Cumulative Profit</th><th>Marketing Spend</th><th>Marketing ROI</th></tr></thead>
+          <tbody>
+            <tr><td>Month 1-2</td><td>0.5</td><td>₹2.0L</td><td>₹1.49L</td><td>₹4.0L</td><td>₹2.97L</td><td>₹1.0L</td><td>3.0x</td></tr>
+            <tr><td>Month 3-4</td><td>1.5</td><td>₹6.0L</td><td>₹4.46L</td><td>₹16.0L</td><td>₹11.88L</td><td>₹1.5L</td><td>5.3x</td></tr>
+            <tr><td>Month 5-8</td><td>2</td><td>₹8.0L</td><td>₹5.94L</td><td>₹48.0L</td><td>₹35.64L</td><td>₹2.0L/q</td><td>8.9x</td></tr>
+            <tr><td>Month 9-12</td><td>2.5</td><td>₹10.0L</td><td>₹7.43L</td><td>₹88.0L</td><td>₹65.34L</td><td>₹2.0L/q</td><td>11.1x</td></tr>
+            <tr class="total-row"><td>YEAR 1</td><td>22 deals</td><td>—</td><td>—</td><td>₹88.0L</td><td>₹65.3L</td><td>₹9.5L</td><td>9.3x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(38,166,154,.05);border-radius:var(--radius-md);font-size:.82rem;">
+        <strong style="color:var(--emerald);">T3-Only Verdict:</strong> High margin (74%), strong booklet/reporting differentiation. <strong>Break-even: Month 3.</strong> Slower start but excellent unit economics. Best if you have radiology department connections. Needs T2 pipeline as bridge during slow months.
+      </div>
+    </div>
+  </div>
+
+  <!-- T4 ONLY -->
+  <div class="stab-panel" id="panel-t4" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="strat-card" style="border-color:rgba(255,215,0,.15);">
+      <div class="strat-header"><div class="strat-tier">T4 Enterprise — Single Tier Strategy</div><div class="strat-badge" style="color:#ffd700;border-color:rgba(255,215,0,.4);">Highest Value</div></div>
+      <div class="strat-kpi">
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹8.50L</div><div class="strat-kpi-lbl">Revenue/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹6.45L</div><div class="strat-kpi-lbl">Profit/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">76%</div><div class="strat-kpi-lbl">Gross Margin</div></div>
+      </div>
+      <div class="strat-detail">
+        <strong>Target Market:</strong> Hospital chains (5+ branches), corporate hospitals, government hospital groups, large diagnostic chains with 200+ studies/day.
+        <ul>
+          <li><strong>Month 1-3:</strong> Long sales cycle. 10 hospital chain targets identified. On-site demos, CIO meetings. Procurement discussions. <strong>Expect 0-1 close in first 3 months.</strong> Revenue: ₹0-8.5L</li>
+          <li><strong>Month 4-6:</strong> First enterprise deals close. Multi-branch implementation adds complexity. 1 close/month. Revenue: ₹8.5L/mo</li>
+          <li><strong>Month 7-9:</strong> Referral from first enterprise. Volume discount negotiation for chains. 1-1.5 closes/month. Revenue: ₹8.5-12.75L/mo</li>
+          <li><strong>Month 10-12:</strong> Pipeline acceleration. 1-2 closes/month. Revenue: ₹8.5-17L/mo</li>
+        </ul>
+        <p style="margin-top:.75rem;color:var(--danger);font-weight:600;">⚠️ Warning: T4-only is HIGH RISK. Long sales cycle (3-6 months), procurement delays, cash flow gaps. Never go T4-only unless you have 6-month runway.</p>
+      </div>
+      <div class="reveal" style="overflow-x:auto;margin-top:1.5rem;">
+        <table class="plan-table">
+          <thead><tr><th>Period</th><th>Deals/mo</th><th>Revenue/mo</th><th>Profit/mo</th><th>Cumulative Rev</th><th>Cumulative Profit</th><th>Marketing Spend</th><th>Marketing ROI</th></tr></thead>
+          <tbody>
+            <tr><td>Month 1-3</td><td>0.33</td><td>₹2.83L</td><td>₹2.15L</td><td>₹8.50L</td><td>₹6.45L</td><td>₹2.0L</td><td>3.2x</td></tr>
+            <tr><td>Month 4-6</td><td>1</td><td>₹8.50L</td><td>₹6.45L</td><td>₹34.0L</td><td>₹25.80L</td><td>₹2.5L</td><td>5.2x</td></tr>
+            <tr><td>Month 7-9</td><td>1.33</td><td>₹11.33L</td><td>₹8.60L</td><td>₹68.0L</td><td>₹51.60L</td><td>₹2.5L</td><td>10.3x</td></tr>
+            <tr><td>Month 10-12</td><td>1.5</td><td>₹12.75L</td><td>₹9.68L</td><td>₹106.25L</td><td>₹80.63L</td><td>₹2.5L</td><td>12.9x</td></tr>
+            <tr class="total-row"><td>YEAR 1</td><td>12-13 deals</td><td>—</td><td>—</td><td>₹1.06 Cr</td><td>₹80.6L</td><td>₹9.5L</td><td>11.2x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(255,215,0,.05);border-radius:var(--radius-md);font-size:.82rem;">
+        <strong style="color:#ffd700;">T4-Only Verdict:</strong> Highest profit per deal, but deadly cash flow gap in Months 1-3. <strong>Break-even: Month 4-5.</strong> Only viable if you have warm hospital connections OR 6-month savings. ALWAYS pair with T2 for cash flow.
+      </div>
+    </div>
+  </div>
+
+  <!-- T5 ONLY -->
+  <div class="stab-panel" id="panel-t5" style="max-width:var(--max-width);margin:0 auto;">
+    <div class="strat-card">
+      <div class="strat-header"><div class="strat-tier">T5 Billing+PACS Bundle — Single Tier Strategy</div><div class="strat-badge">Upsell Play</div></div>
+      <div class="strat-kpi">
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹2.60L</div><div class="strat-kpi-lbl">Revenue/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">₹1.87L</div><div class="strat-kpi-lbl">Profit/Deal</div></div>
+        <div class="strat-kpi-item"><div class="strat-kpi-num">72%</div><div class="strat-kpi-lbl">Gross Margin</div></div>
+      </div>
+      <div class="strat-detail">
+        <strong>Target Market:</strong> New diagnostic centres starting from scratch, centres replacing both billing and image management, mid-size clinics wanting unified system.
+        <ul>
+          <li><strong>Month 1-2:</strong> Target new centre setups — partner with modality vendors (CT/MRI suppliers often know who's opening new centres). 1-2 closes. Revenue: ₹2.6-5.2L</li>
+          <li><strong>Month 3-6:</strong> Referral-driven + equipment dealer partnerships. 2 closes/month. Revenue: ₹5.2L/mo</li>
+          <li><strong>Month 7-12:</strong> Steady 2-3 closes/month. Revenue: ₹5.2-7.8L/mo</li>
+        </ul>
+      </div>
+      <div class="reveal" style="overflow-x:auto;margin-top:1.5rem;">
+        <table class="plan-table">
+          <thead><tr><th>Period</th><th>Deals/mo</th><th>Revenue/mo</th><th>Profit/mo</th><th>Cumulative Rev</th><th>Cumulative Profit</th><th>Marketing Spend</th><th>Marketing ROI</th></tr></thead>
+          <tbody>
+            <tr><td>Month 1-2</td><td>1</td><td>₹2.60L</td><td>₹1.87L</td><td>₹5.20L</td><td>₹3.74L</td><td>₹0.75L</td><td>5.0x</td></tr>
+            <tr><td>Month 3-6</td><td>2</td><td>₹5.20L</td><td>₹3.74L</td><td>₹26.0L</td><td>₹18.70L</td><td>₹1.0L/q</td><td>7.5x</td></tr>
+            <tr><td>Month 7-12</td><td>2.5</td><td>₹6.50L</td><td>₹4.68L</td><td>₹65.0L</td><td>₹46.78L</td><td>₹1.5L/q</td><td>8.9x</td></tr>
+            <tr class="total-row"><td>YEAR 1</td><td>28 deals</td><td>—</td><td>—</td><td>₹72.8L</td><td>₹52.4L</td><td>₹7.0L</td><td>10.4x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(77,208,225,.05);border-radius:var(--radius-md);font-size:.82rem;">
+        <strong style="color:var(--teal-light);">T5-Only Verdict:</strong> Good balance of volume and value. <strong>Break-even: Month 3.</strong> Best for markets where centres are mostly new setups. Harder in established markets where centres already have billing they won't change.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4: INTERACTIVE CUSTOM COMBINATION BUILDER
+     ============================================================ -->
+<section id="sec-combo" style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">🔧 Interactive Combination Builder</div>
+      <h2 class="section-title reveal">Build Your Own Tier Mix</h2>
+      <p class="section-subtitle reveal">Drag sliders to set how many deals per month for each tier. See instant projections for revenue, profit, break-even, and marketing ROI.</p>
+    </div>
+
+    <div class="strat-card reveal" style="max-width:700px;margin:0 auto;">
+      <h3 style="color:var(--teal-light);margin-bottom:1rem;">Deals per Month</h3>
+      <div id="combo-sliders">
+        <div class="combo-row"><span class="combo-label">T1 Billing (₹85K)</span><input type="range" min="0" max="10" value="1" class="combo-slider" id="sl-t1" oninput="updateCombo()"><span class="combo-val" id="sv-t1">1</span></div>
+        <div class="combo-row"><span class="combo-label">T2 PACS (₹1.75L)</span><input type="range" min="0" max="10" value="2" class="combo-slider" id="sl-t2" oninput="updateCombo()"><span class="combo-val" id="sv-t2">2</span></div>
+        <div class="combo-row"><span class="combo-label">T3 Radiology (₹4L)</span><input type="range" min="0" max="5" value="0" class="combo-slider" id="sl-t3" oninput="updateCombo()"><span class="combo-val" id="sv-t3">0</span></div>
+        <div class="combo-row"><span class="combo-label">T4 Enterprise (₹8.5L)</span><input type="range" min="0" max="5" value="1" class="combo-slider" id="sl-t4" oninput="updateCombo()"><span class="combo-val" id="sv-t4">1</span></div>
+        <div class="combo-row"><span class="combo-label">T5 Bundle (₹2.6L)</span><input type="range" min="0" max="10" value="0" class="combo-slider" id="sl-t5" oninput="updateCombo()"><span class="combo-val" id="sv-t5">0</span></div>
+      </div>
+
+      <div class="result-grid" id="combo-results"></div>
+
+      <!-- Detailed month-by-month projection for custom combo -->
+      <div style="margin-top:2rem;overflow-x:auto;">
+        <h4 style="color:var(--teal-light);margin-bottom:1rem;">12-Month Projection (Ramp-Up Model)</h4>
+        <table class="plan-table" id="combo-table">
+          <thead><tr><th>Month</th><th>Ramp %</th><th>Deals</th><th>Revenue</th><th>Profit</th><th>Cumulative Rev</th><th>Cumulative Profit</th></tr></thead>
+          <tbody id="combo-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5: ALL PRESET COMBINATION STRATEGIES
+     ============================================================ -->
+<section id="sec-presets">
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">📊 All Preset Combinations</div>
+    <h2 class="section-title reveal">15 Tier-Mix Strategies with Full Projections</h2>
+    <p class="section-subtitle reveal">Every viable combination analysed: monthly, quarterly, and annual projections. Find the perfect mix for your market.</p>
+  </div>
+
+  <div class="reveal" style="max-width:1200px;margin:0 auto;overflow-x:auto;">
+    <table class="plan-table" id="preset-table">
+      <thead>
+        <tr>
+          <th>Strategy Name</th><th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th>
+          <th>Deals/mo</th><th>Rev/mo</th><th>Profit/mo</th><th>Quarterly Rev</th><th>Annual Rev</th><th>Annual Profit</th><th>Margin</th><th>Break-Even</th><th>Risk</th>
+        </tr>
+      </thead>
+      <tbody id="preset-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6: MARKETING ROI PER TIER
+     ============================================================ -->
+<section id="sec-marketing" style="background:var(--bg-secondary);border-radius:var(--radius-xl);padding:5rem 2rem;">
+  <div style="max-width:var(--max-width);margin:0 auto;">
+    <div class="text-center mb-4">
+      <div class="section-badge reveal">📈 Marketing ROI per Tier</div>
+      <h2 class="section-title reveal">Where to Spend Your Marketing Budget</h2>
+      <p class="section-subtitle reveal">Cost to acquire one customer per tier, best channels, and return on marketing investment. Optimise every rupee.</p>
+    </div>
+
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="plan-table">
+        <thead><tr><th>Metric</th><th>T1 Billing</th><th>T2 PACS</th><th>T3 Radiology</th><th>T4 Enterprise</th><th>T5 Bundle</th></tr></thead>
+        <tbody>
+          <tr class="section-header"><td colspan="6">CUSTOMER ACQUISITION COST (CAC)</td></tr>
+          <tr><td>Google Ads CPC (avg)</td><td>₹25-40</td><td>₹40-80</td><td>₹60-120</td><td>₹80-150</td><td>₹35-70</td></tr>
+          <tr><td>Clicks to Lead (conversion)</td><td>3-5%</td><td>2-4%</td><td>1.5-3%</td><td>1-2%</td><td>2-4%</td></tr>
+          <tr><td>Leads to Demo (qualification)</td><td>30%</td><td>25%</td><td>20%</td><td>15%</td><td>25%</td></tr>
+          <tr><td>Demo to Close (win rate)</td><td>35%</td><td>30%</td><td>25%</td><td>20%</td><td>30%</td></tr>
+          <tr><td>Calls/Contacts per Close</td><td>25-35</td><td>35-50</td><td>50-75</td><td>80-120</td><td>35-50</td></tr>
+          <tr style="font-weight:700;color:var(--teal-light);"><td>Estimated CAC</td><td>₹5,000-8K</td><td>₹12,000-18K</td><td>₹25,000-35K</td><td>₹50,000-80K</td><td>₹10,000-15K</td></tr>
+          <tr class="section-header"><td colspan="6">ROI ANALYSIS</td></tr>
+          <tr><td>Deal Revenue</td><td>₹85,000</td><td>₹1,75,000</td><td>₹4,00,000</td><td>₹8,50,000</td><td>₹2,60,000</td></tr>
+          <tr><td>Deal Profit</td><td>₹59,500</td><td>₹1,17,500</td><td>₹2,97,000</td><td>₹6,45,000</td><td>₹1,87,000</td></tr>
+          <tr style="color:var(--success);font-weight:700;"><td>Marketing ROI (Profit ÷ CAC)</td><td>7.4-11.9x</td><td>6.5-9.8x</td><td>8.5-11.9x</td><td>8.1-12.9x</td><td>12.5-18.7x</td></tr>
+          <tr style="color:var(--success);font-weight:700;"><td>3-Year LTV ÷ CAC</td><td>12-20x</td><td>11-16x</td><td>13-18x</td><td>12-19x</td><td>19-29x</td></tr>
+          <tr class="section-header"><td colspan="6">BEST MARKETING CHANNELS</td></tr>
+          <tr><td>#1 Channel</td><td>WhatsApp</td><td>Google Ads</td><td>IRIA Meetings</td><td>Direct Sales</td><td>Equipment Dealers</td></tr>
+          <tr><td>#2 Channel</td><td>Referral</td><td>Cold Calling</td><td>Webinars</td><td>Trade Shows</td><td>Google Ads</td></tr>
+          <tr><td>#3 Channel</td><td>Local SEO</td><td>Referral</td><td>LinkedIn</td><td>LinkedIn CIO</td><td>Referral</td></tr>
+          <tr><td>Sales Cycle Length</td><td>1-2 weeks</td><td>2-4 weeks</td><td>4-8 weeks</td><td>3-6 months</td><td>2-4 weeks</td></tr>
+          <tr><td>Best Time to Sell</td><td>Any time</td><td>Q1-Q2</td><td>After conferences</td><td>Budget season (Jan-Mar)</td><td>New centre setup</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2 stagger" style="margin-top:2rem;">
+      <div class="strat-card reveal" style="padding:1.5rem;">
+        <h3 style="color:var(--teal-light);font-size:1rem;margin-bottom:1rem;">Marketing Budget Allocation — Recommended</h3>
+        <div class="roi-bar"><span class="roi-bar-label">T2 PACS (40%)</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:40%;"></div></div><span class="roi-bar-amt" style="color:var(--teal);">₹4.2L/yr</span></div>
+        <div class="roi-bar"><span class="roi-bar-label">T4 Enterprise (25%)</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:25%;"></div></div><span class="roi-bar-amt" style="color:var(--teal);">₹2.6L/yr</span></div>
+        <div class="roi-bar"><span class="roi-bar-label">T1 Billing (15%)</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:15%;"></div></div><span class="roi-bar-amt" style="color:var(--teal);">₹1.6L/yr</span></div>
+        <div class="roi-bar"><span class="roi-bar-label">T3 Radiology (12%)</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:12%;"></div></div><span class="roi-bar-amt" style="color:var(--teal);">₹1.3L/yr</span></div>
+        <div class="roi-bar"><span class="roi-bar-label">T5 Bundle (8%)</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:8%;"></div></div><span class="roi-bar-amt" style="color:var(--teal);">₹0.8L/yr</span></div>
+        <p style="font-size:.75rem;color:var(--text-muted);margin-top:.75rem;">Total marketing budget: ₹10.5L/year (Moderate scenario)</p>
+      </div>
+      <div class="strat-card reveal" style="padding:1.5rem;">
+        <h3 style="color:var(--teal-light);font-size:1rem;margin-bottom:1rem;">Expected Returns per ₹1L Spent</h3>
+        <div class="roi-bar"><span class="roi-bar-label">T5 Bundle</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:94%;"></div></div><span class="roi-bar-amt" style="color:var(--success);">₹18.7L</span></div>
+        <div class="roi-bar"><span class="roi-bar-label">T4 Enterprise</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:65%;"></div></div><span class="roi-bar-amt" style="color:var(--success);">₹12.9L</span></div>
+        <div class="roi-bar"><span class="roi-bar-label">T1 Billing</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:60%;"></div></div><span class="roi-bar-amt" style="color:var(--success);">₹11.9L</span></div>
+        <div class="roi-bar"><span class="roi-bar-label">T3 Radiology</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:60%;"></div></div><span class="roi-bar-amt" style="color:var(--success);">₹11.9L</span></div>
+        <div class="roi-bar"><span class="roi-bar-label">T2 PACS</span><div class="roi-bar-track"><div class="roi-bar-fill return" style="width:49%;"></div></div><span class="roi-bar-amt" style="color:var(--success);">₹9.8L</span></div>
+        <p style="font-size:.75rem;color:var(--text-muted);margin-top:.75rem;">Return = Gross Profit per deal ÷ CAC. Higher is better.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 7: MILESTONE TARGETS PER COMBINATION
+     ============================================================ -->
+<section id="sec-milestones">
+  <div class="text-center mb-4">
+    <div class="section-badge reveal">🏆 Milestone Targets</div>
+    <h2 class="section-title reveal">When Do You Hit Key Milestones?</h2>
+    <p class="section-subtitle reveal">Select a strategy to see when you reach each financial milestone.</p>
+  </div>
+
+  <div class="stab-nav" id="ms-tabs">
+    <button class="stab-btn active" onclick="showMilestones('t2only')">T2-Only</button>
+    <button class="stab-btn" onclick="showMilestones('t2t4')">T2+T4</button>
+    <button class="stab-btn" onclick="showMilestones('balanced')">Balanced Mix</button>
+    <button class="stab-btn" onclick="showMilestones('enterprise')">Enterprise Heavy</button>
+    <button class="stab-btn" onclick="showMilestones('full')">Full Spectrum</button>
+    <button class="stab-btn" onclick="showMilestones('custom')">Your Custom Mix</button>
+  </div>
+
+  <div class="reveal" style="max-width:900px;margin:0 auto;overflow-x:auto;">
+    <table class="plan-table" id="ms-table">
+      <thead><tr><th>Milestone</th><th>Target</th><th>Expected Month</th><th>Cumulative Revenue</th><th>Cumulative Profit</th><th>Total Deals</th></tr></thead>
+      <tbody id="ms-body"></tbody>
+    </table>
+  </div>
+
+  <div class="reveal" style="max-width:900px;margin:2rem auto 0;">
+    <div style="padding:1.5rem;border:1px solid var(--border-teal);border-radius:var(--radius-lg);background:rgba(77,208,225,.03);">
+      <h4 style="color:var(--teal-light);margin-bottom:1rem;">📌 Universal Milestones Every Strategy Must Hit</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;font-size:.82rem;color:var(--text-secondary);">
+        <div><strong style="color:var(--text-primary);">Week 2:</strong> First demo completed</div>
+        <div><strong style="color:var(--text-primary);">Week 4:</strong> First revenue (any tier)</div>
+        <div><strong style="color:var(--text-primary);">Month 2:</strong> 3+ proposals out</div>
+        <div><strong style="color:var(--text-primary);">Month 3:</strong> First customer testimonial</div>
+        <div><strong style="color:var(--text-primary);">Month 4:</strong> CRM with 100+ contacts</div>
+        <div><strong style="color:var(--text-primary);">Month 6:</strong> ₹50L+ cumulative (moderate)</div>
+        <div><strong style="color:var(--text-primary);">Month 8:</strong> Monthly revenue > burn</div>
+        <div><strong style="color:var(--text-primary);">Month 10:</strong> 2nd city operational</div>
+        <div><strong style="color:var(--text-primary);">Month 12:</strong> 25+ active customers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title reveal">Every Number. Every Tier. Every Week. <span class="gradient" style="background:var(--gradient-text);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Execute.</span></h2>
+  <div class="cta-buttons reveal">
+    <a href="business-plan.html" class="btn btn-primary btn-lg">Master Business Plan →</a>
+    <a href="total-cost.html" class="btn btn-outline btn-lg">End-User Cost Sheet →</a>
+    <a href="roi-calculator.html" class="btn btn-outline btn-lg">ROI Calculator →</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/animations.js"></script>
+<script>
+'use strict';
+
+// ===== CONSTANTS =====
+const P = { t1:85000, t2:175000, t3:400000, t4:850000, t5:260000 };
+const COST_RATIO = { t1:.30, t2:.33, t3:.26, t4:.24, t5:.28 }; // cost as % of revenue
+const AMC = { t1:15000, t2:30000, t3:60000, t4:125000, t5:40000 };
+
+function fmtINR(n) {
+  if (n >= 10000000) return '₹' + (n/10000000).toFixed(2) + ' Cr';
+  if (n >= 100000) return '₹' + (n/100000).toFixed(1) + 'L';
+  if (n >= 1000) return '₹' + (n/1000).toFixed(1) + 'K';
+  return '₹' + Math.round(n).toLocaleString('en-IN');
+}
+
+// ===== 1. 48-WEEK TABLE =====
+(function buildWeekly() {
+  const data = [
+    // Month 1 (Weeks 1-4)
+    { w:'W1', p:'Month 1', act:'Territory mapping, CRM setup, product training', t2p:'Map 50 centres', t4p:'Identify 10 hospitals', deals:0, rev:0 },
+    { w:'W2', p:'Month 1', act:'Cold outreach blitz (125 calls), WhatsApp campaigns', t2p:'8 demos booked', t4p:'Intro emails sent', deals:0, rev:0 },
+    { w:'W3', p:'Month 1', act:'Execute 5-8 T2 demos, Google Ads launch', t2p:'6 demos done, 2 proposals', t4p:'CIO meetings requested', deals:0, rev:0 },
+    { w:'W4', p:'Month 1', act:'Close first T2, book T4 discovery meetings', t2p:'1 close, 3 in pipeline', t4p:'2 discovery meetings', deals:1, rev:175000 },
+    // Month 2 (Weeks 5-8)
+    { w:'W5', p:'Month 2', act:'T4 on-site demos, continue T2 pipeline', t2p:'5 new demos booked', t4p:'2-3 on-site visits', deals:0, rev:0 },
+    { w:'W6', p:'Month 2', act:'2nd T2 close, T4 proposals, T1 channel open', t2p:'2nd close', t4p:'2 proposals sent', deals:1, rev:175000 },
+    { w:'W7', p:'Month 2', act:'T4 negotiation, T2 pipeline, T1 demos', t2p:'3 demos, follow-ups', t4p:'Negotiation phase', deals:1, rev:85000 },
+    { w:'W8', p:'Month 2', act:'🏆 First T4 close! T2 + T1 closes', t2p:'3rd close', t4p:'1st close!', deals:2, rev:1025000 },
+    // Month 3 (Weeks 9-12)
+    { w:'W9', p:'Month 3', act:'T3 channel launch, IRIA chapter meeting', t2p:'4 new prospects', t4p:'Referral from 1st T4', deals:0, rev:0 },
+    { w:'W10', p:'Month 3', act:'T2 closings, T3 first demo', t2p:'1 close', t4p:'Pipeline nurture', deals:1, rev:175000 },
+    { w:'W11', p:'Month 3', act:'T3 trial deployment, T2 demos', t2p:'2 demos', t4p:'2nd T4 prospect warm', deals:1, rev:175000 },
+    { w:'W12', p:'Month 3', act:'T3 first close, T2 close, case study published', t2p:'1 close', t4p:'Follow-up', deals:2, rev:575000 },
+    // Month 4 (Weeks 13-16)
+    { w:'W13', p:'Month 4', act:'Hire 2nd sales rep, T2 volume push', t2p:'6 demos/week target', t4p:'2nd T4 proposal', deals:1, rev:175000 },
+    { w:'W14', p:'Month 4', act:'T1 clinic blitz by new rep', t2p:'1 close', t4p:'Negotiation', deals:2, rev:260000 },
+    { w:'W15', p:'Month 4', act:'T4 2nd close, T5 bundle demo to new centre', t2p:'Pipeline building', t4p:'2nd close!', deals:1, rev:850000 },
+    { w:'W16', p:'Month 4', act:'T2 + T5 closes, blog content push', t2p:'2 closes', t4p:'Next batch prospect', deals:3, rev:610000 },
+    // Month 5 (Weeks 17-20)
+    { w:'W17', p:'Month 5', act:'Adjacent city expansion begins', t2p:'New city mapping', t4p:'Hospital chain outreach', deals:1, rev:175000 },
+    { w:'W18', p:'Month 5', act:'Webinar: 50+ registrations', t2p:'1 close', t4p:'Webinar leads', deals:1, rev:175000 },
+    { w:'W19', p:'Month 5', act:'Distributor partnership signed', t2p:'2 demos', t4p:'Chain discussion', deals:1, rev:400000 },
+    { w:'W20', p:'Month 5', act:'T2 + T1 closes from new city', t2p:'1 close', t4p:'Pipeline review', deals:2, rev:260000 },
+    // Month 6 (Weeks 21-24)
+    { w:'W21', p:'Month 6', act:'Mid-year review, channel optimization', t2p:'Optimize underperformers', t4p:'T4 pipeline refresh', deals:1, rev:175000 },
+    { w:'W22', p:'Month 6', act:'3 case studies published, T4 close', t2p:'Referral deals', t4p:'3rd close', deals:1, rev:850000 },
+    { w:'W23', p:'Month 6', act:'T2 from referrals, T5 bundle close', t2p:'1 close', t4p:'Next pipeline', deals:2, rev:435000 },
+    { w:'W24', p:'Month 6', act:'🎯 MID-YEAR TARGET: ₹75L+', t2p:'AMC revenue base', t4p:'4th T4 in qualification', deals:1, rev:175000 },
+    // Month 7-8 (Weeks 25-32)
+    { w:'W25', p:'Month 7', act:'Medicall trade show prep', t2p:'Steady 1/week', t4p:'Trade show leads', deals:1, rev:175000 },
+    { w:'W26', p:'Month 7', act:'Trade show execution, T4 lead gen', t2p:'1 close', t4p:'5 new enterprise leads', deals:1, rev:175000 },
+    { w:'W27', p:'Month 7', act:'Trade show follow-ups', t2p:'2 demos', t4p:'3 on-site visits planned', deals:1, rev:400000 },
+    { w:'W28', p:'Month 7', act:'T2 + T1 closes', t2p:'1 close', t4p:'Proposals', deals:2, rev:260000 },
+    { w:'W29', p:'Month 8', act:'Volume discount for chain clients', t2p:'Chain deal negotiation', t4p:'4th close!', deals:1, rev:850000 },
+    { w:'W30', p:'Month 8', act:'T2 steady closings', t2p:'2 closes', t4p:'Pipeline', deals:2, rev:350000 },
+    { w:'W31', p:'Month 8', act:'T3 close from webinar lead', t2p:'1 close', t4p:'Follow-ups', deals:2, rev:575000 },
+    { w:'W32', p:'Month 8', act:'T1 volume from 2nd rep', t2p:'Pipeline', t4p:'Qualification', deals:2, rev:170000 },
+    // Month 9-10 (Weeks 33-40)
+    { w:'W33', p:'Month 9', act:'🏆 BREAK-EVEN — Monthly rev > burn', t2p:'3/month steady', t4p:'5th T4 in pipeline', deals:1, rev:175000 },
+    { w:'W34', p:'Month 9', act:'Year-end purchase urgency messaging', t2p:'1 close', t4p:'Budget season prep', deals:2, rev:435000 },
+    { w:'W35', p:'Month 9', act:'T2 + T1 closings', t2p:'1 close', t4p:'On-site demo', deals:2, rev:260000 },
+    { w:'W36', p:'Month 9', act:'T3 close, AMC renewals approach', t2p:'Pipeline', t4p:'Procurement process', deals:1, rev:400000 },
+    { w:'W37', p:'Month 10', act:'Year 2 planning starts', t2p:'New territory scouting', t4p:'3rd city hospital list', deals:1, rev:175000 },
+    { w:'W38', p:'Month 10', act:'Implementation team hiring', t2p:'2 closes', t4p:'5th close!', deals:3, rev:1200000 },
+    { w:'W39', p:'Month 10', act:'Channel partner expansion', t2p:'1 close', t4p:'Pipeline', deals:1, rev:175000 },
+    { w:'W40', p:'Month 10', act:'T5 bundle + T1 closes', t2p:'Referrals', t4p:'6th qualification', deals:2, rev:345000 },
+    // Month 11-12 (Weeks 41-48)
+    { w:'W41', p:'Month 11', act:'Budget season — T4 push', t2p:'3/month', t4p:'Budget approvals', deals:1, rev:175000 },
+    { w:'W42', p:'Month 11', act:'AMC renewal batch 1', t2p:'1 close', t4p:'6th close pending', deals:2, rev:1025000 },
+    { w:'W43', p:'Month 11', act:'New city ramp-up', t2p:'2 close', t4p:'Pipeline', deals:3, rev:610000 },
+    { w:'W44', p:'Month 11', act:'T3 + T1 closes', t2p:'Pipeline', t4p:'Qualification', deals:2, rev:485000 },
+    { w:'W45', p:'Month 12', act:'Year-end tax saving push', t2p:'4/month push', t4p:'7th T4 expected', deals:2, rev:350000 },
+    { w:'W46', p:'Month 12', act:'Final T4 close of year', t2p:'2 close', t4p:'7th close!', deals:3, rev:1200000 },
+    { w:'W47', p:'Month 12', act:'Year-end acceleration', t2p:'1 close', t4p:'Year review', deals:2, rev:435000 },
+    { w:'W48', p:'Month 12', act:'🏆 YEAR 1 TARGET: ₹1.33 Cr | 36 deals', t2p:'Year review', t4p:'Year 2 T4 pipeline', deals:1, rev:175000 },
+  ];
+
+  let cum = 0;
+  const tbody = document.getElementById('weekly-body');
+  let html = '';
+  let qDeals = 0, qRev = 0;
+  data.forEach((r, i) => {
+    cum += r.rev;
+    qDeals += r.deals;
+    qRev += r.rev;
+    const isMonthEnd = (i+1) % 4 === 0;
+    const isQEnd = (i+1) % 12 === 0;
+    html += `<tr${r.deals > 0 && r.rev >= 850000 ? ' class="highlight-row"' : ''}>
+      <td><strong>${r.w}</strong></td><td>${r.p}</td><td style="text-align:left;max-width:220px;">${r.act}</td>
+      <td style="text-align:left;font-size:.75rem;">${r.t2p}</td><td style="text-align:left;font-size:.75rem;">${r.t4p}</td>
+      <td>${r.deals || '—'}</td><td style="color:${r.rev?'var(--teal-light)':'var(--text-muted)'};">${r.rev ? fmtINR(r.rev) : '—'}</td>
+      <td style="color:var(--success);font-weight:600;">${fmtINR(cum)}</td></tr>`;
+    if (isQEnd) {
+      html += `<tr class="q-row"><td colspan="5" style="text-align:left;">📊 Quarter ${Math.ceil((i+1)/12)} Summary</td><td>${qDeals}</td><td>${fmtINR(qRev)}</td><td>${fmtINR(cum)}</td></tr>`;
+      qDeals = 0; qRev = 0;
+    }
+  });
+  tbody.innerHTML = html;
+})();
+
+// ===== 2. FORTNIGHTLY TABLE =====
+(function buildFortnightly() {
+  const fn = [
+    { fn:'FN1', dt:'Apr 1-15', t1:0, t2:0, t3:0, t4:0, t5:0, focus:'Territory mapping, CRM setup, training' },
+    { fn:'FN2', dt:'Apr 16-30', t1:0, t2:1, t3:0, t4:0, t5:0, focus:'Cold outreach, first demos, first T2 close' },
+    { fn:'FN3', dt:'May 1-15', t1:0, t2:1, t3:0, t4:0, t5:0, focus:'T4 on-site visits, T2 pipeline push' },
+    { fn:'FN4', dt:'May 16-31', t1:1, t2:1, t3:0, t4:1, t5:0, focus:'GAME CHANGER — 1st T4 close, T2+T1 closes' },
+    { fn:'FN5', dt:'Jun 1-15', t1:0, t2:1, t3:0, t4:0, t5:0, focus:'T3 launch, IRIA meeting, referral programme' },
+    { fn:'FN6', dt:'Jun 16-30', t1:1, t2:2, t3:1, t4:0, t5:0, focus:'T3 first close, T2 volume, case study published' },
+    { fn:'FN7', dt:'Jul 1-15', t1:1, t2:1, t3:0, t4:0, t5:0, focus:'2nd sales rep hired, T1 clinic blitz begins' },
+    { fn:'FN8', dt:'Jul 16-31', t1:0, t2:2, t3:0, t4:1, t5:1, focus:'2nd T4 close, T5 bundle introduced, SEO push' },
+    { fn:'FN9', dt:'Aug 1-15', t1:0, t2:1, t3:0, t4:0, t5:0, focus:'New city expansion, distributor partnership' },
+    { fn:'FN10', dt:'Aug 16-31', t1:1, t2:1, t3:1, t4:0, t5:0, focus:'Webinar 50+ leads, T3 close, new city T2' },
+    { fn:'FN11', dt:'Sep 1-15', t1:0, t2:1, t3:0, t4:1, t5:0, focus:'Mid-year review, 3rd T4 close, channel optimize' },
+    { fn:'FN12', dt:'Sep 16-30', t1:1, t2:1, t3:0, t4:0, t5:1, focus:'🎯 MID-YEAR: ₹75L+ target, AMC revenue emerging' },
+    { fn:'FN13', dt:'Oct 1-15', t1:0, t2:1, t3:0, t4:0, t5:0, focus:'Trade show prep, T4 lead generation' },
+    { fn:'FN14', dt:'Oct 16-31', t1:1, t2:1, t3:1, t4:0, t5:0, focus:'Trade show execution, T3 close from event leads' },
+    { fn:'FN15', dt:'Nov 1-15', t1:0, t2:2, t3:0, t4:1, t5:0, focus:'4th T4 close, volume chain deal, T2 steady' },
+    { fn:'FN16', dt:'Nov 16-30', t1:1, t2:1, t3:1, t4:0, t5:0, focus:'T3 close, T1 volume from 2nd rep' },
+    { fn:'FN17', dt:'Dec 1-15', t1:0, t2:1, t3:0, t4:0, t5:1, focus:'🏆 BREAK-EVEN, year-end urgency marketing' },
+    { fn:'FN18', dt:'Dec 16-31', t1:1, t2:2, t3:1, t4:0, t5:0, focus:'Tax saving push, AMC renewals approaching' },
+    { fn:'FN19', dt:'Jan 1-15', t1:0, t2:1, t3:0, t4:1, t5:0, focus:'Year 2 planning, 5th T4 close, new team hired' },
+    { fn:'FN20', dt:'Jan 16-31', t1:1, t2:2, t3:0, t4:0, t5:1, focus:'3rd city scouting, channel partner expansion' },
+    { fn:'FN21', dt:'Feb 1-15', t1:0, t2:1, t3:0, t4:1, t5:0, focus:'Budget season — T4 push, 6th T4 close' },
+    { fn:'FN22', dt:'Feb 16-28', t1:1, t2:2, t3:1, t4:0, t5:0, focus:'AMC batch 1 renewed, new city ramp' },
+    { fn:'FN23', dt:'Mar 1-15', t1:0, t2:2, t3:0, t4:1, t5:0, focus:'Year-end tax push, 7th T4, final acceleration' },
+    { fn:'FN24', dt:'Mar 16-31', t1:1, t2:1, t3:0, t4:0, t5:1, focus:'🏆 YEAR 1 COMPLETE: ₹1.33 Cr | 36 deals' },
+  ];
+
+  let cum = 0;
+  const tbody = document.getElementById('fn-body');
+  let html = '';
+  fn.forEach((r, i) => {
+    const rev = r.t1*P.t1 + r.t2*P.t2 + r.t3*P.t3 + r.t4*P.t4 + r.t5*P.t5;
+    cum += rev;
+    html += `<tr${r.t4>0?' class="highlight-row"':''}>
+      <td><strong>${r.fn}</strong></td><td>${r.dt}</td><td>${r.t1||'—'}</td><td>${r.t2||'—'}</td><td>${r.t3||'—'}</td><td>${r.t4||'—'}</td><td>${r.t5||'—'}</td>
+      <td style="color:var(--teal-light);font-weight:600;">${fmtINR(rev)}</td>
+      <td style="color:var(--success);font-weight:600;">${fmtINR(cum)}</td>
+      <td style="text-align:left;font-size:.75rem;">${r.focus}</td></tr>`;
+  });
+  tbody.innerHTML = html;
+})();
+
+// ===== 3. SINGLE-TIER TABS =====
+function showSingle(tier) {
+  document.querySelectorAll('#single-tier-tabs .stab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('[id^="panel-t"]').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + tier).classList.add('active');
+}
+
+// ===== 4. INTERACTIVE COMBO BUILDER =====
+const RAMP = [0.25, 0.50, 0.65, 0.75, 0.85, 0.90, 0.95, 1.0, 1.0, 1.0, 1.05, 1.10]; // monthly ramp factor
+
+function updateCombo() {
+  const tiers = ['t1','t2','t3','t4','t5'];
+  const vals = {};
+  tiers.forEach(t => {
+    vals[t] = parseInt(document.getElementById('sl-'+t).value);
+    document.getElementById('sv-'+t).textContent = vals[t];
+  });
+
+  const monthlyRev = tiers.reduce((a,t) => a + vals[t] * P[t], 0);
+  const monthlyProfit = tiers.reduce((a,t) => a + vals[t] * P[t] * (1 - COST_RATIO[t]), 0);
+  const dealsPerMonth = tiers.reduce((a,t) => a + vals[t], 0);
+  const annualAMC = tiers.reduce((a,t) => a + vals[t] * AMC[t] * 6, 0); // avg 6 months of customers
+
+  // Results grid
+  const rg = document.getElementById('combo-results');
+  rg.innerHTML = `
+    <div class="result-box"><div class="result-number">${dealsPerMonth}</div><div class="result-label">Deals/Month</div></div>
+    <div class="result-box"><div class="result-number">${fmtINR(monthlyRev)}</div><div class="result-label">Revenue/Month</div></div>
+    <div class="result-box"><div class="result-number">${fmtINR(monthlyProfit)}</div><div class="result-label">Profit/Month</div></div>
+    <div class="result-box"><div class="result-number">${fmtINR(monthlyRev * 3)}</div><div class="result-label">Quarterly Revenue</div></div>
+    <div class="result-box"><div class="result-number" style="color:var(--success);">${fmtINR(monthlyRev * 12)}</div><div class="result-label">Annual Revenue</div></div>
+    <div class="result-box"><div class="result-number" style="color:var(--success);">${fmtINR(monthlyProfit * 12)}</div><div class="result-label">Annual Profit</div></div>
+    <div class="result-box"><div class="result-number">${fmtINR(annualAMC)}</div><div class="result-label">Recurring AMC/yr</div></div>
+    <div class="result-box"><div class="result-number">${monthlyRev > 0 ? (monthlyProfit / monthlyRev * 100).toFixed(0) + '%' : '—'}</div><div class="result-label">Blended Margin</div></div>
+  `;
+
+  // Month-by-month table with ramp
+  const tbody = document.getElementById('combo-body');
+  let cumRev = 0, cumProfit = 0;
+  let html = '';
+  RAMP.forEach((r, i) => {
+    const mRev = Math.round(monthlyRev * r);
+    const mProfit = Math.round(monthlyProfit * r);
+    const mDeals = Math.round(dealsPerMonth * r * 10) / 10;
+    cumRev += mRev;
+    cumProfit += mProfit;
+    html += `<tr>
+      <td>Month ${i+1}</td><td>${Math.round(r*100)}%</td><td>${mDeals.toFixed(1)}</td>
+      <td style="color:var(--teal-light);">${fmtINR(mRev)}</td><td style="color:var(--success);">${fmtINR(mProfit)}</td>
+      <td>${fmtINR(cumRev)}</td><td style="color:var(--success);">${fmtINR(cumProfit)}</td></tr>`;
+  });
+  html += `<tr class="total-row"><td>YEAR 1</td><td>—</td><td>${(dealsPerMonth * RAMP.reduce((a,r)=>a+r,0)).toFixed(0)}</td>
+    <td>${fmtINR(cumRev)}</td><td>${fmtINR(cumProfit)}</td><td>${fmtINR(cumRev)}</td><td>${fmtINR(cumProfit)}</td></tr>`;
+  tbody.innerHTML = html;
+
+  // Store for milestone calc
+  window._customCombo = { monthlyRev, monthlyProfit, dealsPerMonth };
+}
+
+// ===== 5. PRESET COMBINATIONS =====
+(function buildPresets() {
+  const presets = [
+    { name:'T1-Only (Low Risk)', t1:3,t2:0,t3:0,t4:0,t5:0, be:'5-6', risk:'🟢 Low' },
+    { name:'T2-Only (Volume Play)', t1:0,t2:3,t3:0,t4:0,t5:0, be:'3-4', risk:'🟢 Low' },
+    { name:'T3-Only (Niche Radiology)', t1:0,t2:0,t3:2,t4:0,t5:0, be:'3', risk:'🟡 Medium' },
+    { name:'T4-Only (Enterprise Gamble)', t1:0,t2:0,t3:0,t4:1,t5:0, be:'4-5', risk:'🔴 High' },
+    { name:'T5-Only (Bundle Focus)', t1:0,t2:0,t3:0,t4:0,t5:3, be:'3', risk:'🟢 Low' },
+    { name:'T1+T2 Starter', t1:2,t2:2,t3:0,t4:0,t5:0, be:'3-4', risk:'🟢 Low' },
+    { name:'T2+T4 Power Combo ⭐', t1:0,t2:2,t3:0,t4:1,t5:0, be:'2-3', risk:'🟡 Medium' },
+    { name:'T2+T3 Mid-Market', t1:0,t2:2,t3:1,t4:0,t5:0, be:'2-3', risk:'🟢 Low' },
+    { name:'T2+T5 Value Mix', t1:0,t2:2,t3:0,t4:0,t5:1, be:'3', risk:'🟢 Low' },
+    { name:'T1+T2+T4 Tri-Tier', t1:1,t2:2,t3:0,t4:1,t5:0, be:'2-3', risk:'🟡 Medium' },
+    { name:'T2+T3+T4 Premium', t1:0,t2:2,t3:1,t4:1,t5:0, be:'2', risk:'🟡 Medium' },
+    { name:'Balanced (All Tiers)', t1:1,t2:2,t3:1,t4:1,t5:1, be:'2', risk:'🟡 Medium' },
+    { name:'Enterprise Heavy', t1:0,t2:1,t3:0,t4:2,t5:0, be:'3-4', risk:'🔴 High' },
+    { name:'Volume Blitz', t1:3,t2:4,t3:0,t4:0,t5:2, be:'2', risk:'🟢 Low' },
+    { name:'Aggressive Full ⭐', t1:1,t2:3,t3:1,t4:2,t5:1, be:'1-2', risk:'🔴 High' },
+  ];
+
+  const tbody = document.getElementById('preset-body');
+  let html = '';
+  presets.forEach(p => {
+    const mRev = p.t1*P.t1 + p.t2*P.t2 + p.t3*P.t3 + p.t4*P.t4 + p.t5*P.t5;
+    const mProfit = p.t1*P.t1*(1-COST_RATIO.t1) + p.t2*P.t2*(1-COST_RATIO.t2) + p.t3*P.t3*(1-COST_RATIO.t3) + p.t4*P.t4*(1-COST_RATIO.t4) + p.t5*P.t5*(1-COST_RATIO.t5);
+    const deals = p.t1+p.t2+p.t3+p.t4+p.t5;
+    const margin = mRev > 0 ? (mProfit/mRev*100).toFixed(0) : 0;
+    const isHighlight = p.name.includes('⭐');
+    html += `<tr${isHighlight?' class="highlight-row"':''}>
+      <td style="white-space:nowrap;">${p.name}</td><td>${p.t1||'—'}</td><td>${p.t2||'—'}</td><td>${p.t3||'—'}</td><td>${p.t4||'—'}</td><td>${p.t5||'—'}</td>
+      <td><strong>${deals}</strong></td><td>${fmtINR(mRev)}</td><td>${fmtINR(mProfit)}</td>
+      <td>${fmtINR(mRev*3)}</td><td style="color:var(--teal-light);font-weight:700;">${fmtINR(mRev*12)}</td>
+      <td style="color:var(--success);font-weight:700;">${fmtINR(mProfit*12)}</td><td>${margin}%</td><td>Mo ${p.be}</td><td>${p.risk}</td></tr>`;
+  });
+  tbody.innerHTML = html;
+})();
+
+// ===== 6. MILESTONE TRACKER =====
+const MS_STRATEGIES = {
+  t2only: { label:'T2-Only', mRev:175000*3, mProfit:175000*3*(1-COST_RATIO.t2), deals:3 },
+  t2t4: { label:'T2+T4 Power Combo', mRev:2*175000+850000, mProfit:2*175000*(1-COST_RATIO.t2)+850000*(1-COST_RATIO.t4), deals:3 },
+  balanced: { label:'Balanced (All Tiers)', mRev:85000+2*175000+400000+850000+260000, mProfit:85000*(1-COST_RATIO.t1)+2*175000*(1-COST_RATIO.t2)+400000*(1-COST_RATIO.t3)+850000*(1-COST_RATIO.t4)+260000*(1-COST_RATIO.t5), deals:6 },
+  enterprise: { label:'Enterprise Heavy', mRev:175000+2*850000, mProfit:175000*(1-COST_RATIO.t2)+2*850000*(1-COST_RATIO.t4), deals:3 },
+  full: { label:'Aggressive Full', mRev:85000+3*175000+400000+2*850000+260000, mProfit:85000*(1-COST_RATIO.t1)+3*175000*(1-COST_RATIO.t2)+400000*(1-COST_RATIO.t3)+2*850000*(1-COST_RATIO.t4)+260000*(1-COST_RATIO.t5), deals:8 },
+};
+
+const MILESTONES = [
+  { name:'First Revenue', target:85000 },
+  { name:'₹5L Cumulative', target:500000 },
+  { name:'₹10L Cumulative', target:1000000 },
+  { name:'₹25L Cumulative', target:2500000 },
+  { name:'₹50L Cumulative', target:5000000 },
+  { name:'₹75L Cumulative', target:7500000 },
+  { name:'₹1 Crore', target:10000000 },
+  { name:'₹1.33 Crore', target:13300000 },
+  { name:'₹2 Crore', target:20000000 },
+  { name:'₹3 Crore', target:30000000 },
+  { name:'10 Deals Closed', target:10, type:'deals' },
+  { name:'25 Deals Closed', target:25, type:'deals' },
+  { name:'50 Deals Closed', target:50, type:'deals' },
+];
+
+function showMilestones(key) {
+  document.querySelectorAll('#ms-tabs .stab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  let mRev, mProfit, deals;
+  if (key === 'custom' && window._customCombo) {
+    mRev = window._customCombo.monthlyRev;
+    mProfit = window._customCombo.monthlyProfit;
+    deals = window._customCombo.dealsPerMonth;
+  } else if (MS_STRATEGIES[key]) {
+    mRev = MS_STRATEGIES[key].mRev;
+    mProfit = MS_STRATEGIES[key].mProfit;
+    deals = MS_STRATEGIES[key].deals;
+  } else return;
+
+  const tbody = document.getElementById('ms-body');
+  let html = '';
+  MILESTONES.forEach(ms => {
+    const isDeals = ms.type === 'deals';
+    let cumRev = 0, cumProfit = 0, cumDeals = 0, month = 0;
+    for (let m = 0; m < 36; m++) {
+      const ramp = m < 12 ? RAMP[m] : 1.15;
+      cumRev += mRev * ramp;
+      cumProfit += mProfit * ramp;
+      cumDeals += deals * ramp;
+      if ((isDeals && cumDeals >= ms.target) || (!isDeals && cumRev >= ms.target)) {
+        month = m + 1;
+        break;
+      }
+    }
+    if (month === 0) month = '36+';
+    const moStr = typeof month === 'number' ? `Month ${month}` : month;
+    const color = (typeof month === 'number' && month <= 12) ? 'var(--success)' : (typeof month === 'number' && month <= 24 ? 'var(--teal-light)' : 'var(--text-muted)');
+    html += `<tr><td>${ms.name}</td><td>${isDeals ? ms.target + ' deals' : fmtINR(ms.target)}</td>
+      <td style="color:${color};font-weight:700;">${moStr}</td>
+      <td>${fmtINR(month <= 36 ? cumRev : 0)}</td><td>${fmtINR(month <= 36 ? cumProfit : 0)}</td>
+      <td>${month <= 36 ? Math.round(cumDeals) : '—'}</td></tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+// ===== INIT =====
+function jumpTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize combo builder and milestones
+updateCombo();
+showMilestones('t2t4');
+</script>
+</body>
+</html>
